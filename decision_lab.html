@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decision Lab · Andover Economics Society</title>
+  <meta name="description" content="Four experiments that reveal how cognitive biases shape your decisions. Built by the Andover Economics Society.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #0031A7;
+      --blue-dark: #001f6b;
+      --blue-light: #44B8F3;
+      --gold: #6C5E21;
+      --gold-light: #b8a94a;
+      --cream: #f7f5f0;
+      --rule: #d4cfc5;
+      --text: #1a1a1a;
+      --muted: #5a5a5a;
+      --serif: 'Libre Baskerville', Georgia, serif;
+      --sans: 'Source Sans 3', system-ui, sans-serif;
+
+      /* Lab dark palette */
+      --lab-bg: #070d1c;
+      --lab-surface: #0e1830;
+      --lab-border: rgba(255,255,255,0.09);
+      --lab-text: #eeeef4;
+      --lab-muted: rgba(255,255,255,0.48);
+      --lab-accent: #44B8F3;
+      --lab-gold: #b8a94a;
+      --lab-danger: #e06565;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--lab-bg);
+      color: var(--lab-text);
+      line-height: 1.6;
+      font-size: 16px;
+      overflow-x: hidden;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    body.results-mode { background: #fff; color: var(--text); }
+
+    /* ── Progress bar ─────────────────────────────────────── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--lab-gold);
+      width: 0%;
+      opacity: 0;
+      z-index: 999;
+      transition: width 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+    }
+    #progress-bar.visible { opacity: 1; }
+
+    /* ── Lab root ─────────────────────────────────────────── */
+    #lab-root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+      position: relative;
+    }
+
+    /* Atmospheric radial on dark screens */
+    #lab-root::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(0,49,167,0.28) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 90%, rgba(68,184,243,0.09) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.5s;
+    }
+    body.results-mode #lab-root::after { opacity: 0; }
+    body.results-mode #lab-root {
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 3rem;
+      padding-bottom: 5rem;
+    }
+
+    /* ── Screens ──────────────────────────────────────────── */
+    .lab-screen {
+      width: 100%;
+      max-width: 560px;
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
+    .lab-screen.active {
+      display: block;
+      animation: screenIn 0.45s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    @keyframes screenIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Task meta (step counter + dots) ─────────────────── */
+    .task-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 2.25rem;
+    }
+    .task-number {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--lab-gold);
+    }
+    .task-dots { display: flex; gap: 7px; }
+    .task-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .task-dot.done  { background: var(--lab-gold); }
+    .task-dot.active { background: var(--lab-accent); transform: scale(1.35); }
+
+    /* ── Intro screen ─────────────────────────────────────── */
+    #screen-intro { text-align: center; max-width: 480px; }
+
+    .intro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lab-gold);
+      padding: 0.38rem 1rem;
+      border: 1px solid rgba(184,169,74,0.35);
+      border-radius: 20px;
+      margin-bottom: 2.75rem;
+    }
+
+    .intro-title {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 9vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.5rem;
+    }
+
+    .intro-title .underlined {
+      position: relative;
+      display: inline-block;
+      color: var(--lab-accent);
+    }
+    .intro-title .underlined::after {
+      content: '';
+      position: absolute;
+      bottom: -5px; left: 0; right: 0;
+      height: 2px;
+      background: var(--lab-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: lineIn 0.6s cubic-bezier(0.4,0,0.2,1) 0.9s forwards;
+    }
+    @keyframes lineIn { to { transform: scaleX(1); } }
+
+    .intro-sub {
+      font-size: 1rem;
+      color: var(--lab-muted);
+      line-height: 1.7;
+      max-width: 360px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .intro-meta {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 2.75rem;
+    }
+
+    /* ── Buttons ──────────────────────────────────────────── */
+    .lab-btn {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-block;
+      text-decoration: none;
+    }
+    .lab-btn-white {
+      background: #fff;
+      color: var(--blue);
+    }
+    .lab-btn-white:hover {
+      background: var(--cream);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+    }
+    .lab-btn-accent {
+      background: var(--lab-accent);
+      color: #04111f;
+    }
+    .lab-btn-accent:hover {
+      background: #65c8ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(68,184,243,0.45);
+    }
+    .lab-btn-ghost {
+      background: transparent;
+      color: var(--lab-muted);
+      border: 1px solid var(--lab-border);
+    }
+    .lab-btn-ghost:hover {
+      border-color: rgba(255,255,255,0.25);
+      color: var(--lab-text);
+    }
+
+    .action-row {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    /* ── Question screens ─────────────────────────────────── */
+    .q-headline {
+      font-family: var(--serif);
+      font-size: clamp(1.65rem, 4vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+    .q-sub {
+      font-size: 0.87rem;
+      color: var(--lab-muted);
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Dossier (Q1) ─────────────────────────────────────── */
+    .dossier {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 5px;
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1.75rem;
+      position: relative;
+    }
+    .dossier::before {
+      content: 'PROFILE';
+      position: absolute;
+      top: 0.9rem; right: 1.1rem;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.12);
+    }
+    .dossier-row {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 0.75rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.88rem;
+      align-items: start;
+    }
+    .dossier-row:last-child { border-bottom: none; }
+    .dossier-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lab-gold);
+      padding-top: 3px;
+    }
+    .dossier-val { color: rgba(255,255,255,0.78); line-height: 1.55; }
+
+    .choice-prompt {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lab-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    /* ── Choice buttons ───────────────────────────────────── */
+    .choice-stack { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .choice-btn {
+      padding: 1.05rem 1.25rem;
+      border: 1px solid var(--lab-border);
+      background: var(--lab-surface);
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.18s;
+      font-family: var(--sans);
+      color: var(--lab-text);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+    }
+    .choice-btn:hover {
+      border-color: var(--lab-accent);
+      background: rgba(68,184,243,0.06);
+    }
+    .choice-btn.selected {
+      border-color: var(--lab-accent);
+      background: rgba(68,184,243,0.11);
+      box-shadow: 0 0 0 1px var(--lab-accent);
+    }
+    .choice-btn.selected .choice-letter {
+      background: var(--lab-accent);
+      color: #04111f;
+    }
+    .choice-letter {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center; justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.18s;
+    }
+    .choice-text { font-size: 0.93rem; line-height: 1.5; padding-top: 4px; }
+
+    /* ── Present bias panels (Q2) ─────────────────────────── */
+    .bias-panels { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .bias-panel {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 4px;
+      padding: 1.2rem 1.4rem;
+    }
+    .bias-panel-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lab-gold);
+      margin-bottom: 0.6rem;
+    }
+    .bias-panel-desc {
+      font-size: 0.82rem;
+      color: var(--lab-muted);
+      margin-bottom: 1rem;
+    }
+    .bias-panel-choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+    .bias-choice {
+      padding: 1.1rem 0.75rem;
+      border: 1px solid var(--lab-border);
+      background: rgba(0,0,0,0.2);
+      border-radius: 3px;
+      cursor: pointer;
+      text-align: center;
+      font-family: var(--sans);
+      color: var(--lab-text);
+      transition: all 0.18s;
+    }
+    .bias-choice:hover {
+      border-color: var(--lab-accent);
+      background: rgba(68,184,243,0.06);
+    }
+    .bias-choice.selected {
+      border-color: var(--lab-accent);
+      background: rgba(68,184,243,0.13);
+      box-shadow: 0 0 0 1px var(--lab-accent);
+    }
+    .bias-amount {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .bias-timing {
+      font-size: 0.72rem;
+      color: var(--lab-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Scope screen (Q3) ────────────────────────────────── */
+    .scope-hero { text-align: center; margin-bottom: 2rem; }
+    .scope-number {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 11vw, 6rem);
+      font-weight: 700;
+      color: var(--lab-gold);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.2rem;
+    }
+    .scope-unit {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lab-muted);
+    }
+    .scope-scenario {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-left: 3px solid var(--lab-gold);
+      border-radius: 0 4px 4px 0;
+      padding: 1.1rem 1.3rem;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1.75rem;
+    }
+    .scope-q { font-size: 0.87rem; color: var(--lab-muted); margin-bottom: 0.8rem; }
+
+    .dollar-wrap {
+      display: flex;
+      align-items: stretch;
+      max-width: 200px;
+    }
+    .dollar-prefix {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--lab-border);
+      border-right: none;
+      padding: 0.75rem 0.9rem;
+      font-weight: 700;
+      color: var(--lab-gold);
+      border-radius: 3px 0 0 3px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    .dollar-input {
+      flex: 1;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-family: var(--sans);
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 0 3px 3px 0;
+      color: var(--lab-text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .dollar-input:focus {
+      outline: none;
+      border-color: var(--lab-accent);
+      box-shadow: 0 0 0 3px rgba(68,184,243,0.15);
+    }
+    .dollar-input.error {
+      border-color: var(--lab-danger);
+      animation: shake 0.35s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(3px); }
+    }
+
+    /* ── Victim screen (Q4) ───────────────────────────────── */
+    .victim-story {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 4px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .victim-story blockquote {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.82);
+    }
+    .victim-story blockquote strong {
+      color: var(--lab-accent);
+      font-style: normal;
+    }
+    .victim-stats {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .stat-big {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--lab-text);
+      margin-bottom: 0.4rem;
+    }
+    .stat-desc { font-size: 0.85rem; color: var(--lab-muted); line-height: 1.65; }
+
+    .slider-box {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 4px;
+      padding: 1.25rem 1.4rem;
+    }
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1rem;
+    }
+    .slider-label-text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lab-muted);
+    }
+    .slider-value {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--lab-accent);
+    }
+    input[type="range"] {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--lab-accent);
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(68,184,243,0.55);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+      box-shadow: 0 0 22px rgba(68,184,243,0.75);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px; height: 20px;
+      border: none; border-radius: 50%;
+      background: var(--lab-accent);
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(68,184,243,0.55);
+    }
+    .slider-ends {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--lab-muted);
+      margin-top: 0.55rem;
+    }
+
+    /* ── Validation ───────────────────────────────────────── */
+    .val-msg {
+      font-size: 0.76rem;
+      color: var(--lab-danger);
+      margin-top: 0.6rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      height: 1rem;
+    }
+    .val-msg.show { opacity: 1; }
+
+    /* ── Analyzing screen ─────────────────────────────────── */
+    #screen-analyzing { text-align: center; padding: 3rem 2rem; max-width: 420px; }
+
+    .analyzing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      width: 44px;
+      margin: 0 auto 2.25rem;
+    }
+    .a-dot {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--lab-accent);
+      opacity: 0;
+      animation: aDot 1.3s ease infinite;
+    }
+    .a-dot:nth-child(1) { animation-delay: 0s; }
+    .a-dot:nth-child(2) { animation-delay: 0.2s; }
+    .a-dot:nth-child(3) { animation-delay: 0.1s; }
+    .a-dot:nth-child(4) { animation-delay: 0.3s; }
+    @keyframes aDot {
+      0%,100% { opacity: 0.1; transform: scale(0.75); }
+      50%      { opacity: 1;   transform: scale(1); }
+    }
+
+    .analyzing-wrap {
+      height: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .a-msg {
+      position: absolute; width: 100%;
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--lab-muted);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .a-msg.show { opacity: 1; transform: translateY(0); }
+
+    /* ── Results: nav ─────────────────────────────────────── */
+    #results-nav-el {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--blue);
+      border-bottom: 3px solid var(--gold-light);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      /* bleed past screen-results max-width to fill viewport */
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+    }
+    .rn-inner {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .rn-logo {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .rn-logo span { color: var(--gold-light); }
+    .rn-links { display: flex; gap: 0.2rem; list-style: none; }
+    .rn-links a {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      padding: 0.4rem 0.65rem;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .rn-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+    /* ── Results: screen ──────────────────────────────────── */
+    #screen-results { max-width: 680px; }
+
+    /* Profile card */
+    .profile-card {
+      background: linear-gradient(140deg, #001060 0%, #0031A7 55%, #0a3bbf 100%);
+      border-radius: 8px;
+      padding: 2.75rem 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,20,80,0.35);
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: -40%; right: -15%;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(68,184,243,0.07);
+    }
+    .profile-card::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; left: -10%;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(184,169,74,0.06);
+    }
+    .pc-eyebrow {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(184,169,74,0.85);
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .pc-name {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.55rem;
+      position: relative;
+    }
+    .pc-headline {
+      font-size: 0.92rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    .pc-desc {
+      font-size: 0.87rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+      max-width: 420px;
+      margin: 0 auto 1.75rem;
+      position: relative;
+    }
+    .pc-badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      position: relative;
+    }
+    .pc-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.7rem;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+    .badge-bias {
+      background: rgba(68,184,243,0.14);
+      border-color: rgba(68,184,243,0.4);
+      color: #82d4f8;
+    }
+    .badge-resist {
+      background: rgba(184,169,74,0.12);
+      border-color: rgba(184,169,74,0.35);
+      color: var(--gold-light);
+    }
+
+    .share-btn {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.35rem;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 3px;
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .share-btn:hover {
+      border-color: rgba(255,255,255,0.48);
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+    }
+    .share-btn.copied { border-color: #7ab87a; color: #7ab87a; }
+
+    /* Results section divider */
+    .results-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .results-divider::before, .results-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--rule);
+    }
+
+    /* Result blocks */
+    .result-block {
+      margin-bottom: 2rem;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .rb-header {
+      background: var(--cream);
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .rb-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.25rem;
+    }
+    .rb-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .rb-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+    .rb-verdict {
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+    .verdict-bias { color: #c0392b; }
+    .verdict-ok   { color: #27ae60; }
+    .rb-answer {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--blue);
+      background: rgba(0,49,167,0.07);
+      border: 1px solid rgba(0,49,167,0.14);
+      border-radius: 3px;
+      padding: 0.25rem 0.6rem;
+      white-space: nowrap;
+      max-width: 200px;
+      text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Benchmark */
+    .benchmark {
+      padding: 1rem 1.4rem;
+      background: #fafaf8;
+      border-bottom: 1px solid var(--rule);
+    }
+    .bm-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+    .bm-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.45rem;
+      font-size: 0.78rem;
+    }
+    .bm-name { width: 68px; flex-shrink: 0; color: var(--muted); font-size: 0.72rem; }
+    .bm-bar-wrap { flex: 1; height: 5px; background: #e8e5de; border-radius: 3px; overflow: hidden; }
+    .bm-bar { height: 100%; border-radius: 3px; width: 0; transition: width 1.1s cubic-bezier(0.4,0,0.2,1) 0.4s; }
+    .bm-bar.highlighted { background: var(--blue); }
+    .bm-bar.dimmed      { background: var(--rule); }
+    .bm-pct { width: 48px; text-align: right; font-weight: 700; color: var(--text); font-size: 0.76rem; }
+
+    /* Result body */
+    .rb-body { padding: 1.25rem 1.4rem; background: #fff; }
+    .rb-explanation { font-size: 0.87rem; line-height: 1.72; color: var(--muted); }
+    .rb-explanation p { margin-bottom: 0.85rem; }
+    .rb-explanation p:last-child { margin-bottom: 0; }
+    .rb-explanation strong { color: var(--text); }
+
+    /* Closing note */
+    .closing-note {
+      background: var(--cream);
+      border-left: 3px solid var(--blue-light);
+      border-radius: 0 4px 4px 0;
+      padding: 1.25rem 1.4rem;
+      margin-top: 2rem;
+    }
+    .cn-label { font-weight: 700; color: var(--blue); font-size: 0.84rem; margin-bottom: 0.4rem; }
+    .cn-text  { font-size: 0.86rem; line-height: 1.7; color: var(--muted); }
+
+    /* Results footer */
+    .results-footer { text-align: center; padding: 2.5rem 0 0; border-top: 1px solid var(--rule); margin-top: 1.5rem; }
+    .rf-btn {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.7rem 1.75rem;
+      border: 1.5px solid var(--blue);
+      border-radius: 3px;
+      color: var(--blue);
+      text-decoration: none;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.15s;
+      margin: 0 0.4rem;
+    }
+    .rf-btn:hover { background: var(--blue); color: #fff; text-decoration: none; }
+    .rf-btn-ghost { border-color: var(--rule); color: var(--muted); }
+    .rf-btn-ghost:hover { background: var(--cream); color: var(--text); }
+
+    /* Shared banner */
+    .shared-banner {
+      background: rgba(68,184,243,0.08);
+      border: 1px solid rgba(68,184,243,0.22);
+      border-radius: 4px;
+      padding: 0.7rem 1.25rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .bias-panel-choices { grid-template-columns: 1fr; }
+      .profile-card { padding: 2rem 1.5rem; }
+      .rb-header { flex-direction: column; gap: 0.5rem; }
+      .rb-meta { align-items: flex-start; }
+      .rb-answer { text-align: left; }
+      .rn-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div id="lab-root">
+
+  <!-- ══════════════════════════════════════════════════════
+       INTRO
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-intro" class="lab-screen active">
+    <div style="text-align:center;">
+      <div class="intro-badge">Andover Economics Society · Decision Lab</div>
+      <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
+      <p class="intro-sub">Four short experiments. Each one reveals something different about how you actually make decisions, even if you've studied economics.</p>
+      <p class="intro-meta">~4 minutes</p>
+      <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       Q1: CONJUNCTION FALLACY
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-q1" class="lab-screen">
+    <div class="task-meta">
+      <span class="task-number">Task 01 / 04</span>
+      <div class="task-dots">
+        <div class="task-dot active"></div>
+        <div class="task-dot"></div>
+        <div class="task-dot"></div>
+        <div class="task-dot"></div>
+      </div>
+    </div>
+
+    <h2 class="q-headline">Who is Alex?</h2>
+    <p class="q-sub">Read the profile below, then answer the question.</p>
+
+    <div class="dossier">
+      <div class="dossier-row">
+        <span class="dossier-label">Age</span>
+        <span class="dossier-val">26</span>
+      </div>
+      <div class="dossier-row">
+        <span class="dossier-label">Education</span>
+        <span class="dossier-val">Philosophy, B.A. with honors (senior thesis on wage inequality)</span>
+      </div>
+      <div class="dossier-row">
+        <span class="dossier-label">Known for</span>
+        <span class="dossier-val">Outspoken, volunteered at a legal aid clinic, reputation for arguing ethics at dinner</span>
+      </div>
+      <div class="dossier-row">
+        <span class="dossier-label">Location</span>
+        <span class="dossier-val">New York City, post-graduation</span>
+      </div>
+    </div>
+
+    <p class="choice-prompt">Which of the following is more likely?</p>
+
+    <div class="choice-stack" id="q1-choices">
+      <button class="choice-btn" onclick="Lab.selectQ1('bank')" id="choice-bank">
+        <div class="choice-letter">A</div>
+        <div class="choice-text">Alex works at an investment bank.</div>
+      </button>
+      <button class="choice-btn" onclick="Lab.selectQ1('bank-volunteer')" id="choice-bank-volunteer">
+        <div class="choice-letter">B</div>
+        <div class="choice-text">Alex works at an investment bank <em>and</em> volunteers at a nonprofit on weekends.</div>
+      </button>
+    </div>
+    <div id="q1-err" class="val-msg">Please select one of the options above.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       Q2: PRESENT BIAS
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-q2" class="lab-screen">
+    <div class="task-meta">
+      <span class="task-number">Task 02 / 04</span>
+      <div class="task-dots">
+        <div class="task-dot done"></div>
+        <div class="task-dot active"></div>
+        <div class="task-dot"></div>
+        <div class="task-dot"></div>
+      </div>
+    </div>
+
+    <h2 class="q-headline">Two choices.</h2>
+    <p class="q-sub">Answer each independently. Don't look for a pattern.</p>
+
+    <div class="bias-panels">
+      <div class="bias-panel">
+        <p class="bias-panel-label">Choice A</p>
+        <p class="bias-panel-desc">Would you rather receive…</p>
+        <div class="bias-panel-choices" id="q2a-choices">
+          <button class="bias-choice" onclick="Lab.selectQ2a('now')" id="q2a-now">
+            <div class="bias-amount">$50</div>
+            <div class="bias-timing">Today</div>
+          </button>
+          <button class="bias-choice" onclick="Lab.selectQ2a('later')" id="q2a-later">
+            <div class="bias-amount">$65</div>
+            <div class="bias-timing">In 5 weeks</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="bias-panel">
+        <p class="bias-panel-label">Choice B</p>
+        <p class="bias-panel-desc">Would you rather receive…</p>
+        <div class="bias-panel-choices" id="q2b-choices">
+          <button class="bias-choice" onclick="Lab.selectQ2b('year')" id="q2b-year">
+            <div class="bias-amount">$50</div>
+            <div class="bias-timing">In 1 year</div>
+          </button>
+          <button class="bias-choice" onclick="Lab.selectQ2b('year-later')" id="q2b-year-later">
+            <div class="bias-amount">$65</div>
+            <div class="bias-timing">In 1 year + 5 weeks</div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="q2-err" class="val-msg">Please answer both choices before continuing.</div>
+
+    <div class="action-row">
+      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ2()">Continue</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       Q3: SCOPE INSENSITIVITY
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-q3" class="lab-screen">
+    <div class="task-meta">
+      <span class="task-number">Task 03 / 04</span>
+      <div class="task-dots">
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot active"></div>
+        <div class="task-dot"></div>
+      </div>
+    </div>
+
+    <h2 class="q-headline">A conservation decision.</h2>
+    <p class="q-sub">Take a moment before you answer.</p>
+
+    <div class="scope-hero">
+      <div class="scope-number" id="scope-num">…</div>
+      <div class="scope-unit">migratory birds per year</div>
+    </div>
+
+    <div class="scope-scenario" id="scope-scenario"></div>
+
+    <p class="scope-q">What's the most you'd personally contribute?</p>
+    <div class="dollar-wrap">
+      <span class="dollar-prefix">$</span>
+      <input type="number" class="dollar-input" id="scope-input"
+             placeholder="0" min="0"
+             oninput="Lab.onScopeInput(this)">
+    </div>
+    <div id="q3-err" class="val-msg">Please enter an amount ($0 is a valid answer).</div>
+
+    <div class="action-row">
+      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ3()">Continue</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       Q4: IDENTIFIABLE VICTIM
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-q4" class="lab-screen">
+    <div class="task-meta">
+      <span class="task-number">Task 04 / 04</span>
+      <div class="task-dots">
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot active"></div>
+      </div>
+    </div>
+
+    <h2 class="q-headline">A giving decision.</h2>
+    <p class="q-sub">Imagine you've just been handed $10, yours to keep or donate.</p>
+
+    <div id="victim-context"></div>
+
+    <div class="slider-box">
+      <div class="slider-head">
+        <span class="slider-label-text">Your donation</span>
+        <span class="slider-value" id="victim-val">$5.00</span>
+      </div>
+      <input type="range" min="0" max="10" value="5" step="0.5" id="victim-slider"
+             oninput="Lab.updateVictim(this.value)">
+      <div class="slider-ends">
+        <span>Keep it all ($0)</span>
+        <span>Give it all ($10)</span>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ4()">See my results</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ANALYZING
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-analyzing" class="lab-screen" style="text-align:center;padding:3rem 2rem;max-width:420px;">
+    <div class="analyzing-grid">
+      <div class="a-dot"></div>
+      <div class="a-dot"></div>
+      <div class="a-dot"></div>
+      <div class="a-dot"></div>
+    </div>
+    <div class="analyzing-wrap">
+      <div class="a-msg show" id="amsg-0">Mapping your decision landscape…</div>
+      <div class="a-msg" id="amsg-1">Checking for conjunction fallacies…</div>
+      <div class="a-msg" id="amsg-2">Measuring temporal consistency…</div>
+      <div class="a-msg" id="amsg-3">Building your bias profile…</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       RESULTS
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-results" class="lab-screen" style="max-width:680px;">
+
+    <!-- Nav injected here by JS -->
+    <div id="results-nav-container"></div>
+
+    <div id="shared-banner-container"></div>
+
+    <!-- Profile card -->
+    <div id="profile-card-wrap"></div>
+
+    <div class="results-divider">Your experiment breakdown</div>
+
+    <div id="results-detail"></div>
+
+    <div id="closing-note-wrap"></div>
+
+    <div class="results-footer">
+      <a href="index.html" class="rf-btn">Back to AES</a>
+      <button class="rf-btn rf-btn-ghost" onclick="Lab.restart()">Try again</button>
+    </div>
+  </div>
+
+</div><!-- #lab-root -->
+
+<script>
+const Lab = {
+  scopeCondition: [2000, 20000, 200000][Math.floor(Math.random() * 3)],
+  victimCondition: Math.random() > 0.5 ? 'stats' : 'story',
+  state: {
+    conjunction: null,
+    presentA: null,
+    presentB: null,
+    scope: null,
+    victim: 5,
+  },
+
+  // ── Navigation ──────────────────────────────────────────
+  start() {
+    this.setProgress(25, true);
+    this.show('screen-q1');
+  },
+
+  show(id) {
+    document.querySelectorAll('.lab-screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  },
+
+  setProgress(pct, makeVisible) {
+    const bar = document.getElementById('progress-bar');
+    if (makeVisible) bar.classList.add('visible');
+    bar.style.width = pct + '%';
+  },
+
+  // ── Q1: Conjunction fallacy ──────────────────────────────
+  selectQ1(val) {
+    this.state.conjunction = val;
+    document.querySelectorAll('#q1-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('choice-' + val).classList.add('selected');
+    document.getElementById('q1-err').classList.remove('show');
+    // Auto-advance after brief pause so selection is visible
+    setTimeout(() => {
+      this.setProgress(50);
+      this.show('screen-q2');
+    }, 380);
+  },
+
+  // ── Q2: Present bias ─────────────────────────────────────
+  selectQ2a(val) {
+    this.state.presentA = val;
+    document.querySelectorAll('#q2a-choices .bias-choice').forEach(b => b.classList.remove('selected'));
+    document.getElementById('q2a-' + val).classList.add('selected');
+    document.getElementById('q2-err').classList.remove('show');
+  },
+  selectQ2b(val) {
+    this.state.presentB = val;
+    document.querySelectorAll('#q2b-choices .bias-choice').forEach(b => b.classList.remove('selected'));
+    document.getElementById('q2b-' + val).classList.add('selected');
+    document.getElementById('q2-err').classList.remove('show');
+  },
+  nextQ2() {
+    if (!this.state.presentA || !this.state.presentB) {
+      document.getElementById('q2-err').classList.add('show');
+      return;
+    }
+    this.setProgress(75);
+    this.initQ3();
+  },
+
+  // ── Q3: Scope insensitivity ──────────────────────────────
+  initQ3() {
+    const n = this.scopeCondition.toLocaleString();
+    document.getElementById('scope-num').textContent = n;
+    document.getElementById('scope-scenario').innerHTML =
+      `Each year, <strong>${n} migratory birds</strong> die after landing on uncovered industrial oil ponds across the United States. A conservation group is installing protective nets to stop this. The program runs entirely on voluntary contributions.`;
+    this.show('screen-q3');
+  },
+  onScopeInput(el) {
+    this.state.scope = el.value.trim() !== '' ? (parseFloat(el.value) || 0) : null;
+    if (this.state.scope !== null) {
+      document.getElementById('q3-err').classList.remove('show');
+      el.classList.remove('error');
+    }
+  },
+  nextQ3() {
+    if (this.state.scope === null) {
+      document.getElementById('q3-err').classList.add('show');
+      const inp = document.getElementById('scope-input');
+      inp.classList.add('error');
+      setTimeout(() => inp.classList.remove('error'), 400);
+      return;
+    }
+    this.setProgress(100);
+    this.initQ4();
+  },
+
+  // ── Q4: Identifiable victim ──────────────────────────────
+  initQ4() {
+    const ctx = document.getElementById('victim-context');
+    if (this.victimCondition === 'story') {
+      ctx.innerHTML = `
+        <div class="victim-story">
+          <blockquote>
+            <strong>Amara</strong> is 7 years old and lives in a rural village in Niger.
+            The nearest clinic is three hours away on foot, and her family can't afford the
+            nutrition supplements she needs. Without outside help, her chances of reaching
+            adulthood are low.
+          </blockquote>
+        </div>`;
+    } else {
+      ctx.innerHTML = `
+        <div class="victim-stats">
+          <div class="stat-big">5 million</div>
+          <div class="stat-desc">children under 5 die every year from largely preventable causes: contaminated water, malnutrition, and diseases for which vaccines cost less than $1. Aid organizations estimate that $1 directed to basic interventions can protect a child for a full year.</div>
+        </div>`;
+    }
+    this.show('screen-q4');
+  },
+  updateVictim(val) {
+    this.state.victim = parseFloat(val);
+    document.getElementById('victim-val').textContent = '$' + parseFloat(val).toFixed(2);
+  },
+  nextQ4() {
+    this.showAnalyzing();
+  },
+
+  // ── Analyzing screen ─────────────────────────────────────
+  showAnalyzing() {
+    this.show('screen-analyzing');
+    const msgs = ['amsg-0','amsg-1','amsg-2','amsg-3'];
+    let i = 0;
+    const tick = setInterval(() => {
+      i++;
+      if (i < msgs.length) {
+        document.getElementById(msgs[i - 1]).classList.remove('show');
+        document.getElementById(msgs[i]).classList.add('show');
+      } else {
+        clearInterval(tick);
+        setTimeout(() => this.renderResults(), 420);
+      }
+    }, 720);
+  },
+
+  // ── Profile computation ──────────────────────────────────
+  computeProfile() {
+    const narrativePull  = this.state.conjunction === 'bank-volunteer';
+    const presentBiased  = this.state.presentA === 'now' && this.state.presentB === 'year-later';
+
+    const map = {
+      empath:     { name:'The Empath',     color:'#7cd4f8',
+                    headline:'Moved by stories. Anchored in the present.',
+                    desc:'You respond to vivid, specific narratives, and your sense of time is weighted toward now. Both are deeply human responses, and both shape how you evaluate evidence and trade-offs in policy, hiring, and everyday decisions.' },
+      idealist:   { name:'The Idealist',   color:'#7eda92',
+                    headline:'Driven by stories. Patient with time.',
+                    desc:'You\'re drawn to the human side of decisions: a compelling narrative shapes your judgments. But you\'re also willing to wait for better outcomes. You think in arcs, not moments.' },
+      pragmatist: { name:'The Pragmatist', color:'#f4c26a',
+                    headline:'Clear-eyed about evidence. Impatient with delay.',
+                    desc:'You cut through narrative to look at probability directly, but immediate rewards pull hard. You trust data over stories, and you want results now rather than later.' },
+      strategist: { name:'The Strategist', color:'#b8a0f2',
+                    headline:'Analytical. Long-horizon.',
+                    desc:'You resist both the pull of intuitive narratives and the lure of immediate rewards. You evaluate evidence directly and think in timelines. These are the traits that define careful, systematic reasoning, and you\'ll still fall for biases you haven\'t tested yet.' },
+    };
+
+    if ( narrativePull &&  presentBiased) return { key:'empath',     ...map.empath };
+    if ( narrativePull && !presentBiased) return { key:'idealist',   ...map.idealist };
+    if (!narrativePull &&  presentBiased) return { key:'pragmatist', ...map.pragmatist };
+    return                                       { key:'strategist', ...map.strategist };
+  },
+
+  // ── Results rendering ────────────────────────────────────
+  renderResults() {
+    document.body.classList.add('results-mode');
+    document.getElementById('progress-bar').style.opacity = '0';
+    const root = document.getElementById('lab-root');
+    root.style.justifyContent = 'flex-start';
+    root.style.alignItems     = 'center';
+    root.style.paddingTop     = '0';
+    root.style.paddingBottom  = '5rem';
+
+    // Inject nav
+    this.injectNav();
+
+    const profile = this.computeProfile();
+    this.renderProfileCard(profile);
+    this.renderDetailBlocks();
+    this.renderClosingNote();
+
+    // Write hash for sharing
+    this.writeHash(profile.key);
+
+    this.show('screen-results');
+    window.scrollTo(0,0);
+
+    // Animate bars after paint
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.querySelectorAll('.bm-bar[data-w]').forEach(b => {
+          b.style.width = b.dataset.w;
+        });
+      }, 120);
+    });
+  },
+
+  renderProfileCard(profile) {
+    const conj = this.state.conjunction === 'bank-volunteer';
+    const bias = this.state.presentA === 'now' && this.state.presentB === 'year-later';
+
+    const badges = [
+      { label: conj  ? 'Conjunction bias showed' : 'Resisted conjunction', showed: conj },
+      { label: bias  ? 'Present-biased'          : (this.state.presentA==='later'&&this.state.presentB==='year-later'?'Consistently patient':'Time-consistent'), showed: bias },
+      { label: 'Scope sensitivity tested',   showed: false },
+      { label: this.victimCondition==='story' ? 'Saw Amara\'s story' : 'Saw statistics', showed: false },
+    ];
+
+    const badgesHtml = badges.map(b =>
+      `<span class="pc-badge ${b.showed ? 'badge-bias' : 'badge-resist'}">${b.label}</span>`
+    ).join('');
+
+    document.getElementById('profile-card-wrap').innerHTML = `
+      <div class="profile-card">
+        <p class="pc-eyebrow">Your decision profile</p>
+        <h2 class="pc-name" style="color:${profile.color}">${profile.name}</h2>
+        <p class="pc-headline">${profile.headline}</p>
+        <p class="pc-desc">${profile.desc}</p>
+        <div class="pc-badges">${badgesHtml}</div>
+        <button class="share-btn" id="share-btn" onclick="Lab.share()">↗ Copy share link</button>
+      </div>`;
+  },
+
+  renderDetailBlocks() {
+    const { conjunction, presentA, presentB, scope, victim } = this.state;
+    const choseConj   = conjunction === 'bank-volunteer';
+    const tookNow     = presentA === 'now';
+    const tookLater   = presentB === 'year-later';
+    const inconsistent = tookNow && tookLater;
+
+    // ── Q1 ──
+    let html = this.resultBlock({
+      label:'Task 1 · Conjunction Fallacy', title:'Who is Alex?',
+      verdict: choseConj ? { cls:'verdict-bias', text:'Common bias' } : { cls:'verdict-ok', text:'✓ Logical' },
+      answer: choseConj ? 'You chose B' : 'You chose A',
+      bmLabel:'Population response',
+      bmRows:[
+        { name:'Chose B', pct:85, hi: choseConj },
+        { name:'Chose A', pct:15, hi:!choseConj },
+      ],
+      explanation:`
+        <p><strong>${choseConj
+          ? 'You chose B, and so does about 85% of people.'
+          : 'You chose A, the logically correct answer. About 85% of people choose B.'
+        }</strong> Option B can't be more likely than A. If Alex works at a bank and volunteers (B), then he automatically works at a bank (A). Adding a condition always decreases probability. Mathematically it's impossible for B to be more likely.</p>
+        <p>The trap is that Alex's profile makes option B <em>feel</em> right. Intuition isn't probability. The more coherent a story seems, the more likely your brain treats it, even when extra details make it mathematically less probable. This is the conjunction fallacy.</p>
+        <p><strong>Where it shows up:</strong> Juries find detailed, emotionally coherent crime narratives more convincing than simpler ones, even when the simpler story is more probable. Knowing the fallacy doesn't reliably prevent it; the feeling that the story "fits" runs deeper than the rule.</p>`
+    });
+
+    // ── Q2 ──
+    let presentExp = '';
+    if (inconsistent) {
+      presentExp = `<p><strong>Your preferences were time-inconsistent.</strong> You chose $50 now over $65 in 5 weeks, but $65 in a year + 5 weeks over $50 in a year. Both pairs offer the same $15 bonus for the same 5-week wait. The only variable is whether "now" is one of the options. When it is, the wait feels real. When it isn't, you're happy to be patient.</p>
+      <p>This inconsistency isn't a character flaw; it's a structural feature of how human attention works. The future self has all the patience; the present self has none.</p>`;
+    } else if (presentA==='later' && presentB==='year-later') {
+      presentExp = `<p><strong>Your preferences were consistent: you chose patience both times.</strong> About 30–40% of people do this. The majority who choose $50 now but $65 in a year are showing time-inconsistent preferences: the same $15 bonus feels different depending on whether "now" is an option. Your consistency is rarer than it looks.</p>`;
+    } else {
+      presentExp = `<p><strong>Your preferences were consistent: you chose immediacy both times.</strong> Most people are <em>in</em>consistent: they take $50 now but switch to waiting when both options are in the future. Your consistent impatience is actually less common than the bias pattern.</p>`;
+    }
+
+    html += this.resultBlock({
+      label:'Task 2 · Present Bias', title:'Two choices.',
+      verdict: inconsistent ? { cls:'verdict-bias', text:'Present-biased' } : { cls:'verdict-ok', text:'✓ Consistent' },
+      answer: `A: ${tookNow?'$50 today':'$65/5wks'} · B: ${tookLater?'$65/yr+5wks':'$50/yr'}`,
+      bmLabel:'Typical response pattern',
+      bmRows:[
+        { name:'Inconsistent', pct:60, hi: inconsistent },
+        { name:'Consistent',   pct:40, hi:!inconsistent },
+      ],
+      explanation:`${presentExp}
+        <p><strong>Where it shows up:</strong> Retirement accounts go unfunded because "next year" never comes. Diets start Monday. Essays get written at 11 PM.</p>
+        <p><strong>How to beat it:</strong> Commitment devices work: pre-commit to gym classes, automate savings transfers, use temporal landmarks (New Year, start of month) to trigger behavioral change.</p>`
+    });
+
+    // ── Q3 ──
+    const scopeN = this.scopeCondition.toLocaleString();
+    html += this.resultBlock({
+      label:'Task 3 · Scope Insensitivity', title:'A conservation decision.',
+      verdict: null,
+      answer: `${scopeN} birds · $${(scope||0).toFixed(2)} contributed`,
+      bmLabel:"What a 1993 study found (avg. donation)",
+      bmRows:[
+        { name:'2K birds',   pct:80, hi: this.scopeCondition===2000,   label:'$80 avg' },
+        { name:'20K birds',  pct:78, hi: this.scopeCondition===20000,  label:'$78 avg' },
+        { name:'200K birds', pct:88, hi: this.scopeCondition===200000, label:'$88 avg' },
+      ],
+      explanation:`
+        <p>You were randomly assigned to see ${scopeN} birds. In a 1993 study, three groups saw 2,000, 20,000, or 200,000 birds. Average donations were $80, $78, and $88. A <strong>100-fold increase in scale produced almost no change</strong> in how much people gave.</p>
+        <p>Your brain evaluates the scenario holistically: <em>Is this bad? Do I care? How much should I give to feel okay about this?</em> The number barely factors in because numbers don't trigger emotion the way an image does. Show someone a single oiled bird and donations spike far above any statistic.</p>
+        <p><strong>Where it shows up:</strong> Climate change affects 8 billion people, a scale that makes it impossible to feel the way you'd feel about one person. This is why effective charities learned to show one child, not a statistics chart.</p>`
+    });
+
+    // ── Q4 ──
+    const sawStats = this.victimCondition === 'stats';
+    html += this.resultBlock({
+      label:'Task 4 · Identifiable Victim Effect', title:'A giving decision.',
+      verdict: null,
+      answer: `${sawStats ? 'Saw statistics' : "Saw Amara's story"} · $${victim.toFixed(2)} donated`,
+      bmLabel:'What a 2007 study found (avg. donation)',
+      bmRows:[
+        { name:'Statistics', pct:60,  hi:  sawStats, label:'$1.43 avg' },
+        { name:'One story',  pct:100, hi: !sawStats, label:'$2.38 avg' },
+      ],
+      explanation:`
+        <p>You were randomly shown ${sawStats ? 'statistics about child mortality' : "Amara's individual story"}. In a 2007 study, participants who saw statistics donated $1.43 on average. Those who read about one specific girl donated $2.38, about 66% more.</p>
+        <p>But there's a more unsettling finding: when researchers added statistics <em>back</em> into the individual story, donations dropped nearly to baseline. The emotional pull of the individual was diluted by scale information.</p>
+        <p>This isn't just about identifying the victim. It's about the ceiling on emotional response. A single face is concrete; a million is abstract. Once you know the scope, your mind hits a ceiling and can't scale the emotion proportionally.</p>
+        <p><strong>Where it shows up:</strong> Nonprofit fundraisers show one child because it works. News stories about disasters start with one person before the total. We're moved by what we can feel, and we can only feel what we can imagine.</p>`
+    });
+
+    document.getElementById('results-detail').innerHTML = html;
+  },
+
+  resultBlock({ label, title, verdict, answer, bmLabel, bmRows, explanation }) {
+    const verdictHtml = verdict
+      ? `<span class="rb-verdict ${verdict.cls}">${verdict.text}</span>` : '';
+    const barsHtml = bmRows.map(r => `
+      <div class="bm-row">
+        <span class="bm-name">${r.name}</span>
+        <div class="bm-bar-wrap">
+          <div class="bm-bar ${r.hi ? 'highlighted' : 'dimmed'}" data-w="${r.pct}%"></div>
+        </div>
+        <span class="bm-pct">${r.label || r.pct + '%'}</span>
+      </div>`).join('');
+
+    return `
+      <div class="result-block">
+        <div class="rb-header">
+          <div>
+            <p class="rb-label">${label}</p>
+            <p class="rb-title">${title}</p>
+          </div>
+          <div class="rb-meta">
+            ${verdictHtml}
+            <span class="rb-answer">${answer}</span>
+          </div>
+        </div>
+        <div class="benchmark">
+          <p class="bm-label">${bmLabel}</p>
+          ${barsHtml}
+        </div>
+        <div class="rb-body">
+          <div class="rb-explanation">${explanation}</div>
+        </div>
+      </div>`;
+  },
+
+  renderClosingNote() {
+    document.getElementById('closing-note-wrap').innerHTML = `
+      <div class="closing-note">
+        <p class="cn-label">A note on all of this</p>
+        <p class="cn-text">These patterns appear in courtrooms, hospitals, financial markets, and policy debates. Knowing they exist doesn't make you immune; Kahneman himself said he still falls for many of them. But it does make you a better-informed decision maker, and a harder person to manipulate.</p>
+      </div>`;
+  },
+
+  injectNav() {
+    const pages = [
+      ['index.html','Home'],['fed-challenge.html','Fed Challenge'],
+      ['colloquium.html','Colloquium'],['journal.html','Journal'],
+      ['resources.html','Resources'],['board.html','Board'],
+    ];
+    const linksHtml = pages.map(([h,l]) =>
+      `<li><a href="${h}">${l}</a></li>`
+    ).join('');
+
+    const container = document.getElementById('results-nav-container');
+    container.id = 'results-nav-el';
+    container.innerHTML = `
+      <div class="rn-inner">
+        <a href="index.html" class="rn-logo">Andover <span>Economics</span> Society</a>
+        <ul class="rn-links">${linksHtml}</ul>
+      </div>`;
+  },
+
+  // ── Share via URL hash ───────────────────────────────────
+  writeHash(profileKey) {
+    const d = {
+      p: profileKey,
+      c: this.state.conjunction,
+      pa: this.state.presentA,
+      pb: this.state.presentB,
+      sc: this.state.scope,
+      vi: this.state.victim,
+      scc: this.scopeCondition,
+      vic: this.victimCondition,
+    };
+    history.replaceState(null,'','#' + btoa(JSON.stringify(d)));
+  },
+
+  share() {
+    const url = location.href;
+    const btn = document.getElementById('share-btn');
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        btn.textContent = '✓ Link copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '↗ Copy share link'; btn.classList.remove('copied'); }, 2500);
+      });
+    } else {
+      prompt('Copy this link:', url);
+    }
+  },
+
+  restart() {
+    history.replaceState(null,'', location.pathname);
+    location.reload();
+  },
+
+  // ── Handle shared URL on load ────────────────────────────
+  initFromHash() {
+    if (!location.hash) return false;
+    try {
+      const d = JSON.parse(atob(location.hash.slice(1)));
+      this.state.conjunction = d.c;
+      this.state.presentA    = d.pa;
+      this.state.presentB    = d.pb;
+      this.state.scope       = d.sc;
+      this.state.victim      = d.vi;
+      this.scopeCondition    = d.scc;
+      this.victimCondition   = d.vic;
+      return true;
+    } catch(e) { return false; }
+  },
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (Lab.initFromHash()) {
+    document.getElementById('shared-banner-container').innerHTML =
+      `<div class="shared-banner">You're viewing a shared result. <button onclick="Lab.restart()" style="background:none;border:none;color:var(--blue);font-weight:700;cursor:pointer;font-size:inherit;">Take the experiment yourself →</button></div>`;
+    Lab.renderResults();
+    document.querySelectorAll('.lab-screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-results').classList.add('active');
+  }
+});
+</script>
+
+</body>
+</html>
