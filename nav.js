@@ -2,13 +2,13 @@
 (function () {
   const pages = [
     { href: 'index.html',       label: 'Home' },
-    { href: 'fed-challenge.html', label: 'Fed Challenge' },
+    { href: 'fed_challenge.html', label: 'Fed Challenge' },
     { href: 'colloquium.html',  label: 'Colloquium' },
     { href: 'journal.html',     label: 'Journal' },
     { href: 'resources.html',   label: 'Resources' },
     { href: 'board.html',       label: 'Board' },
   ];
-
+henryzimmerman.github.io
   const current = location.pathname.split('/').pop() || 'index.html';
 
   const linksHtml = pages.map(p =>
