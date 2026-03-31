@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAGE TITLE — Andover Economics Society</title>
+  <meta name="description" content="BRIEF PAGE DESCRIPTION (160 chars max).">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     NAV: injected automatically by nav.js.
+     Do not edit the nav here — edit the pages array in nav.js
+     to add or rename pages.
+     ============================================================ -->
+<div id="nav-placeholder"></div>
+
+
+<!-- ============================================================
+     PAGE HEADER (sub-hero)
+     Use this for interior pages (not the homepage).
+     Replace the eyebrow, title, and subtitle.
+     ============================================================ -->
+<div class="sub-hero">
+  <div class="sub-hero-inner">
+    <p class="eyebrow">SECTION LABEL</p>
+    <h1>Page Title</h1>
+    <p>One or two sentences describing what this page is. Keep it short — the page body does the rest.</p>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     PAGE CONTENT
+     All page content goes inside .page-content.
+     Use the component patterns below as building blocks.
+     ============================================================ -->
+<div class="page-content">
+
+  <!-- ── PROSE SECTION ──────────────────────────────────────── -->
+  <!--
+    Standard text block. Keep the max-width at ~680px for readable
+    line lengths. The .prose class adds paragraph spacing.
+  -->
+  <div style="max-width:680px;">
+    <p class="section-label">Section label</p>
+    <h2 class="section-title">Section heading</h2>
+    <div class="prose mt-3">
+      <p>Body text goes here. Write in plain sentences. Avoid bullet points unless content genuinely demands them.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ── CARD GRID ──────────────────────────────────────────── -->
+  <!--
+    Use .card-grid-2 for two columns, .card-grid-3 for three.
+    Each card has: a label (gold, small-caps), a heading, a paragraph, and an optional link.
+    The top border color defaults to PA Blue. Use `border-top-color: var(--gold)` to vary.
+  -->
+  <p class="section-label">Section label</p>
+  <h2 class="section-title">Section heading</h2>
+
+  <div class="card-grid card-grid-3 mt-4">
+
+    <div class="card">
+      <p class="card-label">Card label</p>
+      <h3>Card heading</h3>
+      <p>Card description. One to three sentences.</p>
+      <a href="#" class="card-link">Link text →</a>
+    </div>
+
+    <div class="card">
+      <p class="card-label">Card label</p>
+      <h3>Card heading</h3>
+      <p>Card description. One to three sentences.</p>
+      <a href="#" class="card-link">Link text →</a>
+    </div>
+
+    <div class="card">
+      <p class="card-label">Card label</p>
+      <h3>Card heading</h3>
+      <p>Card description. One to three sentences.</p>
+      <a href="#" class="card-link">Link text →</a>
+    </div>
+
+  </div>
+
+  <hr class="rule">
+
+  <!-- ── EVENT LIST (colloquium / timeline style) ───────────── -->
+  <!--
+    Use for speaker archives, meeting schedules, anything date-stamped.
+    Tags: use .tag-speaker for guest speakers, .tag-meeting for internal events.
+  -->
+  <p class="section-label">Section label</p>
+  <h2 class="section-title">Section heading</h2>
+
+  <ul class="event-list mt-4">
+
+    <li class="event-item">
+      <div class="event-date">Oct 18<span>2025</span></div>
+      <div class="event-body">
+        <span class="event-tag tag-speaker">Guest speaker</span>
+        <h3>Speaker Name — Affiliation</h3>
+        <p>Two to four sentences describing the session: what the speaker covered, the format, and any outcomes or next steps for students.</p>
+      </div>
+    </li>
+
+    <li class="event-item">
+      <div class="event-date">Oct 29<span>2025</span></div>
+      <div class="event-body">
+        <span class="event-tag tag-meeting">Internal</span>
+        <h3>Meeting or event title</h3>
+        <p>Description of the meeting or event.</p>
+      </div>
+    </li>
+
+  </ul>
+
+  <hr class="rule">
+
+  <!-- ── BUTTONS ────────────────────────────────────────────── -->
+  <!--
+    Button variants:
+      .btn-white       — white fill, blue text (use on dark backgrounds)
+      .btn-outline-white — white outline (use on dark backgrounds)
+      .btn-blue        — blue fill, white text
+      .btn-ghost       — blue outline, blue text (most common CTA)
+    
+    Add margin classes like .mt-4 to space from preceding content.
+  -->
+  <div style="display:flex; gap:1rem; flex-wrap:wrap;" class="mt-4">
+    <a href="#" class="btn btn-ghost">Primary action</a>
+    <a href="#" class="btn btn-ghost">Secondary action</a>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ── HIGHLIGHT BAR (pull quote / callout) ──────────────── -->
+  <div class="highlight-bar mt-3">
+    <p>"Pull quote or callout text. Keep it short — one to two sentences."</p>
+    <p style="margin-top:0.75rem; font-size:0.82rem; font-style:normal; color:#888; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;">Attribution or label</p>
+  </div>
+
+</div>
+<!-- end .page-content -->
+
+
+<!-- ============================================================
+     FOOTER: injected automatically by nav.js.
+     ============================================================ -->
+<div id="footer-placeholder"></div>
+<script src="nav.js"></script>
+</body>
+</html>
