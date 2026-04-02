@@ -376,6 +376,26 @@
       grid-template-columns: 1fr 1fr;
       gap: 0.65rem;
     }
+
+    /* Framing panel reveal */
+    .framing-hidden {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin-bottom: 0 !important;
+      border-color: transparent !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s 0.1s, margin-bottom 0.4s, padding 0.4s;
+    }
+    .framing-hidden.revealed {
+      max-height: 600px;
+      opacity: 1;
+      margin-bottom: 1.25rem !important;
+      border-color: var(--lab-border) !important;
+      padding-top: 1.2rem !important;
+      padding-bottom: 1.2rem !important;
+    }
     .bias-choice {
       padding: 1.1rem 0.75rem;
       border: 1px solid var(--lab-border);
@@ -1018,7 +1038,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       Q2: FRAMING EFFECT
+       Q2: FRAMING EFFECT (with gamma calibration)
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q2" class="lab-screen">
     <div class="task-meta">
@@ -1031,23 +1051,46 @@
       </div>
     </div>
 
-    <h2 class="q-headline">A public health decision.</h2>
-    <p class="q-sub">Read the scenario, then choose a program.</p>
+    <h2 class="q-headline">Two decisions.</h2>
+    <p class="q-sub">Answer each one independently.</p>
 
-    <div class="scope-scenario" id="framing-scenario"></div>
-
-    <p class="choice-prompt">Which program would you support?</p>
-    <div class="choice-stack" id="q2-choices">
-      <button class="choice-btn" onclick="Lab.selectQ2('certain')" id="q2-certain">
-        <div class="choice-letter">A</div>
-        <div class="choice-text" id="q2-text-certain"></div>
-      </button>
-      <button class="choice-btn" onclick="Lab.selectQ2('risky')" id="q2-risky">
-        <div class="choice-letter">B</div>
-        <div class="choice-text" id="q2-text-risky"></div>
-      </button>
+    <!-- Gamma calibration panel -->
+    <div class="bias-panel" style="margin-bottom:1.25rem;">
+      <p class="bias-panel-label">Decision A</p>
+      <p class="bias-panel-desc">Same expected value. Which would you choose?</p>
+      <div class="bias-panel-choices" id="gamma-choices">
+        <button class="bias-choice" onclick="Lab.selectGamma('certain')" id="gamma-certain">
+          <div class="bias-amount" style="font-size:1.1rem;">$50</div>
+          <div class="bias-timing">For certain</div>
+        </button>
+        <button class="bias-choice" onclick="Lab.selectGamma('risky')" id="gamma-risky">
+          <div class="bias-amount" style="font-size:1.1rem;">50 / 50</div>
+          <div class="bias-timing">$100 or nothing</div>
+        </button>
+      </div>
     </div>
-    <div id="q2-err" class="val-msg">Please select one of the options above.</div>
+
+    <!-- Framing panel: visible from start -->
+    <div id="framing-panel" class="bias-panel" style="margin-top:1.25rem;">
+      <p class="bias-panel-label">Decision B</p>
+      <p class="bias-panel-desc" id="framing-scenario"></p>
+      <div class="choice-stack" id="q2-choices" style="margin-top:0.75rem;">
+        <button class="choice-btn" onclick="Lab.selectQ2('certain')" id="q2-certain">
+          <div class="choice-letter">A</div>
+          <div class="choice-text" id="q2-text-certain"></div>
+        </button>
+        <button class="choice-btn" onclick="Lab.selectQ2('risky')" id="q2-risky">
+          <div class="choice-letter">B</div>
+          <div class="choice-text" id="q2-text-risky"></div>
+        </button>
+      </div>
+    </div>
+
+    <div id="q2-err" class="val-msg">Please answer both decisions before continuing.</div>
+
+    <div class="action-row">
+      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ2()">Continue</button>
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
@@ -1179,6 +1222,7 @@ const Lab = {
   theatreCondition: Math.random() > 0.5 ? 'cash' : 'ticket',
   state: {
     anchorEstimate: null,
+    gammaChoice:    null,
     framingChoice:    null,
     theatreChoice:    null,
     confLow:          null,
@@ -1229,10 +1273,10 @@ const Lab = {
     this.initQ2();
   },
 
-  // ── Q2: Framing effect ───────────────────────────────────
+  // ── Q2: Framing effect (with gamma calibration) ──────────
   initQ2() {
     const gain = this.framingCondition === 'gain';
-    document.getElementById('framing-scenario').innerHTML =
+    document.getElementById('framing-scenario').textContent =
       'A new disease is expected to kill 600 people. Two response programs have been proposed. Assume the scientific estimates of each program\'s outcomes are accurate.';
     document.getElementById('q2-text-certain').textContent = gain
       ? 'Program A: 200 people will be saved.'
@@ -1242,15 +1286,25 @@ const Lab = {
       : 'Program B: 1/3 chance nobody dies, 2/3 chance all 600 die.';
     this.show('screen-q2');
   },
+  selectGamma(val) {
+    this.state.gammaChoice = val;
+    document.querySelectorAll('#gamma-choices .bias-choice').forEach(b => b.classList.remove('selected'));
+    document.getElementById('gamma-' + val).classList.add('selected');
+    document.getElementById('q2-err').classList.remove('show');
+  },
   selectQ2(val) {
     this.state.framingChoice = val;
     document.querySelectorAll('#q2-choices .choice-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('q2-' + val).classList.add('selected');
     document.getElementById('q2-err').classList.remove('show');
-    setTimeout(() => {
-      this.setProgress(75);
-      this.initQ3();
-    }, 380);
+  },
+  nextQ2() {
+    if (!this.state.gammaChoice || !this.state.framingChoice) {
+      document.getElementById('q2-err').classList.add('show');
+      return;
+    }
+    this.setProgress(75);
+    this.initQ3();
   },
 
   // ── Q3: Mental accounting ────────────────────────────────
@@ -1435,8 +1489,10 @@ const Lab = {
     const anchorPulled = this.anchorCondition === 'high' ? estimate > midpoint : estimate < midpoint;
 
     const gain = this.framingCondition === 'gain';
-    const choseCertain = framingChoice === 'certain';
-    const followedFraming = (gain && choseCertain) || (!gain && !choseCertain);
+    const riskAverse = this.state.gammaChoice === 'certain';
+    const followedFraming =
+      (riskAverse  && !gain && this.state.framingChoice === 'risky') ||
+      (!riskAverse &&  gain && this.state.framingChoice === 'certain');
 
     const cash   = this.theatreCondition === 'cash';
     const bought = theatreChoice === 'yes';
@@ -1466,13 +1522,34 @@ const Lab = {
         <p><strong>Where it shows up:</strong> Salary negotiations, retail pricing ("was $299, now $199"), real estate listing prices. First numbers set expectations, and most people don't adjust away from them by nearly enough.</p>`
     });
 
+    const choseCertain = framingChoice === 'certain';
+    const baselineConsistent =
+      (riskAverse && choseCertain) || (!riskAverse && !choseCertain);
+
     // ── Q2: Framing ──
+    let framingVerdict, framingVerdictText;
+    if (followedFraming) {
+      framingVerdict = 'verdict-bias'; framingVerdictText = 'Framing effect showed';
+    } else if (baselineConsistent) {
+      framingVerdict = 'verdict-ok'; framingVerdictText = '✓ Consistent with baseline';
+    } else {
+      framingVerdict = 'verdict-ok'; framingVerdictText = '✓ Frame-resistant';
+    }
+
+    const gammaLabel = riskAverse ? 'risk-averse ($50 certain)' : 'risk-seeking ($100 or nothing)';
+    let framingExp = '';
+    if (followedFraming) {
+      framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>. The ${gain ? 'gain' : 'loss'} frame flipped you: you chose the ${choseCertain ? 'certain' : 'risky'} option, which runs against your baseline. That's the framing effect: the same math, reworded, reversed your preference.</p>`;
+    } else if (baselineConsistent) {
+      framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>, and your public health choice was consistent with it. You chose the ${choseCertain ? 'certain' : 'risky'} option in the ${gain ? 'gain' : 'loss'} frame, which matches your baseline. The frame didn't shift you.</p>`;
+    } else {
+      framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>, but you chose the ${choseCertain ? 'certain' : 'risky'} option in the ${gain ? 'gain' : 'loss'} frame. Your choice runs against both the typical framing effect and your own baseline. An unusual pattern, suggesting deliberate reasoning about the scenario.</p>`;
+    }
+
     html += this.resultBlock({
-      label: 'Task 2 · Framing Effect', title: 'A public health decision.',
-      verdict: followedFraming
-        ? { cls:'verdict-bias', text:'Framing effect showed' }
-        : { cls:'verdict-ok',   text:'✓ Frame-resistant' },
-      answer: `${gain ? 'Gain frame' : 'Loss frame'} · Chose ${choseCertain ? 'certain (A)' : 'risky (B)'}`,
+      label: 'Task 2 · Framing Effect', title: 'Two decisions.',
+      verdict: { cls: framingVerdict, text: framingVerdictText },
+      answer: `Baseline: ${riskAverse ? '$50 certain' : '$100 or nothing'} · ${gain ? 'Gain' : 'Loss'} frame · Chose ${choseCertain ? 'certain (A)' : 'risky (B)'}`,
       bmLabel: 'Kahneman & Tversky (1981), Asian Disease Problem',
       bmRows: [
         { name: 'Gain: chose certain', pct: 72, hi:  gain &&  choseCertain, label: '72%' },
@@ -1481,8 +1558,8 @@ const Lab = {
         { name: 'Loss: chose risky',   pct: 78, hi: !gain && !choseCertain, label: '78%' },
       ],
       explanation: `
-        <p>You were shown the <strong>${gain ? 'gain' : 'loss'} frame</strong> and chose the <strong>${choseCertain ? 'certain' : 'risky'}</strong> option. The two frames describe identical outcomes: saving 200 of 600 people is the same as letting 400 of 600 die. The math is the same. The psychology isn't.</p>
-        <p>In the original study, 72% chose the certain option in the gain frame. When the same scenario was reframed as deaths, only 22% chose the equivalent certain option; 78% gambled instead. A global study across 19 countries confirmed the pattern holds with a 90% replication rate.</p>
+        ${framingExp}
+        <p>The first question established your baseline risk preference , with no gain or loss language, just two options with the same expected value. The second question repackaged identical outcomes in a ${gain ? 'gain' : 'loss'} frame. In the original study, 72% chose the certain option in the gain frame; 78% gambled in the loss frame. A global study across 19 countries confirmed the pattern holds with a 90% replication rate.</p>
         <p><strong>Where it shows up:</strong> "90% fat-free" vs. "10% fat." Medical consent forms that describe survival rates vs. mortality rates. Budget proposals framed as savings vs. cuts. The frame shapes the feeling before the reasoning starts.</p>`
     });
 
@@ -1593,6 +1670,7 @@ const Lab = {
     const d = {
       p:   profileKey,
       aa:  this.state.anchorEstimate,
+      gc:  this.state.gammaChoice,
       fc:  this.state.framingChoice,
       tc:  this.state.theatreChoice,
       cl:  this.state.confLow,
@@ -1629,6 +1707,7 @@ const Lab = {
     try {
       const d = JSON.parse(atob(location.hash.slice(1)));
       this.state.anchorEstimate   = d.aa;
+      this.state.gammaChoice      = d.gc;
       this.state.framingChoice    = d.fc;
       this.state.theatreChoice    = d.tc;
       this.state.confLow          = d.cl;
