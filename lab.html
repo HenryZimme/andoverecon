@@ -602,6 +602,104 @@
       margin-top: 0.55rem;
     }
 
+    /* ── Anchor display (Q1) ─────────────────────────────── */
+    .anchor-display {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .anchor-display-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lab-muted);
+      margin-bottom: 0.5rem;
+    }
+    .anchor-number {
+      font-family: var(--serif);
+      font-size: clamp(4rem, 14vw, 7rem);
+      font-weight: 700;
+      color: var(--lab-gold);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    /* ── Dual-ended slider (Q4) ───────────────────────────── */
+    .ds-wrap {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 4px;
+      padding: 1.25rem 1.4rem 1rem;
+    }
+    .ds-display {
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--lab-accent);
+      margin-bottom: 1.4rem;
+      letter-spacing: -0.01em;
+    }
+    .ds-display .ds-sep {
+      color: var(--lab-muted);
+      margin: 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    .ds-track-container {
+      position: relative;
+      height: 24px;
+    }
+    .ds-track-bg {
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      transform: translateY(-50%);
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+    }
+    .ds-track-fill {
+      position: absolute;
+      height: 100%;
+      background: var(--lab-accent);
+      border-radius: 2px;
+    }
+    .ds-input {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 4px;
+      background: transparent !important;
+      pointer-events: none;
+      -webkit-appearance: none;
+      appearance: none;
+      outline: none;
+    }
+    .ds-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      pointer-events: all;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--lab-accent);
+      cursor: pointer;
+      border: 3px solid var(--lab-bg);
+      box-shadow: 0 0 12px rgba(68,184,243,0.55);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .ds-input::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+      box-shadow: 0 0 22px rgba(68,184,243,0.75);
+    }
+    .ds-input::-moz-range-thumb {
+      pointer-events: all;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--lab-accent);
+      cursor: pointer;
+      border: 3px solid var(--lab-bg);
+      box-shadow: 0 0 12px rgba(68,184,243,0.55);
+    }
+
     /* ── Confidence interval (Q4) ─────────────────────────── */
     .conf-range-wrap { display: flex; align-items: center; gap: 0.5rem; }
     .conf-sep { color: var(--lab-muted); font-size: 1rem; flex-shrink: 0; }
@@ -1022,15 +1120,26 @@
     </div>
 
     <h2 class="q-headline">A quick estimate.</h2>
-    <p class="q-sub">Don't look it up. Go with your first instinct.</p>
+    <p class="q-sub">Don't look it up. Go with your gut.</p>
+
+    <div class="anchor-display">
+      <p class="anchor-display-label">Consider this number</p>
+      <div class="anchor-number" id="anchor-shown"></div>
+    </div>
 
     <p class="scope-q">What percentage of UN member states are from Africa?</p>
-    <div class="dollar-wrap">
-      <input type="number" class="dollar-input" id="anchor-input"
-             style="border-radius:3px;" min="0" max="100"
-             oninput="Lab.onAnchorInput(this)">
+    <div class="slider-box">
+      <div class="slider-head">
+        <span class="slider-label-text">Your estimate</span>
+        <span class="slider-value" id="anchor-val">—%</span>
+      </div>
+      <input type="range" min="0" max="100" step="1" id="anchor-slider"
+             oninput="Lab.onAnchorSlider(this.value)">
+      <div class="slider-ends">
+        <span>0%</span>
+        <span>100%</span>
+      </div>
     </div>
-    <div id="q1-err" class="val-msg">Please enter a number (0 is a valid answer).</div>
 
     <div class="action-row">
       <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ1()">Continue</button>
@@ -1141,29 +1250,33 @@
     </div>
 
     <h2 class="q-headline">A knowledge question.</h2>
-    <p class="q-sub">Don't look it up. Give a range you're 90% confident contains the answer.</p>
+    <p class="q-sub">Don't look it up. Drag both ends to the range you're 90% sure contains the answer.</p>
 
     <div class="scope-scenario">
       What year was the first email sent?
     </div>
 
-    <p class="scope-q">Your 90% confidence interval:</p>
-    <div class="conf-range-wrap">
-      <div class="dollar-wrap" style="max-width:150px;">
-        <span class="dollar-prefix" style="font-size:0.7rem;letter-spacing:0.05em;">from</span>
-        <input type="number" class="dollar-input" id="conf-low"
-               placeholder="e.g. 1960" min="1900" max="2020"
-               oninput="Lab.onConfInput()">
+    <p class="scope-q" style="margin-bottom:0.9rem;">Your 90% confidence interval:</p>
+    <div class="ds-wrap">
+      <div class="ds-display">
+        <span id="ds-low-val">1965</span>
+        <span class="ds-sep">—</span>
+        <span id="ds-high-val">2000</span>
       </div>
-      <span class="conf-sep">–</span>
-      <div class="dollar-wrap" style="max-width:150px;">
-        <span class="dollar-prefix" style="font-size:0.7rem;letter-spacing:0.05em;">to</span>
-        <input type="number" class="dollar-input" id="conf-high"
-               placeholder="e.g. 1995" min="1900" max="2020"
-               oninput="Lab.onConfInput()">
+      <div class="ds-track-container">
+        <div class="ds-track-bg">
+          <div class="ds-track-fill" id="ds-fill"></div>
+        </div>
+        <input type="range" class="ds-input" id="ds-lo" min="1900" max="2020" value="1965" step="1"
+               oninput="Lab.onDualSlider()">
+        <input type="range" class="ds-input" id="ds-hi" min="1900" max="2020" value="2000" step="1"
+               oninput="Lab.onDualSlider()">
+      </div>
+      <div class="slider-ends">
+        <span>1900</span>
+        <span>2020</span>
       </div>
     </div>
-    <div id="q4-err" class="val-msg">Please enter both years.</div>
 
     <div class="action-row">
       <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ4()">See my results</button>
@@ -1250,25 +1363,18 @@ const Lab = {
   // ── Q1: Anchoring ────────────────────────────────────────
   initQ1() {
     const anchor = this.anchorCondition === 'high' ? 65 : 10;
-    document.getElementById('anchor-input').placeholder = 'e.g. ' + anchor;
+    document.getElementById('anchor-shown').textContent = anchor;
+    const slider = document.getElementById('anchor-slider');
+    slider.value = anchor;
+    document.getElementById('anchor-val').textContent = anchor + '%';
+    this.state.anchorEstimate = anchor;
     this.show('screen-q1');
   },
-  onAnchorInput(el) {
-    const v = el.value.trim();
-    this.state.anchorEstimate = v !== '' ? parseFloat(v) : null;
-    if (this.state.anchorEstimate !== null) {
-      document.getElementById('q1-err').classList.remove('show');
-      el.classList.remove('error');
-    }
+  onAnchorSlider(val) {
+    this.state.anchorEstimate = parseInt(val);
+    document.getElementById('anchor-val').textContent = val + '%';
   },
   nextQ1() {
-    if (this.state.anchorEstimate === null) {
-      document.getElementById('q1-err').classList.add('show');
-      const inp = document.getElementById('anchor-input');
-      inp.classList.add('error');
-      setTimeout(() => inp.classList.remove('error'), 400);
-      return;
-    }
     this.setProgress(50);
     this.initQ2();
   },
@@ -1328,28 +1434,37 @@ const Lab = {
 
   // ── Q4: Overprecision ────────────────────────────────────
   initQ4() {
+    this.state.confLow  = 1965;
+    this.state.confHigh = 2000;
+    this.updateDualSlider();
     this.show('screen-q4');
   },
-  onConfInput() {
-    const lo = document.getElementById('conf-low').value;
-    const hi = document.getElementById('conf-high').value;
-    this.state.confLow  = lo !== '' ? parseInt(lo) : null;
-    this.state.confHigh = hi !== '' ? parseInt(hi) : null;
-    if (this.state.confLow !== null && this.state.confHigh !== null) {
-      document.getElementById('q4-err').classList.remove('show');
+  onDualSlider() {
+    let lo = parseInt(document.getElementById('ds-lo').value);
+    let hi = parseInt(document.getElementById('ds-hi').value);
+    if (lo >= hi) {
+      lo = hi - 1;
+      document.getElementById('ds-lo').value = lo;
+    }
+    this.state.confLow  = lo;
+    this.state.confHigh = hi;
+    this.updateDualSlider();
+  },
+  updateDualSlider() {
+    const lo = this.state.confLow;
+    const hi = this.state.confHigh;
+    document.getElementById('ds-low-val').textContent  = lo;
+    document.getElementById('ds-high-val').textContent = hi;
+    const range    = 2020 - 1900;
+    const leftPct  = ((lo - 1900) / range) * 100;
+    const rightPct = ((2020 - hi)  / range) * 100;
+    const fill = document.getElementById('ds-fill');
+    if (fill) {
+      fill.style.left  = leftPct  + '%';
+      fill.style.right = rightPct + '%';
     }
   },
   nextQ4() {
-    const lo = this.state.confLow;
-    const hi = this.state.confHigh;
-    if (lo === null || hi === null || lo >= hi) {
-      const msg = document.getElementById('q4-err');
-      msg.textContent = (lo !== null && hi !== null && lo >= hi)
-        ? 'The lower year must be less than the upper year.'
-        : 'Please enter both years.';
-      msg.classList.add('show');
-      return;
-    }
     this.showAnalyzing();
   },
 
