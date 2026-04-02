@@ -582,6 +582,10 @@
       margin-top: 0.55rem;
     }
 
+    /* ── Confidence interval (Q4) ─────────────────────────── */
+    .conf-range-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    .conf-sep { color: var(--lab-muted); font-size: 1rem; flex-shrink: 0; }
+
     /* ── Validation ───────────────────────────────────────── */
     .val-msg {
       font-size: 0.76rem;
@@ -977,14 +981,14 @@
     <div style="text-align:center;">
       <div class="intro-badge">Andover Economics Society · Decision Lab</div>
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
-      <p class="intro-sub">Four short experiments. Each one reveals something different about how you actually make decisions, even if you've studied economics.</p>
+      <p class="intro-sub">Four short experiments on anchoring, framing, mental accounting, and calibration. Each one tests a different way judgment gets distorted.</p>
       <p class="intro-meta">~4 minutes</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       Q1: CONJUNCTION FALLACY
+       Q1: ANCHORING
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q1" class="lab-screen">
     <div class="task-meta">
@@ -997,45 +1001,24 @@
       </div>
     </div>
 
-    <h2 class="q-headline">Who is Alex?</h2>
-    <p class="q-sub">Read the profile below, then answer the question.</p>
+    <h2 class="q-headline">A quick estimate.</h2>
+    <p class="q-sub">Don't look it up. Go with your first instinct.</p>
 
-    <div class="dossier">
-      <div class="dossier-row">
-        <span class="dossier-label">Age</span>
-        <span class="dossier-val">26</span>
-      </div>
-      <div class="dossier-row">
-        <span class="dossier-label">Education</span>
-        <span class="dossier-val">Philosophy, B.A. with honors (senior thesis on wage inequality)</span>
-      </div>
-      <div class="dossier-row">
-        <span class="dossier-label">Known for</span>
-        <span class="dossier-val">Outspoken, volunteered at a legal aid clinic, reputation for arguing ethics at dinner</span>
-      </div>
-      <div class="dossier-row">
-        <span class="dossier-label">Location</span>
-        <span class="dossier-val">New York City, post-graduation</span>
-      </div>
+    <p class="scope-q">What percentage of UN member states are from Africa?</p>
+    <div class="dollar-wrap">
+      <input type="number" class="dollar-input" id="anchor-input"
+             style="border-radius:3px;" min="0" max="100"
+             oninput="Lab.onAnchorInput(this)">
     </div>
+    <div id="q1-err" class="val-msg">Please enter a number (0 is a valid answer).</div>
 
-    <p class="choice-prompt">Which of the following is more likely?</p>
-
-    <div class="choice-stack" id="q1-choices">
-      <button class="choice-btn" onclick="Lab.selectQ1('bank')" id="choice-bank">
-        <div class="choice-letter">A</div>
-        <div class="choice-text">Alex works at an investment bank.</div>
-      </button>
-      <button class="choice-btn" onclick="Lab.selectQ1('bank-volunteer')" id="choice-bank-volunteer">
-        <div class="choice-letter">B</div>
-        <div class="choice-text">Alex works at an investment bank <em>and</em> volunteers at a nonprofit on weekends.</div>
-      </button>
+    <div class="action-row">
+      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ1()">Continue</button>
     </div>
-    <div id="q1-err" class="val-msg">Please select one of the options above.</div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       Q2: PRESENT BIAS
+       Q2: FRAMING EFFECT
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q2" class="lab-screen">
     <div class="task-meta">
@@ -1048,49 +1031,27 @@
       </div>
     </div>
 
-    <h2 class="q-headline">Two choices.</h2>
-    <p class="q-sub">Answer each independently. Don't look for a pattern.</p>
+    <h2 class="q-headline">A public health decision.</h2>
+    <p class="q-sub">Read the scenario, then choose a program.</p>
 
-    <div class="bias-panels">
-      <div class="bias-panel">
-        <p class="bias-panel-label">Choice A</p>
-        <p class="bias-panel-desc">Would you rather receive…</p>
-        <div class="bias-panel-choices" id="q2a-choices">
-          <button class="bias-choice" onclick="Lab.selectQ2a('now')" id="q2a-now">
-            <div class="bias-amount">$50</div>
-            <div class="bias-timing">Today</div>
-          </button>
-          <button class="bias-choice" onclick="Lab.selectQ2a('later')" id="q2a-later">
-            <div class="bias-amount">$65</div>
-            <div class="bias-timing">In 5 weeks</div>
-          </button>
-        </div>
-      </div>
+    <div class="scope-scenario" id="framing-scenario"></div>
 
-      <div class="bias-panel">
-        <p class="bias-panel-label">Choice B</p>
-        <p class="bias-panel-desc">Would you rather receive…</p>
-        <div class="bias-panel-choices" id="q2b-choices">
-          <button class="bias-choice" onclick="Lab.selectQ2b('year')" id="q2b-year">
-            <div class="bias-amount">$50</div>
-            <div class="bias-timing">In 1 year</div>
-          </button>
-          <button class="bias-choice" onclick="Lab.selectQ2b('year-later')" id="q2b-year-later">
-            <div class="bias-amount">$65</div>
-            <div class="bias-timing">In 1 year + 5 weeks</div>
-          </button>
-        </div>
-      </div>
+    <p class="choice-prompt">Which program would you support?</p>
+    <div class="choice-stack" id="q2-choices">
+      <button class="choice-btn" onclick="Lab.selectQ2('certain')" id="q2-certain">
+        <div class="choice-letter">A</div>
+        <div class="choice-text" id="q2-text-certain"></div>
+      </button>
+      <button class="choice-btn" onclick="Lab.selectQ2('risky')" id="q2-risky">
+        <div class="choice-letter">B</div>
+        <div class="choice-text" id="q2-text-risky"></div>
+      </button>
     </div>
-    <div id="q2-err" class="val-msg">Please answer both choices before continuing.</div>
-
-    <div class="action-row">
-      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ2()">Continue</button>
-    </div>
+    <div id="q2-err" class="val-msg">Please select one of the options above.</div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       Q3: SCOPE INSENSITIVITY
+       Q3: MENTAL ACCOUNTING
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q3" class="lab-screen">
     <div class="task-meta">
@@ -1103,32 +1064,27 @@
       </div>
     </div>
 
-    <h2 class="q-headline">A conservation decision.</h2>
-    <p class="q-sub">Take a moment before you answer.</p>
+    <h2 class="q-headline">A theater decision.</h2>
+    <p class="q-sub">Read the scenario, then answer.</p>
 
-    <div class="scope-hero">
-      <div class="scope-number" id="scope-num">…</div>
-      <div class="scope-unit">migratory birds per year</div>
+    <div class="scope-scenario" id="theatre-scenario"></div>
+
+    <p class="choice-prompt">Do you buy a ticket?</p>
+    <div class="choice-stack" id="q3-choices">
+      <button class="choice-btn" onclick="Lab.selectQ3('yes')" id="q3-yes">
+        <div class="choice-letter">A</div>
+        <div class="choice-text">Yes, I'll buy a ticket and go.</div>
+      </button>
+      <button class="choice-btn" onclick="Lab.selectQ3('no')" id="q3-no">
+        <div class="choice-letter">B</div>
+        <div class="choice-text">No, I'll skip the show.</div>
+      </button>
     </div>
-
-    <div class="scope-scenario" id="scope-scenario"></div>
-
-    <p class="scope-q">What's the most you'd personally contribute?</p>
-    <div class="dollar-wrap">
-      <span class="dollar-prefix">$</span>
-      <input type="number" class="dollar-input" id="scope-input"
-             placeholder="0" min="0"
-             oninput="Lab.onScopeInput(this)">
-    </div>
-    <div id="q3-err" class="val-msg">Please enter an amount ($0 is a valid answer).</div>
-
-    <div class="action-row">
-      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ3()">Continue</button>
-    </div>
+    <div id="q3-err" class="val-msg">Please select one of the options above.</div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       Q4: IDENTIFIABLE VICTIM
+       Q4: OVERPRECISION
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q4" class="lab-screen">
     <div class="task-meta">
@@ -1141,23 +1097,30 @@
       </div>
     </div>
 
-    <h2 class="q-headline">A giving decision.</h2>
-    <p class="q-sub">Imagine you've just been handed $10, yours to keep or donate.</p>
+    <h2 class="q-headline">A knowledge question.</h2>
+    <p class="q-sub">Don't look it up. Give a range you're 90% confident contains the answer.</p>
 
-    <div id="victim-context"></div>
+    <div class="scope-scenario">
+      What year was the Eiffel Tower completed?
+    </div>
 
-    <div class="slider-box">
-      <div class="slider-head">
-        <span class="slider-label-text">Your donation</span>
-        <span class="slider-value" id="victim-val">$5.00</span>
+    <p class="scope-q">Your 90% confidence interval:</p>
+    <div class="conf-range-wrap">
+      <div class="dollar-wrap" style="max-width:150px;">
+        <span class="dollar-prefix" style="font-size:0.7rem;letter-spacing:0.05em;">from</span>
+        <input type="number" class="dollar-input" id="conf-low"
+               placeholder="1800" min="1700" max="2100"
+               oninput="Lab.onConfInput()">
       </div>
-      <input type="range" min="0" max="10" value="5" step="0.5" id="victim-slider"
-             oninput="Lab.updateVictim(this.value)">
-      <div class="slider-ends">
-        <span>Keep it all ($0)</span>
-        <span>Give it all ($10)</span>
+      <span class="conf-sep">–</span>
+      <div class="dollar-wrap" style="max-width:150px;">
+        <span class="dollar-prefix" style="font-size:0.7rem;letter-spacing:0.05em;">to</span>
+        <input type="number" class="dollar-input" id="conf-high"
+               placeholder="1950" min="1700" max="2100"
+               oninput="Lab.onConfInput()">
       </div>
     </div>
+    <div id="q4-err" class="val-msg">Please enter both years.</div>
 
     <div class="action-row">
       <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ4()">See my results</button>
@@ -1176,8 +1139,8 @@
     </div>
     <div class="analyzing-wrap">
       <div class="a-msg show" id="amsg-0">Mapping your decision landscape…</div>
-      <div class="a-msg" id="amsg-1">Checking for conjunction fallacies…</div>
-      <div class="a-msg" id="amsg-2">Measuring temporal consistency…</div>
+      <div class="a-msg" id="amsg-1">Measuring your anchoring response…</div>
+      <div class="a-msg" id="amsg-2">Checking framing and sunk costs…</div>
       <div class="a-msg" id="amsg-3">Building your bias profile…</div>
     </div>
   </div>
@@ -1211,20 +1174,21 @@
 
 <script>
 const Lab = {
-  scopeCondition: [2000, 20000, 200000][Math.floor(Math.random() * 3)],
-  victimCondition: Math.random() > 0.5 ? 'stats' : 'story',
+  anchorCondition:  Math.random() > 0.5 ? 'high' : 'low',
+  framingCondition: Math.random() > 0.5 ? 'gain' : 'loss',
+  theatreCondition: Math.random() > 0.5 ? 'cash' : 'ticket',
   state: {
-    conjunction: null,
-    presentA: null,
-    presentB: null,
-    scope: null,
-    victim: 5,
+    anchorEstimate: null,
+    framingChoice:    null,
+    theatreChoice:    null,
+    confLow:          null,
+    confHigh:         null,
   },
 
   // ── Navigation ──────────────────────────────────────────
   start() {
     this.setProgress(25, true);
-    this.show('screen-q1');
+    this.initQ1();
   },
 
   show(id) {
@@ -1239,95 +1203,99 @@ const Lab = {
     bar.style.width = pct + '%';
   },
 
-  // ── Q1: Conjunction fallacy ──────────────────────────────
-  selectQ1(val) {
-    this.state.conjunction = val;
-    document.querySelectorAll('#q1-choices .choice-btn').forEach(b => b.classList.remove('selected'));
-    document.getElementById('choice-' + val).classList.add('selected');
-    document.getElementById('q1-err').classList.remove('show');
-    // Auto-advance after brief pause so selection is visible
-    setTimeout(() => {
-      this.setProgress(50);
-      this.show('screen-q2');
-    }, 380);
+  // ── Q1: Anchoring ────────────────────────────────────────
+  initQ1() {
+    const anchor = this.anchorCondition === 'high' ? 65 : 10;
+    document.getElementById('anchor-input').placeholder = 'e.g. ' + anchor;
+    this.show('screen-q1');
   },
-
-  // ── Q2: Present bias ─────────────────────────────────────
-  selectQ2a(val) {
-    this.state.presentA = val;
-    document.querySelectorAll('#q2a-choices .bias-choice').forEach(b => b.classList.remove('selected'));
-    document.getElementById('q2a-' + val).classList.add('selected');
-    document.getElementById('q2-err').classList.remove('show');
-  },
-  selectQ2b(val) {
-    this.state.presentB = val;
-    document.querySelectorAll('#q2b-choices .bias-choice').forEach(b => b.classList.remove('selected'));
-    document.getElementById('q2b-' + val).classList.add('selected');
-    document.getElementById('q2-err').classList.remove('show');
-  },
-  nextQ2() {
-    if (!this.state.presentA || !this.state.presentB) {
-      document.getElementById('q2-err').classList.add('show');
-      return;
-    }
-    this.setProgress(75);
-    this.initQ3();
-  },
-
-  // ── Q3: Scope insensitivity ──────────────────────────────
-  initQ3() {
-    const n = this.scopeCondition.toLocaleString();
-    document.getElementById('scope-num').textContent = n;
-    document.getElementById('scope-scenario').innerHTML =
-      `Each year, <strong>${n} migratory birds</strong> die after landing on uncovered industrial oil ponds across the United States. A conservation group is installing protective nets to stop this. The program runs entirely on voluntary contributions.`;
-    this.show('screen-q3');
-  },
-  onScopeInput(el) {
-    this.state.scope = el.value.trim() !== '' ? (parseFloat(el.value) || 0) : null;
-    if (this.state.scope !== null) {
-      document.getElementById('q3-err').classList.remove('show');
+  onAnchorInput(el) {
+    const v = el.value.trim();
+    this.state.anchorEstimate = v !== '' ? parseFloat(v) : null;
+    if (this.state.anchorEstimate !== null) {
+      document.getElementById('q1-err').classList.remove('show');
       el.classList.remove('error');
     }
   },
-  nextQ3() {
-    if (this.state.scope === null) {
-      document.getElementById('q3-err').classList.add('show');
-      const inp = document.getElementById('scope-input');
+  nextQ1() {
+    if (this.state.anchorEstimate === null) {
+      document.getElementById('q1-err').classList.add('show');
+      const inp = document.getElementById('anchor-input');
       inp.classList.add('error');
       setTimeout(() => inp.classList.remove('error'), 400);
       return;
     }
-    this.setProgress(100);
-    this.initQ4();
+    this.setProgress(50);
+    this.initQ2();
   },
 
-  // ── Q4: Identifiable victim ──────────────────────────────
+  // ── Q2: Framing effect ───────────────────────────────────
+  initQ2() {
+    const gain = this.framingCondition === 'gain';
+    document.getElementById('framing-scenario').innerHTML =
+      'A new disease is expected to kill 600 people. Two response programs have been proposed. Assume the scientific estimates of each program\'s outcomes are accurate.';
+    document.getElementById('q2-text-certain').textContent = gain
+      ? 'Program A: 200 people will be saved.'
+      : 'Program A: 400 people will die.';
+    document.getElementById('q2-text-risky').textContent = gain
+      ? 'Program B: 1/3 chance all 600 are saved, 2/3 chance nobody is saved.'
+      : 'Program B: 1/3 chance nobody dies, 2/3 chance all 600 die.';
+    this.show('screen-q2');
+  },
+  selectQ2(val) {
+    this.state.framingChoice = val;
+    document.querySelectorAll('#q2-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('q2-' + val).classList.add('selected');
+    document.getElementById('q2-err').classList.remove('show');
+    setTimeout(() => {
+      this.setProgress(75);
+      this.initQ3();
+    }, 380);
+  },
+
+  // ── Q3: Mental accounting ────────────────────────────────
+  initQ3() {
+    const cash = this.theatreCondition === 'cash';
+    document.getElementById('theatre-scenario').innerHTML = cash
+      ? 'You decide to see a play. Tickets cost $10. On the way to the theater, you discover you\'ve lost $10 from your wallet. Do you still pay $10 for a ticket?'
+      : 'You buy a $10 ticket to a play in advance. On the way to the theater, you discover you\'ve lost the ticket. It\'s gone. Do you pay $10 for a new one?';
+    this.show('screen-q3');
+  },
+  selectQ3(val) {
+    this.state.theatreChoice = val;
+    document.querySelectorAll('#q3-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('q3-' + val).classList.add('selected');
+    document.getElementById('q3-err').classList.remove('show');
+    setTimeout(() => {
+      this.setProgress(100);
+      this.initQ4();
+    }, 380);
+  },
+
+  // ── Q4: Overprecision ────────────────────────────────────
   initQ4() {
-    const ctx = document.getElementById('victim-context');
-    if (this.victimCondition === 'story') {
-      ctx.innerHTML = `
-        <div class="victim-story">
-          <blockquote>
-            <strong>Amara</strong> is 7 years old and lives in a rural village in Niger.
-            The nearest clinic is three hours away on foot, and her family can't afford the
-            nutrition supplements she needs. Without outside help, her chances of reaching
-            adulthood are low.
-          </blockquote>
-        </div>`;
-    } else {
-      ctx.innerHTML = `
-        <div class="victim-stats">
-          <div class="stat-big">5 million</div>
-          <div class="stat-desc">children under 5 die every year from largely preventable causes: contaminated water, malnutrition, and diseases for which vaccines cost less than $1. Aid organizations estimate that $1 directed to basic interventions can protect a child for a full year.</div>
-        </div>`;
-    }
     this.show('screen-q4');
   },
-  updateVictim(val) {
-    this.state.victim = parseFloat(val);
-    document.getElementById('victim-val').textContent = '$' + parseFloat(val).toFixed(2);
+  onConfInput() {
+    const lo = document.getElementById('conf-low').value;
+    const hi = document.getElementById('conf-high').value;
+    this.state.confLow  = lo !== '' ? parseInt(lo) : null;
+    this.state.confHigh = hi !== '' ? parseInt(hi) : null;
+    if (this.state.confLow !== null && this.state.confHigh !== null) {
+      document.getElementById('q4-err').classList.remove('show');
+    }
   },
   nextQ4() {
+    const lo = this.state.confLow;
+    const hi = this.state.confHigh;
+    if (lo === null || hi === null || lo >= hi) {
+      const msg = document.getElementById('q4-err');
+      msg.textContent = (lo !== null && hi !== null && lo >= hi)
+        ? 'The lower year must be less than the upper year.'
+        : 'Please enter both years.';
+      msg.classList.add('show');
+      return;
+    }
     this.showAnalyzing();
   },
 
@@ -1350,28 +1318,50 @@ const Lab = {
 
   // ── Profile computation ──────────────────────────────────
   computeProfile() {
-    const narrativePull  = this.state.conjunction === 'bank-volunteer';
-    const presentBiased  = this.state.presentA === 'now' && this.state.presentB === 'year-later';
+    const anchor   = this.anchorCondition === 'high' ? 65 : 10;
+    const estimate = this.state.anchorEstimate || 0;
+    const midpoint = (anchor + 28) / 2;
+    const anchorPulled = this.anchorCondition === 'high' ? estimate > midpoint : estimate < midpoint;
+
+    const gain = this.framingCondition === 'gain';
+    const followedFraming =
+      (gain  && this.state.framingChoice === 'certain') ||
+      (!gain && this.state.framingChoice === 'risky');
+
+    const showedMentalAccounting =
+      this.theatreCondition === 'ticket' && this.state.theatreChoice === 'no';
+
+    const overprecise = !(
+      (this.state.confLow  !== null && this.state.confLow  <= 1889) &&
+      (this.state.confHigh !== null && this.state.confHigh >= 1889)
+    );
+
+    const score = [anchorPulled, followedFraming, showedMentalAccounting, overprecise].filter(Boolean).length;
 
     const map = {
-      empath:     { name:'The Empath',     color:'#7cd4f8',
-                    headline:'Moved by stories. Anchored in the present.',
-                    desc:'You respond to vivid, specific narratives, and your sense of time is weighted toward now. Both are deeply human responses, and both shape how you evaluate evidence and trade-offs in policy, hiring, and everyday decisions.' },
-      idealist:   { name:'The Idealist',   color:'#7eda92',
-                    headline:'Driven by stories. Patient with time.',
-                    desc:'You\'re drawn to the human side of decisions: a compelling narrative shapes your judgments. But you\'re also willing to wait for better outcomes. You think in arcs, not moments.' },
-      pragmatist: { name:'The Pragmatist', color:'#f4c26a',
-                    headline:'Clear-eyed about evidence. Impatient with delay.',
-                    desc:'You cut through narrative to look at probability directly, but immediate rewards pull hard. You trust data over stories, and you want results now rather than later.' },
-      strategist: { name:'The Strategist', color:'#b8a0f2',
-                    headline:'Analytical. Long-horizon.',
-                    desc:'You resist both the pull of intuitive narratives and the lure of immediate rewards. You evaluate evidence directly and think in timelines. These are the traits that define careful, systematic reasoning, and you\'ll still fall for biases you haven\'t tested yet.' },
+      0: { name: 'The Outlier',
+           color: '#7eda92',
+           headline: 'Resisted all four.',
+           desc: 'You avoided every pattern in this experiment. This is genuinely rare: either you\'ve studied behavioral economics closely, your heuristics fired well today, or both. Kahneman himself says he still falls for the ones he identified.' },
+      1: { name: 'The Resistant',
+           color: '#7cd4f8',
+           headline: 'One pattern showed. Three didn\'t.',
+           desc: 'Mostly clear-eyed. One bias broke through, which is roughly as well as it gets without prior training. The research shows that knowing a bias exists reduces but doesn\'t eliminate it.' },
+      2: { name: 'The Human',
+           color: '#b8a94a',
+           headline: 'Right down the middle.',
+           desc: 'Two biases showed, two didn\'t. This is the statistical center, exactly where most people land. Being average here doesn\'t mean you\'re uninformed; it means your brain is running the standard equipment.' },
+      3: { name: 'The Susceptible',
+           color: '#f4a26a',
+           headline: 'Three out of four.',
+           desc: 'Most patterns fired. This is common, not embarrassing. The same cognitive shortcuts that create these biases help you make fast, good-enough decisions in most real-world situations. The tradeoff is worth it most of the time.' },
+      4: { name: 'The Predictable',
+           color: '#e06565',
+           headline: 'Every pattern predicted correctly.',
+           desc: 'All four fired. Kahneman would not be surprised. These are among the most replicated findings in experimental psychology, and you reproduced every one of them. Knowing the pattern is the first step to catching it in high-stakes decisions.' },
     };
 
-    if ( narrativePull &&  presentBiased) return { key:'empath',     ...map.empath };
-    if ( narrativePull && !presentBiased) return { key:'idealist',   ...map.idealist };
-    if (!narrativePull &&  presentBiased) return { key:'pragmatist', ...map.pragmatist };
-    return                                       { key:'strategist', ...map.strategist };
+    return { key: String(score), score, anchorPulled, followedFraming, showedMentalAccounting, overprecise, ...map[score] };
   },
 
   // ── Results rendering ────────────────────────────────────
@@ -1409,14 +1399,17 @@ const Lab = {
   },
 
   renderProfileCard(profile) {
-    const conj = this.state.conjunction === 'bank-volunteer';
-    const bias = this.state.presentA === 'now' && this.state.presentB === 'year-later';
+    const { anchorPulled, followedFraming, showedMentalAccounting, overprecise } = profile;
+
+    const q3Label = this.theatreCondition === 'ticket'
+      ? (showedMentalAccounting ? 'Mental accounting showed' : '✓ Overcame mental account')
+      : (this.state.theatreChoice === 'yes' ? 'Bought despite cash loss' : 'Skipped regardless');
 
     const badges = [
-      { label: conj  ? 'Conjunction bias showed' : 'Resisted conjunction', showed: conj },
-      { label: bias  ? 'Present-biased'          : (this.state.presentA==='later'&&this.state.presentB==='year-later'?'Consistently patient':'Time-consistent'), showed: bias },
-      { label: 'Scope sensitivity tested',   showed: false },
-      { label: this.victimCondition==='story' ? 'Saw Amara\'s story' : 'Saw statistics', showed: false },
+      { label: anchorPulled        ? 'Anchoring showed'        : '✓ Anchor-resistant',    showed: anchorPulled },
+      { label: followedFraming     ? 'Framing effect showed'   : '✓ Frame-resistant',      showed: followedFraming },
+      { label: q3Label,                                                                     showed: showedMentalAccounting },
+      { label: overprecise         ? 'Interval too narrow'     : '✓ Well-calibrated',      showed: overprecise },
     ];
 
     const badgesHtml = badges.map(b =>
@@ -1435,90 +1428,100 @@ const Lab = {
   },
 
   renderDetailBlocks() {
-    const { conjunction, presentA, presentB, scope, victim } = this.state;
-    const choseConj   = conjunction === 'bank-volunteer';
-    const tookNow     = presentA === 'now';
-    const tookLater   = presentB === 'year-later';
-    const inconsistent = tookNow && tookLater;
+    const { anchorEstimate, framingChoice, theatreChoice, confLow, confHigh } = this.state;
+    const anchor   = this.anchorCondition === 'high' ? 65 : 10;
+    const estimate = anchorEstimate || 0;
+    const midpoint = (anchor + 28) / 2;
+    const anchorPulled = this.anchorCondition === 'high' ? estimate > midpoint : estimate < midpoint;
 
-    // ── Q1 ──
-    let html = this.resultBlock({
-      label:'Task 1 · Conjunction Fallacy', title:'Who is Alex?',
-      verdict: choseConj ? { cls:'verdict-bias', text:'Common bias' } : { cls:'verdict-ok', text:'✓ Logical' },
-      answer: choseConj ? 'You chose B' : 'You chose A',
-      bmLabel:'Population response',
-      bmRows:[
-        { name:'Chose B', pct:85, hi: choseConj },
-        { name:'Chose A', pct:15, hi:!choseConj },
+    const gain = this.framingCondition === 'gain';
+    const choseCertain = framingChoice === 'certain';
+    const followedFraming = (gain && choseCertain) || (!gain && !choseCertain);
+
+    const cash   = this.theatreCondition === 'cash';
+    const bought = theatreChoice === 'yes';
+    const showedMentalAccounting = !cash && !bought;
+
+    const captured   = confLow !== null && confHigh !== null && confLow <= 1889 && confHigh >= 1889;
+    const overprecise = !captured;
+    const intervalWidth = (confHigh || 0) - (confLow || 0);
+
+    let html = '';
+
+    // ── Q1: Anchoring ──
+    html += this.resultBlock({
+      label: 'Task 1 · Anchoring', title: 'A quick estimate.',
+      verdict: anchorPulled
+        ? { cls:'verdict-bias', text:'Anchor pulled' }
+        : { cls:'verdict-ok',   text:'✓ Adjusted correctly' },
+      answer: `Your estimate: ${estimate}% · True answer: 28% · Anchor: ${anchor}%`,
+      bmLabel: 'Kahneman & Tversky (1974), median estimates by anchor group',
+      bmRows: [
+        { name: 'Low anchor (10)',  pct: 38, hi: this.anchorCondition === 'low',  label: '~25% avg' },
+        { name: 'High anchor (65)', pct: 69, hi: this.anchorCondition === 'high', label: '~45% avg' },
       ],
-      explanation:`
-        <p><strong>${choseConj
-          ? 'You chose B, and so does about 85% of people.'
-          : 'You chose A, the logically correct answer. About 85% of people choose B.'
-        }</strong> Option B can't be more likely than A. If Alex works at a bank and volunteers (B), then he automatically works at a bank (A). Adding a condition always decreases probability. Mathematically it's impossible for B to be more likely.</p>
-        <p>The trap is that Alex's profile makes option B <em>feel</em> right. Intuition isn't probability. The more coherent a story seems, the more likely your brain treats it, even when extra details make it mathematically less probable. This is the conjunction fallacy.</p>
-        <p><strong>Where it shows up:</strong> Juries find detailed, emotionally coherent crime narratives more convincing than simpler ones, even when the simpler story is more probable. Knowing the fallacy doesn't reliably prevent it; the feeling that the story "fits" runs deeper than the rule.</p>`
+      explanation: `
+        <p><strong>The true answer is 28%.</strong> You were shown a placeholder of ${anchor}% and estimated ${estimate}%. ${anchorPulled ? `That's closer to the anchor than to the true value. Textbook anchoring.` : `You adjusted far enough past the anchor to end up closer to the true answer.`}</p>
+        <p>In the original study, participants watched a rigged wheel of fortune stop at 10 or 65, then estimated what percentage of UN member states are from Africa. Those who saw 65 averaged about 45%. Those who saw 10 averaged about 25%. The wheel was obviously random, yet it moved estimates by 20 points.</p>
+        <p><strong>Where it shows up:</strong> Salary negotiations, retail pricing ("was $299, now $199"), real estate listing prices. First numbers set expectations, and most people don't adjust away from them by nearly enough.</p>`
     });
 
-    // ── Q2 ──
-    let presentExp = '';
-    if (inconsistent) {
-      presentExp = `<p><strong>Your preferences were time-inconsistent.</strong> You chose $50 now over $65 in 5 weeks, but $65 in a year + 5 weeks over $50 in a year. Both pairs offer the same $15 bonus for the same 5-week wait. The only variable is whether "now" is one of the options. When it is, the wait feels real. When it isn't, you're happy to be patient.</p>
-      <p>This inconsistency isn't a character flaw; it's a structural feature of how human attention works. The future self has all the patience; the present self has none.</p>`;
-    } else if (presentA==='later' && presentB==='year-later') {
-      presentExp = `<p><strong>Your preferences were consistent: you chose patience both times.</strong> About 30–40% of people do this. The majority who choose $50 now but $65 in a year are showing time-inconsistent preferences: the same $15 bonus feels different depending on whether "now" is an option. Your consistency is rarer than it looks.</p>`;
-    } else {
-      presentExp = `<p><strong>Your preferences were consistent: you chose immediacy both times.</strong> Most people are <em>in</em>consistent: they take $50 now but switch to waiting when both options are in the future. Your consistent impatience is actually less common than the bias pattern.</p>`;
-    }
-
+    // ── Q2: Framing ──
     html += this.resultBlock({
-      label:'Task 2 · Present Bias', title:'Two choices.',
-      verdict: inconsistent ? { cls:'verdict-bias', text:'Present-biased' } : { cls:'verdict-ok', text:'✓ Consistent' },
-      answer: `A: ${tookNow?'$50 today':'$65/5wks'} · B: ${tookLater?'$65/yr+5wks':'$50/yr'}`,
-      bmLabel:'Typical response pattern',
-      bmRows:[
-        { name:'Inconsistent', pct:60, hi: inconsistent },
-        { name:'Consistent',   pct:40, hi:!inconsistent },
+      label: 'Task 2 · Framing Effect', title: 'A public health decision.',
+      verdict: followedFraming
+        ? { cls:'verdict-bias', text:'Framing effect showed' }
+        : { cls:'verdict-ok',   text:'✓ Frame-resistant' },
+      answer: `${gain ? 'Gain frame' : 'Loss frame'} · Chose ${choseCertain ? 'certain (A)' : 'risky (B)'}`,
+      bmLabel: 'Kahneman & Tversky (1981), Asian Disease Problem',
+      bmRows: [
+        { name: 'Gain: chose certain', pct: 72, hi:  gain &&  choseCertain, label: '72%' },
+        { name: 'Gain: chose risky',   pct: 28, hi:  gain && !choseCertain, label: '28%' },
+        { name: 'Loss: chose certain', pct: 22, hi: !gain &&  choseCertain, label: '22%' },
+        { name: 'Loss: chose risky',   pct: 78, hi: !gain && !choseCertain, label: '78%' },
       ],
-      explanation:`${presentExp}
-        <p><strong>Where it shows up:</strong> Retirement accounts go unfunded because "next year" never comes. Diets start Monday. Essays get written at 11 PM.</p>
-        <p><strong>How to beat it:</strong> Commitment devices work: pre-commit to gym classes, automate savings transfers, use temporal landmarks (New Year, start of month) to trigger behavioral change.</p>`
+      explanation: `
+        <p>You were shown the <strong>${gain ? 'gain' : 'loss'} frame</strong> and chose the <strong>${choseCertain ? 'certain' : 'risky'}</strong> option. The two frames describe identical outcomes: saving 200 of 600 people is the same as letting 400 of 600 die. The math is the same. The psychology isn't.</p>
+        <p>In the original study, 72% chose the certain option in the gain frame. When the same scenario was reframed as deaths, only 22% chose the equivalent certain option; 78% gambled instead. A global study across 19 countries confirmed the pattern holds with a 90% replication rate.</p>
+        <p><strong>Where it shows up:</strong> "90% fat-free" vs. "10% fat." Medical consent forms that describe survival rates vs. mortality rates. Budget proposals framed as savings vs. cuts. The frame shapes the feeling before the reasoning starts.</p>`
     });
 
-    // ── Q3 ──
-    const scopeN = this.scopeCondition.toLocaleString();
+    // ── Q3: Mental accounting ──
     html += this.resultBlock({
-      label:'Task 3 · Scope Insensitivity', title:'A conservation decision.',
-      verdict: null,
-      answer: `${scopeN} birds · $${(scope||0).toFixed(2)} contributed`,
-      bmLabel:"What a 1993 study found (avg. donation)",
-      bmRows:[
-        { name:'2K birds',   pct:80, hi: this.scopeCondition===2000,   label:'$80 avg' },
-        { name:'20K birds',  pct:78, hi: this.scopeCondition===20000,  label:'$78 avg' },
-        { name:'200K birds', pct:88, hi: this.scopeCondition===200000, label:'$88 avg' },
+      label: 'Task 3 · Mental Accounting', title: 'A theater decision.',
+      verdict: showedMentalAccounting
+        ? { cls:'verdict-bias', text:'Mental account effect' }
+        : { cls:'verdict-ok',   text: bought ? '✓ Bought regardless' : '✓ Skipped regardless' },
+      answer: `${cash ? 'Lost $10 cash' : 'Lost pre-bought ticket'} · ${bought ? 'Bought new ticket' : 'Skipped the show'}`,
+      bmLabel: '2024 registered replication, Kahneman & Tversky theater ticket',
+      bmRows: [
+        { name: 'Cash lost: buy ticket',  pct: 90, hi:  cash &&  bought, label: '90%' },
+        { name: 'Cash lost: skip',        pct: 10, hi:  cash && !bought, label: '10%' },
+        { name: 'Ticket lost: buy again', pct: 77, hi: !cash &&  bought, label: '77%' },
+        { name: 'Ticket lost: skip',      pct: 23, hi: !cash && !bought, label: '23%' },
       ],
-      explanation:`
-        <p>You were randomly assigned to see ${scopeN} birds. In a 1993 study, three groups saw 2,000, 20,000, or 200,000 birds. Average donations were $80, $78, and $88. A <strong>100-fold increase in scale produced almost no change</strong> in how much people gave.</p>
-        <p>Your brain evaluates the scenario holistically: <em>Is this bad? Do I care? How much should I give to feel okay about this?</em> The number barely factors in because numbers don't trigger emotion the way an image does. Show someone a single oiled bird and donations spike far above any statistic.</p>
-        <p><strong>Where it shows up:</strong> Climate change affects 8 billion people, a scale that makes it impossible to feel the way you'd feel about one person. This is why effective charities learned to show one child, not a statistics chart.</p>`
+      explanation: `
+        <p>You ${cash ? 'lost $10 cash on the way there' : 'lost a pre-bought $10 ticket'} and chose to ${bought ? 'buy a new ticket' : 'skip the show'}. In a 2024 registered replication of Kahneman and Tversky's original experiment, 90% of people bought a ticket after losing cash, but only 77% did after losing a pre-bought ticket.</p>
+        <p>The dollar cost is identical in both scenarios: seeing the show costs $10 on top of what was lost. But people who lose a ticket mentally charge it to a "theater" account that already feels debited. Paying again feels like paying twice. Losing cash feels like a separate event in a different account.</p>
+        <p><strong>Where it shows up:</strong> Continuing to fund a failing project because of money already spent. Finishing a meal you don't want because you paid for it. The logic is always the same: the cost is sunk, but the account isn't closed.</p>`
     });
 
-    // ── Q4 ──
-    const sawStats = this.victimCondition === 'stats';
+    // ── Q4: Overprecision ──
     html += this.resultBlock({
-      label:'Task 4 · Identifiable Victim Effect', title:'A giving decision.',
-      verdict: null,
-      answer: `${sawStats ? 'Saw statistics' : "Saw Amara's story"} · $${victim.toFixed(2)} donated`,
-      bmLabel:'What a 2007 study found (avg. donation)',
-      bmRows:[
-        { name:'Statistics', pct:60,  hi:  sawStats, label:'$1.43 avg' },
-        { name:'One story',  pct:100, hi: !sawStats, label:'$2.38 avg' },
+      label: 'Task 4 · Overprecision', title: 'A knowledge question.',
+      verdict: overprecise
+        ? { cls:'verdict-bias', text:'Interval too narrow' }
+        : { cls:'verdict-ok',   text:'✓ Well-calibrated' },
+      answer: `Your interval: ${confLow}–${confHigh} (${intervalWidth} yrs wide) · True answer: 1889`,
+      bmLabel: 'Calibration research benchmark',
+      bmRows: [
+        { name: captured ? 'Your CI captured 1889' : 'Your CI missed 1889', pct: captured ? 92 : 8, hi: captured, label: captured ? '✓' : '✗' },
+        { name: 'Typical 90% CI hit rate', pct: 45, hi: false, label: '~40–50%' },
       ],
-      explanation:`
-        <p>You were randomly shown ${sawStats ? 'statistics about child mortality' : "Amara's individual story"}. In a 2007 study, participants who saw statistics donated $1.43 on average. Those who read about one specific girl donated $2.38, about 66% more.</p>
-        <p>But there's a more unsettling finding: when researchers added statistics <em>back</em> into the individual story, donations dropped nearly to baseline. The emotional pull of the individual was diluted by scale information.</p>
-        <p>This isn't just about identifying the victim. It's about the ceiling on emotional response. A single face is concrete; a million is abstract. Once you know the scope, your mind hits a ceiling and can't scale the emotion proportionally.</p>
-        <p><strong>Where it shows up:</strong> Nonprofit fundraisers show one child because it works. News stories about disasters start with one person before the total. We're moved by what we can feel, and we can only feel what we can imagine.</p>`
+      explanation: `
+        <p>The Eiffel Tower was completed in <strong>1889</strong>. Your interval was ${confLow}–${confHigh}. ${captured ? 'It captured the right answer. You are in the minority.' : 'It didn\'t, even though you asked for a 90% confidence interval.'}</p>
+        <p>In calibration research, when people give 90% confidence intervals across many factual questions, those intervals contain the true answer only about 40–50% of the time. A well-calibrated 90% interval should hit 9 out of 10. Most people's 90% intervals behave more like 50% intervals. Overprecision has been called the "mother of all biases" for its consistency across domains and populations.</p>
+        <p><strong>Where it shows up:</strong> Engineering project timelines, earnings forecasts, medical prognoses, legal outcome assessments. When experts say "I'm 90% confident," they're usually closer to 60%. The intervals look precise; the confidence is not earned.</p>`
     });
 
     document.getElementById('results-detail').innerHTML = html;
@@ -1562,7 +1565,7 @@ const Lab = {
     document.getElementById('closing-note-wrap').innerHTML = `
       <div class="closing-note">
         <p class="cn-label">A note on all of this</p>
-        <p class="cn-text">These patterns appear in courtrooms, hospitals, financial markets, and policy debates. Knowing they exist doesn't make you immune; Kahneman himself said he still falls for many of them. But it does make you a better-informed decision maker, and a harder person to manipulate.</p>
+        <p class="cn-text">These patterns appear in courtrooms, hospitals, financial markets, and policy debates. Knowing they exist doesn't make you immune. Kahneman himself said he still falls for many of them. Note that Task 3 only detects mental accounting in the ticket-lost condition; if you were assigned the cash scenario, that dimension wasn't measured. The profile score reflects what could be tested with your specific random assignment.</p>
       </div>`;
   },
 
@@ -1588,14 +1591,15 @@ const Lab = {
   // ── Share via URL hash ───────────────────────────────────
   writeHash(profileKey) {
     const d = {
-      p: profileKey,
-      c: this.state.conjunction,
-      pa: this.state.presentA,
-      pb: this.state.presentB,
-      sc: this.state.scope,
-      vi: this.state.victim,
-      scc: this.scopeCondition,
-      vic: this.victimCondition,
+      p:   profileKey,
+      aa:  this.state.anchorEstimate,
+      fc:  this.state.framingChoice,
+      tc:  this.state.theatreChoice,
+      cl:  this.state.confLow,
+      ch:  this.state.confHigh,
+      ac:  this.anchorCondition,
+      frc: this.framingCondition,
+      thc: this.theatreCondition,
     };
     history.replaceState(null,'','#' + btoa(JSON.stringify(d)));
   },
@@ -1624,13 +1628,14 @@ const Lab = {
     if (!location.hash) return false;
     try {
       const d = JSON.parse(atob(location.hash.slice(1)));
-      this.state.conjunction = d.c;
-      this.state.presentA    = d.pa;
-      this.state.presentB    = d.pb;
-      this.state.scope       = d.sc;
-      this.state.victim      = d.vi;
-      this.scopeCondition    = d.scc;
-      this.victimCondition   = d.vic;
+      this.state.anchorEstimate   = d.aa;
+      this.state.framingChoice    = d.fc;
+      this.state.theatreChoice    = d.tc;
+      this.state.confLow          = d.cl;
+      this.state.confHigh         = d.ch;
+      this.anchorCondition        = d.ac;
+      this.framingCondition       = d.frc;
+      this.theatreCondition       = d.thc;
       return true;
     } catch(e) { return false; }
   },
