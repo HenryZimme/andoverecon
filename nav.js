@@ -8,7 +8,7 @@
     { href: 'resources.html',   label: 'Resources' },
     { href: 'board.html',       label: 'Board' },
   ];
-andoverecon.org
+henryzimme.github.io
   const current = location.pathname.split('/').pop() || 'index.html';
 
   const linksHtml = pages.map(p =>
