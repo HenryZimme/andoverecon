@@ -8,7 +8,6 @@
     { href: 'resources.html',   label: 'Resources' },
     { href: 'board.html',       label: 'Board' },
   ];
-
   const current = location.pathname.split('/').pop() || 'index.html';
 
   const linksHtml = pages.map(p =>
@@ -33,7 +32,7 @@
           <div class="footer-brand">Andover Economics Society</div>
           <div class="footer-sub">Phillips Academy Andover &nbsp;·&nbsp; Founded 2004</div>
         </div>
-        <nav class="footer-links">
+        <nav class="footer-links" style="display:flex;flex-wrap:wrap;gap:1rem;">
           ${pages.map(p => `<a href="${p.href}">${p.label}</a>`).join('')}
         </nav>
       </div>
