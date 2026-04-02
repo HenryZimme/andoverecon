@@ -1144,7 +1144,7 @@
     <p class="q-sub">Don't look it up. Give a range you're 90% confident contains the answer.</p>
 
     <div class="scope-scenario">
-      What year was the Eiffel Tower completed?
+      What year was the first email sent?
     </div>
 
     <p class="scope-q">Your 90% confidence interval:</p>
@@ -1152,14 +1152,14 @@
       <div class="dollar-wrap" style="max-width:150px;">
         <span class="dollar-prefix" style="font-size:0.7rem;letter-spacing:0.05em;">from</span>
         <input type="number" class="dollar-input" id="conf-low"
-               placeholder="1800" min="1700" max="2100"
+               placeholder="e.g. 1960" min="1900" max="2020"
                oninput="Lab.onConfInput()">
       </div>
       <span class="conf-sep">–</span>
       <div class="dollar-wrap" style="max-width:150px;">
         <span class="dollar-prefix" style="font-size:0.7rem;letter-spacing:0.05em;">to</span>
         <input type="number" class="dollar-input" id="conf-high"
-               placeholder="1950" min="1700" max="2100"
+               placeholder="e.g. 1995" min="1900" max="2020"
                oninput="Lab.onConfInput()">
       </div>
     </div>
@@ -1386,8 +1386,8 @@ const Lab = {
       this.theatreCondition === 'ticket' && this.state.theatreChoice === 'no';
 
     const overprecise = !(
-      (this.state.confLow  !== null && this.state.confLow  <= 1889) &&
-      (this.state.confHigh !== null && this.state.confHigh >= 1889)
+      (this.state.confLow  !== null && this.state.confLow  <= 1971) &&
+      (this.state.confHigh !== null && this.state.confHigh >= 1971)
     );
 
     const score = [anchorPulled, followedFraming, showedMentalAccounting, overprecise].filter(Boolean).length;
@@ -1498,7 +1498,7 @@ const Lab = {
     const bought = theatreChoice === 'yes';
     const showedMentalAccounting = !cash && !bought;
 
-    const captured   = confLow !== null && confHigh !== null && confLow <= 1889 && confHigh >= 1889;
+    const captured   = confLow !== null && confHigh !== null && confLow <= 1971 && confHigh >= 1971;
     const overprecise = !captured;
     const intervalWidth = (confHigh || 0) - (confLow || 0);
 
@@ -1589,14 +1589,14 @@ const Lab = {
       verdict: overprecise
         ? { cls:'verdict-bias', text:'Interval too narrow' }
         : { cls:'verdict-ok',   text:'✓ Well-calibrated' },
-      answer: `Your interval: ${confLow}–${confHigh} (${intervalWidth} yrs wide) · True answer: 1889`,
+      answer: `Your interval: ${confLow}–${confHigh} (${intervalWidth} yrs wide) · True answer: 1971`,
       bmLabel: 'Calibration research benchmark',
       bmRows: [
-        { name: captured ? 'Your CI captured 1889' : 'Your CI missed 1889', pct: captured ? 92 : 8, hi: captured, label: captured ? '✓' : '✗' },
+        { name: captured ? 'Your CI captured 1971' : 'Your CI missed 1971', pct: captured ? 92 : 8, hi: captured, label: captured ? '✓' : '✗' },
         { name: 'Typical 90% CI hit rate', pct: 45, hi: false, label: '~40–50%' },
       ],
       explanation: `
-        <p>The Eiffel Tower was completed in <strong>1889</strong>. Your interval was ${confLow}–${confHigh}. ${captured ? 'It captured the right answer. You are in the minority.' : 'It didn\'t, even though you asked for a 90% confidence interval.'}</p>
+        <p>The first email was sent in <strong>1971</strong> by Ray Tomlinson, a programmer at BBN Technologies. Your interval was ${confLow}–${confHigh}. ${captured ? 'It captured the right answer. You are in the minority.' : 'It didn\'t, even though you asked for a 90% confidence interval. Most people place email firmly in the 1980s or 90s — their intervals look confident and land a decade too late.'}</p>
         <p>In calibration research, when people give 90% confidence intervals across many factual questions, those intervals contain the true answer only about 40–50% of the time. A well-calibrated 90% interval should hit 9 out of 10. Most people's 90% intervals behave more like 50% intervals. Overprecision has been called the "mother of all biases" for its consistency across domains and populations.</p>
         <p><strong>Where it shows up:</strong> Engineering project timelines, earnings forecasts, medical prognoses, legal outcome assessments. When experts say "I'm 90% confident," they're usually closer to 60%. The intervals look precise; the confidence is not earned.</p>`
     });
