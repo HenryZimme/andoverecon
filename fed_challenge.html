@@ -6,6 +6,286 @@
   <title>Fed Challenge — Andover Economics Society</title>
   <meta name="description" content="AES competes in the Federal Reserve Bank of New York's High School Fed Challenge. 2026 theme: Economics of Music.">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── script reader container ─────────────────────────── */
+    .script-reader-wrap {
+      background: #070d1c;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-top: 2rem;
+      position: relative;
+    }
+
+    /* ── header bar ──────────────────────────────────────── */
+    .script-reader-header {
+      background: #0e1830;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .script-show-title {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 0.78rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.55);
+    }
+    .script-show-title strong {
+      font-style: normal;
+      font-weight: 700;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: 0.01em;
+    }
+    .speaker-legend {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .legend-pill {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      padding: 0.26rem 0.65rem;
+      border-radius: 20px;
+    }
+    .legend-rophone {
+      background: rgba(184,169,74,0.14);
+      border: 1px solid rgba(184,169,74,0.38);
+      color: #b8a94a;
+    }
+    .legend-flayshun {
+      background: rgba(68,184,243,0.1);
+      border: 1px solid rgba(68,184,243,0.32);
+      color: #44B8F3;
+    }
+
+    /* ── progress bar ────────────────────────────────────── */
+    .reader-progress-track {
+      height: 2px;
+      background: rgba(255,255,255,0.05);
+    }
+    .reader-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6c5e21, #b8a94a);
+      width: 0%;
+      transition: width 0.08s linear;
+    }
+
+    /* ── scroll body ─────────────────────────────────────── */
+    .script-body {
+      height: 540px;
+      overflow-y: scroll;
+      padding: 1.75rem 1.75rem 2.5rem;
+      scroll-behavior: smooth;
+    }
+    .script-body::-webkit-scrollbar { width: 4px; }
+    .script-body::-webkit-scrollbar-track { background: transparent; }
+    .script-body::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+    }
+    .script-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* ── bottom scroll fade ──────────────────────────────── */
+    .script-reader-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 44px; /* above fn-bar */
+      left: 0; right: 0;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, #070d1c);
+      pointer-events: none;
+    }
+
+    /* ── exchange layout ─────────────────────────────────── */
+    .script-exchange {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 1.1rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      align-items: start;
+    }
+    .script-exchange:last-child {
+      border-bottom: none;
+      padding-bottom: 0.5rem;
+    }
+
+    /* ── speaker pills ───────────────────────────────────── */
+    .speaker-pill {
+      display: inline-block;
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.55rem;
+      border-radius: 20px;
+      text-align: center;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+    .pill-rophone {
+      background: rgba(184,169,74,0.13);
+      border: 1px solid rgba(184,169,74,0.32);
+      color: #b8a94a;
+    }
+    .pill-flayshun {
+      background: rgba(68,184,243,0.09);
+      border: 1px solid rgba(68,184,243,0.28);
+      color: #44B8F3;
+    }
+
+    /* ── script text ─────────────────────────────────────── */
+    .script-line {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.75);
+    }
+    .script-line em { font-style: italic; color: rgba(255,255,255,0.55); }
+
+    /* ── footnote superscripts ───────────────────────────── */
+    sup.fn {
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 0.62em;
+      font-weight: 700;
+      color: #44B8F3;
+      cursor: pointer;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 1px;
+      transition: color 0.15s;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+    sup.fn:hover { color: #7dd4f8; }
+    sup.fn.active-fn { color: #7dd4f8; background: rgba(68,184,243,0.12); }
+
+    /* ── citation bar at bottom of reader ───────────────── */
+    .fn-bar {
+      background: #0a1525;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 0.6rem 1.5rem;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .fn-bar-num {
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #44B8F3;
+      flex-shrink: 0;
+      width: 20px;
+      text-align: right;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .fn-bar-num.visible { opacity: 1; }
+    .fn-bar-text {
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 0.73rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+    }
+    .fn-bar-text.active { color: rgba(255,255,255,0.65); }
+
+    /* ── end-of-script marker ────────────────────────────── */
+    .script-end-marker {
+      text-align: center;
+      padding: 1.5rem 0 0.5rem;
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+    }
+
+    /* ── authors & meta strip ────────────────────────────── */
+    .script-authors {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .script-authors span {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ── references accordion ────────────────────────────── */
+    .ref-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 3px 3px 0 0;
+      padding: 0.7rem 1.25rem;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 1.5rem;
+    }
+    .ref-toggle:hover { border-color: var(--blue); color: var(--blue); }
+    .ref-toggle.open { border-bottom-color: transparent; color: var(--blue); }
+    .ref-arrow { transition: transform 0.2s; display: inline-block; }
+    .ref-toggle.open .ref-arrow { transform: rotate(180deg); }
+
+    .ref-body {
+      display: none;
+      border: 1px solid var(--rule);
+      border-top: none;
+      border-radius: 0 0 3px 3px;
+      padding: 1.25rem 1.5rem;
+      background: #fafaf8;
+    }
+    .ref-body.open { display: block; }
+
+    .ref-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .ref-item {
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: var(--muted);
+      padding-left: 1.75rem;
+      text-indent: -1.75rem;
+    }
+    .ref-item a { color: var(--blue); word-break: break-all; }
+
+    /* ── mobile ──────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .script-body { height: 440px; padding: 1.25rem 1rem 2rem; }
+      .script-exchange { grid-template-columns: 68px 1fr; gap: 0.75rem; }
+      .speaker-pill { font-size: 0.52rem; padding: 0.25rem 0.4rem; }
+      .script-line { font-size: 0.87rem; }
+      .script-reader-header { padding: 0.75rem 1rem; }
+      .fn-bar { padding: 0.5rem 1rem; }
+    }
+  </style>
 </head>
 <body>
 
@@ -21,7 +301,7 @@
 
 <div class="page-content">
 
-  <!-- About the competition -->
+  <!-- ── About + team card ───────────────────────────────── -->
   <div style="display:grid; grid-template-columns:2fr 1fr; gap:3rem; align-items:start;">
     <div>
       <p class="section-label">About the program</p>
@@ -35,19 +315,89 @@
     </div>
 
     <div>
-      <div class="card">
+      <div class="card" style="border-top-color: var(--gold);">
         <p class="card-label">2026 Team</p>
         <h3>Economics of Music</h3>
         <p>This year's theme examined the economics of the music industry. The team produced a podcast script analyzing market structures, incentive design, and policy questions in the streaming era.</p>
         <p style="margin-top:0.75rem; font-size:0.85rem; color:#888;">Submitted March 2026</p>
-        <p style="margin-top:0.5rem; font-size:0.85rem; color:#888;">Sponsored by the Federal Reserve Bank of New York</p>
+        <p style="margin-top:0.4rem; font-size:0.85rem; color:#888;">Sponsored by the Federal Reserve Bank of New York</p>
+        <a href="#the-script" class="card-link" style="margin-top:1rem;">Read the script ↓</a>
       </div>
     </div>
   </div>
 
   <hr class="rule">
 
-  <!-- What the team produces -->
+  <!-- ── Script reader ────────────────────────────────────── -->
+  <div id="the-script">
+    <p class="section-label">The submission</p>
+    <h2 class="section-title">The Price of the Pit: The Economics of Live Concert Ticketing</h2>
+
+    <div class="script-authors">
+      <span>Authors:</span> Crispin Black, Pia Chhabra, Konnor Fortini, Bella Huang, Anna Lu, Philip Molina, Anoushka Pandey, Henry Zimmerman
+      &nbsp;&middot;&nbsp; <span>Faculty advisor:</span> Theodore Parker
+      &nbsp;&middot;&nbsp; <span>2,492 words</span>
+      &nbsp;&middot;&nbsp; Chicago Manual of Style, 18th ed.
+    </div>
+
+    <div class="script-reader-wrap">
+      <div class="script-reader-header">
+        <div class="script-show-title"><strong>Sound Money</strong>: a podcast on the economics of the music industry</div>
+        <div class="speaker-legend">
+          <span class="legend-pill legend-rophone">Rophone (host)</span>
+          <span class="legend-pill legend-flayshun">Flay-Shun (guest)</span>
+        </div>
+      </div>
+
+      <div class="reader-progress-track">
+        <div class="reader-progress-fill" id="reader-progress"></div>
+      </div>
+
+      <div class="script-body" id="script-body">
+        <!-- exchanges rendered by JS below -->
+      </div>
+
+      <div class="fn-bar">
+        <span class="fn-bar-num" id="fn-num"></span>
+        <span class="fn-bar-text" id="fn-text">Hover a footnote number to see the citation.</span>
+      </div>
+    </div>
+
+    <!-- references accordion -->
+    <button class="ref-toggle" id="ref-toggle" onclick="toggleRefs()">
+      References <span class="ref-arrow" id="ref-arrow">▾</span>
+    </button>
+    <div class="ref-body" id="ref-body">
+      <ul class="ref-list">
+        <li class="ref-item">Allen, Bob. "Pollstar 2025 Year End Business Analysis—A Return to Earth." In <em>Pollstar</em>. Last modified December 23, 2025. <a href="https://news.pollstar.com/2025/12/23/year-end-business-analysis-a-return-to-earth-2025-grosses-ticket-sales-drop-averages-increase-beyonce-oasis-coldplay-have-top-tours-venues-stadiums-rock/" target="_blank" rel="noopener">pollstar.com ↗</a></li>
+        <li class="ref-item">Aramesh, Waiss. "Maggie Rogers Announces Arena Tour, Sequel to In-Person Ticketing Program to Skirt Scalpers." <em>Rolling Stone</em>. Last modified April 11, 2024. <a href="https://www.rollingstone.com/music/music-news/maggie-rogers-2024-arena-tour-in-person-ticketing-1235002892/" target="_blank" rel="noopener">rollingstone.com ↗</a></li>
+        <li class="ref-item">Denis, Kyle. "Zara Larsson's 2026 Chart Breakthrough Proves 2016 Is Truly Back." <em>Billboard</em>. Last modified February 3, 2026. <a href="https://www.billboard.com/music/features/zara-larsson-midnight-sun-hot-100-comeback-2016-stateside-1236172020/" target="_blank" rel="noopener">billboard.com ↗</a></li>
+        <li class="ref-item">Ellison, Sara Fisher. "Internet Technology and its Role in the Price of Concert Tickets." <em>Competition Policy International</em>, February 23, 2021. <a href="https://www.pymnts.com/cpi-posts/internet-technology-and-its-role-in-the-price-of-concert-tickets/" target="_blank" rel="noopener">pymnts.com ↗</a></li>
+        <li class="ref-item">Gendron, Will. "The average price of a resale ticket for the Eras Tour was $3,801." <em>Business Insider</em>. Last modified August 12, 2023. <a href="https://www.businessinsider.com/resale-price-taylor-swift-eras-tour-reputation-ticket-pitchfork-report-2023-8" target="_blank" rel="noopener">businessinsider.com ↗</a></li>
+        <li class="ref-item">Ginsburgh, Victor, and C. D. Throsby. <em>Handbook of the Economics of Art and Culture. Volume 2</em>. North-Holland, 2014.</li>
+        <li class="ref-item">Kallman, Audrey. "The end of an Era(s Tour): Taylor Swift's final impact on hotel performance." <em>CoStar</em>, December 19, 2024. <a href="https://www.costar.com/products/str-benchmark/resources/data-insights-blog/end-eras-tour-taylor-swifts-final-impact-hotel" target="_blank" rel="noopener">costar.com ↗</a></li>
+        <li class="ref-item">Krueger, Alan B. <em>Rockonomics: A Backstage Tour of What the Music Industry Can Teach Us about Economics and Life</em>. Currency, 2019.</li>
+        <li class="ref-item">Lee, Ben. "The Rise of D2C Ticketing: Driving Growth and Direct Fan Engagement." <em>IQ Magazine</em>, September 4, 2025. <a href="https://www.iqmagazine.com/magazine/the-rise-of-d2c-ticketing" target="_blank" rel="noopener">iqmagazine.com ↗</a></li>
+        <li class="ref-item">Leslie, Phillip, and Alan Sorensen. <em>The Welfare Effects of Ticket Resale</em>. <a href="https://doi.org/10.3386/w15476" target="_blank" rel="noopener">doi.org/10.3386/w15476 ↗</a></li>
+        <li class="ref-item">Lynch, Jessica. "Olivia Dean Secures Refunds for Fans after Calling out Ticket Resale Prices." <em>Billboard</em>. Last modified December 1, 2025. <a href="https://www.billboard.com/music/music-news/olivia-dean-refunds-ticket-resale-prices-1236124960/" target="_blank" rel="noopener">billboard.com ↗</a></li>
+        <li class="ref-item">Research and Markets. "Live Entertainment Global Market Forecasts 2025-2030." <em>Yahoo Finance</em>. Last modified August 25, 2025. <a href="https://finance.yahoo.com/news/live-entertainment-global-market-forecasts-132600267.html" target="_blank" rel="noopener">finance.yahoo.com ↗</a></li>
+        <li class="ref-item">Rhodes, Andrew. "A Survey on Drip Pricing and Other False Advertising." <em>SSRN Electronic Journal</em>, 2023. <a href="https://doi.org/10.2139/ssrn.4430453" target="_blank" rel="noopener">doi.org/10.2139/ssrn.4430453 ↗</a></li>
+        <li class="ref-item">Rule on Unfair or Deceptive Fees, 16 C.F.R. § 1 (2025). <a href="https://www.ecfr.gov/current/title-16/chapter-I/subchapter-D/part-464" target="_blank" rel="noopener">ecfr.gov ↗</a></li>
+        <li class="ref-item">S.3183 - BOTS Act of 2016, S. 114-274, 114th Cong., 2d Sess. (Sept. 14, 2016). <a href="https://www.congress.gov/bill/114th-congress/senate-bill/3183" target="_blank" rel="noopener">congress.gov ↗</a></li>
+        <li class="ref-item">Sherman, Maria. "Taylor Swift's Eras Tour ends by shattering own record, grossing an estimated $2.2B." <em>AP News</em>. Last modified December 9, 2024. <a href="https://apnews.com/article/taylor-swift-eras-tour-numbers-2-billion-118a7f5ea4609c5d3072a29152e387bb" target="_blank" rel="noopener">apnews.com ↗</a></li>
+        <li class="ref-item">Sisario, Ben. "U.K. Vows to Ban Resale of Concert Tickets above Face Value." <em>The New York Times</em>, November 19, 2025. <a href="https://www.nytimes.com/2025/11/19/arts/music/uk-tickets-resale-ban.html" target="_blank" rel="noopener">nytimes.com ↗</a></li>
+        <li class="ref-item">Sisario, Ben, David McCabe, and Olivia Bensimon. "Justice Department and Live Nation Reach Settlement Terms in Antitrust Case." <em>The New York Times</em>, March 9, 2026. <a href="https://www.nytimes.com/2026/03/09/arts/music/live-nation-ticketmaster-antitrust-suit-settled.html" target="_blank" rel="noopener">nytimes.com ↗</a></li>
+        <li class="ref-item">Ticketmaster. "Our Story." Ticketmaster Business. Last modified 2026. <a href="https://business.ticketmaster.com/why-ticketmaster/our-story/" target="_blank" rel="noopener">business.ticketmaster.com ↗</a></li>
+        <li class="ref-item">Ticketmaster. "Taylor Swift | The Eras Tour Onsale Explained." News release. November 19, 2022. <a href="https://business.ticketmaster.com/press-release/taylor-swift-the-eras-tour-onsale-explained/" target="_blank" rel="noopener">business.ticketmaster.com ↗</a></li>
+        <li class="ref-item">United States Department of Justice v. Live Nation Entertainment, Inc. (settled March 9, 2026). <a href="https://www.justice.gov/archives/opa/pr/justice-department-sues-live-nation-ticketmaster-monopolizing-markets-across-live-concert" target="_blank" rel="noopener">justice.gov ↗</a></li>
+        <li class="ref-item">Wescott, Andrew. "'How much?!' – The Great Ticket Price Backlash of 2025." <em>DORK</em>. Last modified February 22, 2025. <a href="https://readdork.com/features/ticket-prices-beyonce-kendrick-lamar-2025/" target="_blank" rel="noopener">readdork.com ↗</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ── What the team produces ───────────────────────────── -->
   <p class="section-label">The work</p>
   <h2 class="section-title">What the team produces</h2>
   <div class="card-grid card-grid-3 mt-4">
@@ -74,7 +424,7 @@
 
   <hr class="rule">
 
-  <!-- Competition standard -->
+  <!-- ── Journal reference ────────────────────────────────── -->
   <p class="section-label">Reference</p>
   <h2 class="section-title">The Journal of Future Economists</h2>
   <div class="prose mt-3" style="max-width:620px;">
@@ -88,5 +438,164 @@
 
 <div id="footer-placeholder"></div>
 <script src="nav.js"></script>
+<script>
+// footnote citation strings, keyed by number
+const FN = {
+  1:  'Lynch, Jessica. "Olivia Dean Secures Refunds for Fans after Calling out Ticket Resale Prices." Billboard, December 1, 2025.',
+  2:  'Lynch, "Olivia Dean," Billboard.',
+  3:  'Lynch, "Olivia Dean," Billboard.',
+  4:  'Ginsburgh, Victor, and C. D. Throsby. Handbook of the Economics of Art and Culture. Volume 2. North-Holland, 2014.',
+  5:  'Krueger, Alan B. Rockonomics: A Backstage Tour of What the Music Industry Can Teach Us about Economics and Life. Currency, 2019.',
+  6:  'Krueger, Rockonomics.',
+  7:  'Krueger, Rockonomics.',
+  8:  'Ellison, Sara Fisher. "Internet Technology and its Role in the Price of Concert Tickets." Competition Policy International, February 23, 2021.',
+  9:  'Krueger, Rockonomics, 12.',
+  10: 'Ticketmaster. "Our Story." Ticketmaster Business. Last modified 2026.',
+  11: 'Sisario, Ben, David McCabe, and Olivia Bensimon. "Justice Department and Live Nation Reach Settlement Terms in Antitrust Case." The New York Times, March 9, 2026.',
+  12: 'Research and Markets. "Live Entertainment Global Market Forecasts 2025–2030." Yahoo Finance, August 25, 2025.',
+  13: 'Allen, Bob. "Pollstar 2025 Year End Business Analysis." Pollstar, December 23, 2025.',
+  14: 'Allen, "Pollstar 2025."',
+  15: 'Wescott, Andrew. "\'How much?!\' – The Great Ticket Price Backlash of 2025." DORK, February 22, 2025.',
+  16: 'Krueger, Rockonomics.',
+  17: 'Leslie, Phillip, and Alan Sorensen. The Welfare Effects of Ticket Resale.',
+  18: 'Rhodes, Andrew. "A Survey on Drip Pricing and Other False Advertising." SSRN Electronic Journal, 2023.',
+  19: 'Ticketmaster. "Taylor Swift | The Eras Tour Onsale Explained." News release, November 19, 2022.',
+  20: 'Ticketmaster, "Taylor Swift."',
+  21: 'Gendron, Will. "The average price of a resale ticket for the Eras Tour was $3,801." Business Insider, August 12, 2023.',
+  22: 'Kallman, Audrey. "The end of an Era(s Tour): Taylor Swift\'s final impact on hotel performance." CoStar, December 19, 2024.',
+  23: 'Sherman, Maria. "Taylor Swift\'s Eras Tour ends by shattering own record, grossing an estimated $2.2B." AP News, December 9, 2024.',
+  24: 'Allen, "Pollstar 2025."',
+  25: 'Denis, Kyle. "Zara Larsson\'s 2026 Chart Breakthrough Proves 2016 Is Truly Back." Billboard, February 3, 2026.',
+  26: 'S.3183 - BOTS Act of 2016, S. 114-274, 114th Cong., 2d Sess. (September 14, 2016).',
+  27: 'Aramesh, Waiss. "Maggie Rogers Announces Arena Tour, Sequel to In-Person Ticketing Program to Skirt Scalpers." Rolling Stone, April 11, 2024.',
+  28: 'Leslie and Sorensen, The Welfare Effects of Ticket Resale.',
+  29: 'Rule on Unfair or Deceptive Fees, 16 C.F.R. § 1 (2025).',
+  30: 'United States Department of Justice v. Live Nation Entertainment, Inc. (settled March 9, 2026).',
+  31: 'Sisario, Ben. "U.K. Vows to Ban Resale of Concert Tickets above Face Value." The New York Times, November 19, 2025.',
+  32: 'Lee, Ben. "The Rise of D2C Ticketing: Driving Growth and Direct Fan Engagement." IQ Magazine, September 4, 2025.',
+};
+
+// script exchanges: s = speaker ('r' | 'f'), t = text with [N] footnote markers
+const SCRIPT = [
+  { s:'r', t:'Hello, and welcome all, to <em>Sound Money</em>, the podcast where we pull back the curtain on the economics driving the music industry. I\'m your host, Mike Rophone, and with me today we have a special guest: Justin Flay-Shun, acclaimed economist who just won the Nobel Prize in Economic Sciences&hellip;basically the equivalent of a Grammy!' },
+  { s:'f', t:'Not exactly, Mike, but thank you for having me on the show!' },
+  { s:'r', t:'Just jokes, Justin! But anyway, let\'s get right into it. Fresh off winning "Best New Artist" at the 2026 Grammys, Olivia Dean has quickly become one of the most "in-demand" rising artists in soul and pop music. But as they say, with great power comes great responsibility.' },
+  { s:'f', t:'For Dean, this responsibility means wading into the messy economics of the live ticketing industry.' },
+  { s:'r', t:'For context, tickets for her 2026 North American tour began popping up on resale platforms at more than 14 times their original price, with some exceeding an astonishing $1,000.[1]' },
+  { s:'f', t:'Yes, and afterwards, Dean criticized the ticketing system as "vile," "disgusting," and "exploitative," in an open letter, calling out the resale market for cashing in on fans\' excitement.[2] Exorbitant prices turned what should be a shared, once-in-a-lifetime experience into something that suddenly felt out of reach. Her criticism spread and eventually sparked a rare response: major players in the industry, such as Ticketmaster and AXS, were pressured to issue partial refunds to fans. Ticketmaster also announced that it would cap resale prices for her tour at face value and activate a Face Value Exchange.[3]' },
+  { s:'r', t:'Extraordinary. Just one artist did all that.' },
+  { s:'f', t:'It really is. And while remarkable, it speaks to a deeper phenomenon. When limited seats, massive fan demand, and thriving resale markets collide, concert tickets feel less like entertainment and more like commodities in a high-demand marketplace.' },
+  { s:'r', t:'Which raises a bigger question: what is actually happening behind the scenes of the live ticket market industry?' },
+  { s:'f', t:'The live ticket market is a superstar market, where a small number of artists dominate the market share.[4] In the power-law-abiding market that music operates in, luck is exponentially more important.[5]' },
+  { s:'r', t:'Simply not being in the right place, at the right time, with the right song, right manager, or right label, can all make or break a career, right?' },
+  { s:'f', t:'You got it, Mike. Looking at other fields, such as nursing or accounting, wages are more consistent across workers, leaving less room for growth or failure. There are two key characteristics a market must have to be dominated by a small number of stars: scale economies and imperfect substitutes.[6]' },
+  { s:'r', t:'What are those?' },
+  { s:'f', t:'In a scale economy, it isn\'t much more expensive to share one\'s talent with more people. The only thing limiting an artist from reaching more fans is the stadium size. With modern distribution channels like social media and streaming platforms, it\'s much easier to acquire a larger fan base than before.[7]' },
+  { s:'r', t:'Got it, so when technology advanced enough that records, tapes, and CD players allowed artists to record and produce music at a large scale, the live-performance-based model was no longer the primary source of revenue for most artists. Recordings and live performances work hand in hand; a fan might buy an album and feel inspired to purchase the artist\'s concert tickets, or attend a show and feel compelled to buy the tracks played there.[8]' },
+  { s:'f', t:'Exactly. The second factor is imperfect substitutes, the concept that artists provide a unique service. The power law explains this: the popularity of a fan\'s favorite performer is a multiple of their second-most-favorite, which in turn is a multiple of their third-most-favorite, and so on.[9]' },
+  { s:'r', t:'So even if another artist has the same vocal range, songwriting ability, or pizazz, they just can\'t replace your favorite.' },
+  { s:'f', t:'That irreplaceability is what gives the top of the market its enormous pricing power.' },
+  { s:'r', t:'But let\'s go back in time a bit. How did ticketing platforms evolve into what they are today?' },
+  { s:'f', t:'Ticketron won the market for computerized tickets in the 1960s, completely transforming how people access live entertainment. It shifted ticket distribution from local box offices towards centralized computerized terminals, reducing transactional costs and allowing consumers to buy seats anywhere, at any time.[10] While this model greatly increased efficiency and expanded access, it also ensured that whoever controlled ticketing technology essentially controlled the entire live market.' },
+  { s:'r', t:'And control eventually consolidated even further.' },
+  { s:'f', t:'Yes. In the 1990s, after much of Ticketron\'s assets were sold to Ticketmaster, this model intensified and became monopolistic. When Ticketmaster merged with Live Nation in 2010, more than 80% of the ticket market came under their control.[11] And because venues relied on this ticketing technology to reach large audiences, the company could now charge higher service fees, negotiate exclusive contracts, own the stages, and quietly embed itself as an indispensable middleman between artists, venues, and consumers.' },
+  { s:'r', t:'Jumping ahead to 2020, the COVID-19 pandemic brought the live-event industry to an abrupt halt. Yet, as normal life has resumed, revenue reached $202.9 billion in 2025, surpassing pre-pandemic levels.[12] Can you walk us through what happened?' },
+  { s:'f', t:'During the shutdown, mass cancellations disrupted cash flow for venues and promoters, leading these platforms to withhold refunds. When venues reopened, ticket prices soared to recoup losses. As of 2025, ticket prices had increased by 41% since 2020, and are expected to rise in the coming years.[13] It is estimated that big tours cost between 25% and 40% more to stage than they did in 2019, and that\'s before factoring in inflation.[14]' },
+  { s:'r', t:'So you\'ve got higher costs on the supply side. But what about demand?' },
+  { s:'f', t:'After years of isolation, people craved human connection, and companies raised ticket prices as consumers were willing to pay more, cutting into consumer surplus. COVID-19 also led to the permanent shutdown of many smaller, more affordable venues, creating a greater concentration of demand on fewer, larger arenas and driving prices even higher.[15] The pandemic created the perfect conditions for live event prices to rise, paving the way for record revenues at the consumer\'s expense.' },
+  { s:'r', t:'Why do fans pay thousands of dollars to see their favorite artists live in the first place?' },
+  { s:'f', t:'It\'s a lot to unpack. First, it is important to acknowledge a foundational principle from Alan B. Krueger\'s <em>Rockonomics</em>: humans are not perfectly rational. Emotional, psychological, and social factors influence supply and demand. In this case, to put it simply, music is happiness.[16]' },
+  { s:'r', t:'There is a euphoric factor to attending a concert that music videos and recordings cannot capture. It\'s unparalleled.' },
+  { s:'f', t:'Right, and that unparalleled experience is inelastic demand. Fans will pay almost anything for it, and the market has developed several mechanisms to extract every dollar of that demand. Consumers enter what economists call "the arrival game" with different strategies based on experience and expectations. Given the price discrimination of the ticket market, consumers can receive what they are willing to pay for.[17] Not all people queuing up for tickets are fans, though. Many are "brokers" who derive no utility beyond financial gain, intending solely to resell. Brokers increase consumer queuing cost as fans will expend more energy and money on the arrival game, knowing there is competition. There are also external pressures like the drip pricing strategy, where companies charge fees at the end of checkout, convincing customers to finish their purchases while paying the extra costs.[18]' },
+  { s:'r', t:'That reminds me of when I bought tickets to Taylor Swift\'s Eras Tour. I was securing tickets on my computer. The pit tickets I selected were already pricey, and when I went to check out, the price jumped up like crazy. I had to go back and pick cheaper seats. Do you know what was going on?' },
+  { s:'f', t:'Mike, you were experiencing a classic case of market shock. The high demand, concentrated on a fixed, highly constrained supply of seats, cascaded from primary to secondary markets. Over 3.5 million fans like you pre-registered for TaylorSwiftTix Verified Fan Presale, which was the largest registration in history.[19] Different people were allowed different levels of access at different times, creating a larger sense of urgency, leading to the market volatility you faced.[20] This inelastic demand caused quickly sold-out tickets to reach extreme secondary market prices ranging from $5,000 to $30,000.[21]' },
+  { s:'r', t:'Wow, I got lucky with the tickets! And it didn\'t stop at tickets either.' },
+  { s:'f', t:'That same scarcity spilled over as a positive externality into the hospitality sector in cities where Swift toured, driving hotel occupancy rates to over 96% and average daily rates up by 300%, indicating a massive economic ripple effect.[22] The tour made approximately $2.2 billion, becoming the highest-grossing tour in history.[23] The whole situation demonstrates that in live ticket markets, outcomes are shaped by the interplay among capacity constraints, inelastic demand, and platform rules that inflate secondary-market prices in an attempt to "clear" demand.' },
+  { s:'r', t:'Another thing fans have started noticing is how volatile concert ticket prices are. Can you explain how dynamic pricing works in the concert industry today?' },
+  { s:'f', t:'Of course. Dynamic pricing has become a central feature of the modern concert industry, allowing prices to adjust in real time based on demand. Platforms like Ticketmaster use algorithms that raise prices when large numbers of fans enter queues or when tickets sell out rapidly, similar to airline or rideshare surge pricing. This strategy has contributed to the average ticket for top tours reaching $135.92 last year, indicating the previously discussed 41% increase, far outpacing general inflationary trends.[24]' },
+  { s:'r', t:'Have you seen this in action recently?' },
+  { s:'f', t:'Yes, Zara Larsson\'s 2026 Midnight Sun tour is a great example. One of her songs went viral, and her shows sold out minutes after opening. Demand was so high that venues in Perth, Melbourne, and Sydney were upgraded to significantly larger arenas, and an additional New Zealand date was added to the schedule.[25] High prices soon followed.' },
+  { s:'r', t:'How do companies justify this? I\'m pretty upset that I couldn\'t get tickets to her tour.' },
+  { s:'f', t:'While companies argue this model maximizes revenue for artists and discourages resale markets, in actuality, it transforms live music into a luxury good by pushing prices higher precisely when fan excitement is strongest.' },
+  { s:'r', t:'If you had to describe the live ticket market in just one word, which would you use and why?' },
+  { s:'f', t:'Asymmetric. When fans face prices thousands of dollars above face value, it\'s difficult to think that the market is doing its job to achieve allocative efficiency, where tickets are distributed to the highest-demanding individuals, aka superfans. Automated scalping bots are increasingly common on online platforms, having a distinct advantage in both numbers and capability over humans, shifting markets to be price-dominated rather than demand-dominated.[26]' },
+  { s:'r', t:'That has to be expensive for consumers. Die-hard fans are unhappy that camping out to get tickets can no longer beat scalping. What are people in the music industry doing about this?' },
+  { s:'f', t:'Some artists have returned to in-person ticket sales. Grammy-winning artist Maggie Rogers sold tickets in person for her first arena tour in 2024.[27] This comes with many advantages: fans can see exactly how much demand there is by virtue of how many people are waiting in line, can\'t be cut in line by an automated scalping bot, and don\'t face hidden online fees or first-degree price discrimination. This approach ensures that tickets are allocated not to those necessarily willing to pay the most, but to those willing to do the most for them.' },
+  { s:'r', t:'So markets were hurting consumers because fan loyalty was not adequately rewarded.' },
+  { s:'f', t:'Precisely, Mike. Money is not a fundamental determinant of demand; its value is highly elastic and subjective from person to person. Instead, friction and time commitment are used as proxies for demand. When we optimize for allocative efficiency, the transaction costs of arrival in ticket markets, including showing up early and waiting, erase more than 50% of the gains from allocative efficiency.[28]' },
+  { s:'r', t:'What\'s been the regulatory response from our government?' },
+  { s:'f', t:'So, in 2025, the Federal Trade Commission implemented the Rule on Unfair or Deceptive Fees. It prohibits bait-and-switch pricing and other tactics that obscure the true cost of live-event tickets. The rule requires the total price to be disclosed upfront and displayed more prominently than other pricing information. Companies must also clearly explain the purpose and amount of any additional charges before consumers pay, and cannot disguise fees using vague labels such as "service" or "processing" fees.[29] The US approach scrutinizes the monopolist behavior of primary ticket sellers while considering the role of secondary markets in achieving allocative efficiency. Recently, the US Department of Justice sued Live Nation for monopolistic practices, alleging exclusive agreements and other anti-competitive conduct. They settled on March 9, 2026, requiring Live Nation to divest 13 exclusive amphitheater booking agreements and allow venues to use competing ticketing platforms.[30]' },
+  { s:'r', t:'That\'s great news for fans across America. Any other developments?' },
+  { s:'f', t:'The UK\'s 2025 announcement to ban for-profit ticket resales. Their legislation now caps resale prices at face value, aims to halt so-called "touts" who hoard tickets using bots, and enforces stricter, more transparent ticketing practices.[31] As both nations act, the focus is shifting toward ensuring that resale fills seats and serves fans, rather than solely facilitating predatory fees and rent-seeking behaviors.' },
+  { s:'r', t:'It\'s good that work is underway to protect customers, but I know some fans are stepping away from these ticket resale platforms altogether. What are your thoughts on direct-to-fan ticket distribution, where artists sell tickets directly to their fanbase, as an alternative to Ticketmaster or StubHub?' },
+  { s:'f', t:'It is a rising model with advantages for both sides. For artists, the direct-to-fan model eliminates third-party cuts and gives artists more control over ticket pricing. For fans, their data passes through fewer hands, and tickets incur a smaller upcharge. As appealing as it may seem for artists to control ticket prices, the pitfalls of this model become apparent when an event is cancelled or must be rescheduled. Then, redistributing all of that money is a headache most artists would prefer to avoid.[32]' },
+  { s:'r', t:'It\'s a long road, but it seems the era of unbridled power for ticketing companies may finally be ending.' },
+  { s:'f', t:'It does. But the economics tell us there\'s no silver bullet. Banning resale risks black markets. Dynamic pricing punishes loyalty. Direct-to-fan models buckle under cancellations. What the DOJ settlement, the FTC rule, and Olivia Dean\'s open letter all share is the same diagnosis: this market fails not because demand is too high, but because information is too asymmetric. Fans don\'t know the true price until checkout, don\'t know how many seats went to bots, and don\'t know who controls the queue.' },
+  { s:'r', t:'The price of the pit has never been higher. But maybe now, for the first time, we actually know why. Thanks, Justin, and thank <em>you</em> for tuning into this episode of <em>Sound Money</em>!' },
+];
+
+// convert [N] markers to footnote superscripts
+function markup(text) {
+  return text.replace(/\[(\d+)\]/g, (_, n) =>
+    `<sup class="fn" data-fn="${n}">${n}</sup>`
+  );
+}
+
+// render all exchanges into the script body
+function renderScript() {
+  const body = document.getElementById('script-body');
+  const items = SCRIPT.map(({ s, t }) => {
+    const isR = s === 'r';
+    return `
+      <div class="script-exchange">
+        <div class="speaker-pill ${isR ? 'pill-rophone' : 'pill-flayshun'}">
+          ${isR ? 'Rophone' : 'Flay-Shun'}
+        </div>
+        <p class="script-line">${markup(t)}</p>
+      </div>`;
+  }).join('');
+
+  body.innerHTML = items + '<div class="script-end-marker">End of script &mdash; 2,492 words</div>';
+
+  // footnote hover handlers
+  body.querySelectorAll('sup.fn').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const n = el.dataset.fn;
+      document.getElementById('fn-num').textContent = n;
+      document.getElementById('fn-num').classList.add('visible');
+      const bar = document.getElementById('fn-text');
+      bar.textContent = FN[n] || '';
+      bar.classList.add('active');
+      // mark active
+      body.querySelectorAll('sup.fn.active-fn').forEach(x => x.classList.remove('active-fn'));
+      el.classList.add('active-fn');
+    });
+    el.addEventListener('mouseleave', () => {
+      document.getElementById('fn-num').classList.remove('visible');
+      document.getElementById('fn-text').textContent = 'Hover a footnote number to see the citation.';
+      document.getElementById('fn-text').classList.remove('active');
+      el.classList.remove('active-fn');
+    });
+  });
+
+  // scroll progress
+  body.addEventListener('scroll', () => {
+    const pct = body.scrollTop / (body.scrollHeight - body.clientHeight) * 100;
+    document.getElementById('reader-progress').style.width = pct + '%';
+  });
+}
+
+function toggleRefs() {
+  const body = document.getElementById('ref-body');
+  const btn  = document.getElementById('ref-toggle');
+  const arrow = document.getElementById('ref-arrow');
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▴' : '▾';
+}
+
+// init on load
+document.addEventListener('DOMContentLoaded', renderScript);
+</script>
 </body>
 </html>
