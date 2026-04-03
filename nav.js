@@ -18,7 +18,7 @@
   document.getElementById('nav-placeholder').innerHTML = `
     <nav id="site-nav">
       <div class="nav-inner">
-        <a href="index.html" class="nav-logo">Andover <span>Economics</span> Society</a>
+        <a href="index.html" class="nav-logo"><span class="logo-full">Andover <span class="logo-accent">Economics</span> Society</span><span class="logo-short">AES</span></a>
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -33,7 +33,7 @@
           <div class="footer-brand">Andover Economics Society</div>
           <div class="footer-sub">Phillips Academy Andover &nbsp;·&nbsp; Founded 2004</div>
         </div>
-        <nav class="footer-links" style="display:flex;flex-wrap:wrap;gap:1rem;">
+        <nav class="footer-links">
           ${pages.map(p => `<a href="${p.href}">${p.label}</a>`).join('')}
         </nav>
       </div>
@@ -78,4 +78,10 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeMenu();
   });
+
+  // add shadow when scrolled
+  const siteNav = document.getElementById('site-nav');
+  window.addEventListener('scroll', function () {
+    siteNav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
 })();
