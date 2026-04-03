@@ -81,7 +81,11 @@ nav {
 }
 .nav-logo:hover { text-decoration: none; opacity: 0.9; }
 
-.nav-logo span {
+.nav-logo .logo-accent {
+  color: var(--gold-light);
+}
+.nav-logo .logo-short {
+  display: none;
   color: var(--gold-light);
 }
 
@@ -107,7 +111,7 @@ nav {
   align-items: center;
 }
 .nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; text-decoration: none; }
-.nav-links a.active { color: #fff; background: rgba(255,255,255,0.15); }
+.nav-links a.active { color: #fff; background: transparent; border-bottom: 2px solid var(--gold-light); padding-bottom: calc(0.45rem - 2px); }
 
 /* hamburger (mobile) */
 .nav-toggle {
@@ -132,7 +136,22 @@ nav {
   transition: all 0.2s;
 }
 
-/* ---- Page hero ------------------------------------------- */
+/* nav scrolled shadow */
+#site-nav.scrolled {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.28);
+}
+
+/* hamburger → X animation */
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
 .hero {
   background: var(--blue);
   color: #fff;
@@ -446,7 +465,7 @@ footer {
   margin-bottom: 0.5rem;
 }
 .footer-sub { font-size: 0.82rem; }
-.footer-links { display: flex; flex-direction: column; gap: 0.4rem; text-align: right; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; text-align: right; justify-content: flex-end; }
 .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
 .footer-links a:hover { color: #fff; text-decoration: none; }
 .footer-bottom {
@@ -492,10 +511,15 @@ footer {
   }
 }
 
+/* ---- Responsive: 760px (swap logo to AES) ---------------- */
+@media (max-width: 760px) {
+  .nav-logo .logo-full { display: none; }
+  .nav-logo .logo-short { display: inline; }
+}
+
 /* ---- Responsive: 680px (mobile) -------------------------- */
 @media (max-width: 680px) {
   /* nav: switch to hamburger */
-  nav { position: relative; }
   .nav-toggle { display: flex; }
   .nav-links {
     display: none;
@@ -557,7 +581,7 @@ footer {
 
   /* footer: single column */
   .footer-inner { grid-template-columns: 1fr; }
-  .footer-links { text-align: left; flex-direction: row; flex-wrap: wrap; gap: 0.75rem 1.25rem; }
+  .footer-links { text-align: left; justify-content: flex-start; gap: 0.5rem 1rem; }
 
   /* stat band: tighter */
   .stat-band { padding: 2rem 1.25rem; }
