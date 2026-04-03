@@ -33,9 +33,9 @@
   <div class="prose mt-3" style="max-width:560px;">
     <p>For questions about membership, journal submissions, or the speaker series, email the co-presidents directly.</p>
     <p>
-      Henry Zimmerman: <a href="mailto:hzimmerman27@andover.edu">hzimmerman27@andover.edu</a><br>
-      Kachi Ikekpeazu: <a href="mailto:oikekpeazu27@andover.edu">oikekpeazu27@andover.edu</a><br>
-      Andrew Liu: <a href="mailto:aliu27@andover.edu">aliu27@andover.edu</a>
+      Henry Zimmerman: <a href="/cdn-cgi/l/email-protection#d5bdafbcb8b8b0a7b8b4bbe7e295b4bbb1baa3b0a7fbb0b1a0"><span class="__cf_email__" data-cfemail="3e56445753535b4c535f500c097e5f505a51485b4c105b5a4b">[email&#160;protected]</span></a><br>
+      Kachi Ikekpeazu: <a href="/cdn-cgi/l/email-protection#107f797b757b6075716a65222750717e747f6675623e757465"><span class="__cf_email__" data-cfemail="8ae5e3e1efe1faefebf0ffb8bdcaebe4eee5fceff8a4efeeff">[email&#160;protected]</span></a><br>
+      Andrew Liu: <a href="/cdn-cgi/l/email-protection#32535e5b47000572535c565d4457401c575647"><span class="__cf_email__" data-cfemail="6c0d0005195e5b2c0d0208031a091e42090819">[email&#160;protected]</span></a>
     </p>
     <p>Board applications open each spring and are sent out by email.</p>
   </div>
@@ -50,7 +50,7 @@
   <p class="section-label">History</p>
   <h2 class="section-title">Past leadership</h2>
   <div class="prose mt-3" style="max-width:640px;">
-    <p>AES was founded in Spring 2004 by Conor Sutherland '06 and James Kelly '06. The club has had continuous student leadership since then. The tradition of handing the organization off each December ensures the incoming board has a full term of overlap with the outgoing one before spring leadership transitions take effect.</p>
+    <p>AES was founded in Spring 2004 by Conor Sutherland '06 and James Kelly '06. The club has had continuous student leadership since then. AES uses a two-stage transition: co-presidents hand off in January, giving the incoming co-presidents a full winter and spring term before the broader board transitions in the spring. This keeps leadership continuity at the top of the organization while the full board turns over on the academic year.</p>
     <p>Past boards are encouraged to stay connected with AES and are welcome to return as colloquium guests after graduation.</p>
   </div>
 
@@ -63,7 +63,7 @@
 </div>
 
 <div id="footer-placeholder"></div>
-<script src="nav.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="nav.js"></script>
 
 <script>
   function getInitial(name) {
@@ -113,22 +113,4 @@
       // ── Past boards ─────────────────────────────────────────────
       const pastItems = data.past.map(entry => `
         <li class="event-item">
-          <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color:var(--muted);">${entry.year}</div>
-          <div class="event-body">
-            <h3>${entry.presidents}, ${entry.title}</h3>
-            <p>${entry.members}</p>
-          </div>
-        </li>
-      `).join('');
-      document.getElementById('past-board-list').innerHTML = pastItems;
-
-    })
-    .catch(err => {
-      console.error('Failed to load board.json:', err);
-      document.getElementById('board-root').innerHTML =
-        '<p style="color:var(--muted)">Board information could not be loaded.</p>';
-    });
-</script>
-
-</body>
-</html>
+          <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color:var(--muted);
