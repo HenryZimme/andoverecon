@@ -7,7 +7,7 @@
     { href: 'journal.html',     label: 'Journal' },
     { href: 'lab.html',         label: 'Decision Lab'},
     { href: 'resources.html',   label: 'Resources' },
-    { href: 'board.html',       label: 'Board' },
+    { href: 'leadership.html',       label: 'Leadership' },
   ];
   const current = location.pathname.split('/').pop() || 'index.html';
 
