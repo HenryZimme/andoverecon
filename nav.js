@@ -1,13 +1,13 @@
 /* nav.js — injects shared nav and footer, marks active page */
 (function () {
   const pages = [
-    { href: 'index.html',       label: 'Home' },
+    { href: 'index.html',         label: 'Home' },
     { href: 'fed_challenge.html', label: 'Fed Challenge' },
-    { href: 'colloquium.html',  label: 'Colloquium' },
-    { href: 'journal.html',     label: 'Journal' },
-    { href: 'lab.html',         label: 'Decision Lab'},
-    { href: 'resources.html',   label: 'Resources' },
-    { href: 'leadership.html',       label: 'Leadership' },
+    { href: 'colloquium.html',    label: 'Colloquium' },
+    { href: 'journal.html',       label: 'Journal' },
+    { href: 'lab.html',           label: 'Decision Lab' },
+    { href: 'resources.html',     label: 'Resources' },
+    { href: 'leadership.html',    label: 'Leadership' },
   ];
   const current = location.pathname.split('/').pop() || 'index.html';
 
@@ -16,13 +16,13 @@
   ).join('');
 
   document.getElementById('nav-placeholder').innerHTML = `
-    <nav>
+    <nav id="site-nav">
       <div class="nav-inner">
         <a href="index.html" class="nav-logo">Andover <span>Economics</span> Society</a>
-        <button class="nav-toggle" aria-label="Toggle menu" onclick="this.nextElementSibling.classList.toggle('open')">
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
-        <ul class="nav-links">${linksHtml}</ul>
+        <ul class="nav-links" id="nav-links">${linksHtml}</ul>
       </div>
     </nav>`;
 
@@ -41,4 +41,41 @@
         © ${new Date().getFullYear()} Andover Economics Society. All rights reserved.
       </div>
     </footer>`;
+
+  // hamburger toggle
+  const toggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  function openMenu() {
+    navLinks.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMenu() {
+    navLinks.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    navLinks.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  // close menu when any nav link is clicked
+  navLinks.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // close menu when clicking outside the nav
+  document.addEventListener('click', function (e) {
+    const nav = document.getElementById('site-nav');
+    if (nav && !nav.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  // close menu on esc key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
 })();
