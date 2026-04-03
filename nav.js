@@ -5,6 +5,7 @@
     { href: 'fed_challenge.html', label: 'Fed Challenge' },
     { href: 'colloquium.html',  label: 'Colloquium' },
     { href: 'journal.html',     label: 'Journal' },
+    { href: 'lab.html',         label: 'Decision Lab'},
     { href: 'resources.html',   label: 'Resources' },
     { href: 'board.html',       label: 'Board' },
   ];
