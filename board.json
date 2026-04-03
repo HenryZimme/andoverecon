@@ -1,0 +1,107 @@
+{
+  "incoming": [
+    {
+      "name": "Henry Zimmerman",
+      "role": "Co-President",
+      "bio": "Henry founded AES's first Fed Challenge team, which competed in the Federal Reserve Bank of New York's national research competition on this year's theme: the economics of music. He also helped launch the research colloquium, which puts students in front of Boston policymakers to defend their policy briefs. Outside AES, he does astrophysics research, captains the cross country team, and tutors at the Writing Center."
+    },
+    {
+      "name": "Kachi Ikekpeazu",
+      "role": "Co-President",
+      "bio": ""
+    },
+    {
+      "name": "Andrew Liu",
+      "role": "Co-President",
+      "bio": ""
+    }
+  ],
+  "current": [
+    {
+      "name": "Gavin Spencer",
+      "year": "26",
+      "role": "Co-President",
+      "bio": ""
+    },
+    {
+      "name": "Sophia Tabibian",
+      "year": "26",
+      "role": "Co-President",
+      "bio": ""
+    },
+    {
+      "name": "Andrew Liu",
+      "year": "27",
+      "role": "Senior Board",
+      "bio": ""
+    },
+    {
+      "name": "Kachi Ikekpeazu",
+      "year": "27",
+      "role": "Senior Board",
+      "bio": ""
+    },
+    {
+      "name": "Kai Wang",
+      "year": "27",
+      "role": "Senior Board",
+      "bio": ""
+    },
+    {
+      "name": "Henry Zimmerman",
+      "year": "27",
+      "role": "Senior Board",
+      "bio": ""
+    },
+    {
+      "name": "Lisa de Boer",
+      "year": "26",
+      "role": "Senior Board",
+      "bio": ""
+    },
+    {
+      "name": "Konnor Fortini",
+      "year": "28",
+      "role": "Junior Board",
+      "bio": ""
+    },
+    {
+      "name": "Bella Huang",
+      "year": "28",
+      "role": "Junior Board",
+      "bio": ""
+    },
+    {
+      "name": "Pia Chhabra",
+      "year": "28",
+      "role": "Junior Board",
+      "bio": ""
+    },
+    {
+      "name": "Anna Lu",
+      "year": "27",
+      "role": "Junior Board",
+      "bio": ""
+    }
+  ],
+  "past": [
+    {
+      "year": "2024–25",
+      "presidents": "Grant DeHoog '25 & Robert Simkus '25",
+      "title": "Co-Presidents",
+      "members": "Board: Nurul Khairunnisa '25, Sophia Tabibian '26, Lisa de Boer '26, Gavin Spencer '26, Andrew Liu '27. Board of Editors: Michael Huang '26, Henry Zimmerman '27, Kai Wang '27."
+    },
+    {
+      "year": "2023–24",
+      "presidents": "Chris Wong '24 & Audrey Powers '24",
+      "title": "Co-Presidents",
+      "members": "Board: Robert Simkus '25, Philip Meng '26, Grant DeHoog '25, Alex Mazzarelli '24, Sophia Tabibian '26."
+    },
+    {
+      "year": "2022–23",
+      "presidents": "Mason McCormack '23",
+      "title": "President",
+      "members": "Board: Adrian Morrison '23, Nigel Savage '23, Dawson Lin '23, Chris Wong '24, Audrey Powers '24."
+    }
+  ]
+}
