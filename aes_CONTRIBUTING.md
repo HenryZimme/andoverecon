@@ -48,7 +48,7 @@ To make any change: edit the relevant `.html` file, commit, and push to GitHub. 
 2. Update the `incoming` array for the next year's board, and the `current` array for the present board.
 3. Each entry supports `name`, `role`, `year`, `bio`, `photo`, and `url` fields.
 4. To add a photo, place a headshot (square crop, at least 200×200px, saved as `.webp`) in `photos/`.
-5. Set `"photo": "/photos/firstname.webp"` in the relevant `board.json` entry.
+5. Set `"photo": "/photos/firstinitiallastname_pfp.webp"` in the relevant `board.json` entry.
 
 ### Update Fed Challenge info
 
