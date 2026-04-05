@@ -626,6 +626,14 @@
       letter-spacing: -0.03em;
     }
 
+    .ci-timeline-wrap {
+      margin-bottom: 0.25rem;
+    }
+    #ci-timeline {
+      border-radius: 4px;
+      touch-action: none;
+    }
+
     /* ── Dual-ended slider (Q4) ───────────────────────────── */
     .ds-wrap {
       background: var(--lab-surface);
@@ -1168,11 +1176,6 @@
     <h2 class="q-headline">A quick estimate.</h2>
     <p class="q-sub">Don't look it up. Go with your gut.</p>
 
-    <div class="anchor-display">
-      <p class="anchor-display-label">Consider this number</p>
-      <div class="anchor-number" id="anchor-shown"></div>
-    </div>
-
     <p class="scope-q">What percentage of UN member states are from Africa?</p>
     <div class="slider-box">
       <div class="slider-head">
@@ -1226,7 +1229,8 @@
     </div>
 
     <!-- Framing panel: visible from start -->
-    <div id="framing-panel" class="bias-panel" style="margin-top:1.25rem;">
+    <!-- Framing panel: hidden until Decision A is answered to prevent frame contamination -->
+    <div id="framing-panel" class="bias-panel framing-hidden" style="margin-top:1.25rem;">
       <p class="bias-panel-label">Decision B</p>
       <p class="bias-panel-desc" id="framing-scenario"></p>
       <div class="choice-stack" id="q2-choices" style="margin-top:0.75rem;">
@@ -1300,33 +1304,29 @@
     </div>
 
     <h2 class="q-headline">A knowledge question.</h2>
-    <p class="q-sub">Don't look it up. Drag both ends to the range you're 90% sure contains the answer.</p>
+    <p class="q-sub">Don't look it up. Click your earliest plausible year, then your latest.</p>
 
     <div class="scope-scenario">
       What year was the first networked email sent?
     </div>
 
-    <p class="scope-q" style="margin-bottom:0.9rem;">Your 90% confidence interval:</p>
-    <div class="ds-wrap">
-      <div class="ds-display">
-        <span id="ds-low-val">1982</span>
-        <span class="ds-sep">–</span>
-        <span id="ds-high-val">2005</span>
-      </div>
-      <div class="ds-track-container">
-        <div class="ds-track-bg">
-          <div class="ds-track-fill" id="ds-fill"></div>
-        </div>
-        <input type="range" class="ds-input" id="ds-lo" min="1900" max="2020" value="1982" step="1"
-               oninput="Lab.onDualSlider()">
-        <input type="range" class="ds-input" id="ds-hi" min="1900" max="2020" value="2005" step="1"
-               oninput="Lab.onDualSlider()">
-      </div>
-      <div class="slider-ends">
+    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt">Click to set your <strong>earliest</strong> bound — the earliest year you think it could possibly be.</p>
+
+    <!-- Click-to-place timeline -->
+    <div class="ci-timeline-wrap" id="ci-timeline-wrap">
+      <canvas id="ci-timeline" height="56" style="width:100%;cursor:crosshair;display:block;"></canvas>
+      <div class="slider-ends" style="margin-top:0.4rem;">
         <span>1900</span>
+        <span>1960</span>
         <span>2020</span>
       </div>
     </div>
+
+    <div id="q4-state-display" style="min-height:2rem;text-align:center;font-family:var(--serif);font-size:1.2rem;font-weight:700;color:var(--lab-accent);margin-top:0.75rem;letter-spacing:-0.01em;">
+      <!-- shows e.g. "1965 –" then "1965 – 1985" -->
+    </div>
+
+    <div id="q4-err" class="val-msg" style="text-align:center;">Set both endpoints before continuing.</div>
 
     <div class="action-row">
       <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ4()">See my results</button>
@@ -1413,11 +1413,11 @@ const Lab = {
   // ── Q1: Anchoring ────────────────────────────────────────
   initQ1() {
     const anchor = this.anchorCondition === 'high' ? 65 : 10;
-    document.getElementById('anchor-shown').textContent = anchor;
     const slider = document.getElementById('anchor-slider');
-    slider.value = 50;
-    document.getElementById('anchor-val').textContent = '50%';
-    this.state.anchorEstimate = 50;
+    // Slider starts at the anchor value — the implicit anchor, not shown on screen
+    slider.value = anchor;
+    document.getElementById('anchor-val').textContent = anchor + '%';
+    this.state.anchorEstimate = anchor;
     this.show('screen-q1');
   },
   onAnchorSlider(val) {
@@ -1447,6 +1447,8 @@ const Lab = {
     document.querySelectorAll('#gamma-choices .bias-choice').forEach(b => b.classList.remove('selected'));
     document.getElementById('gamma-' + val).classList.add('selected');
     document.getElementById('q2-err').classList.remove('show');
+    // Reveal Decision B now that Decision A is answered (prevents frame contamination)
+    document.getElementById('framing-panel').classList.add('revealed');
   },
   selectQ2(val) {
     this.state.framingChoice = val;
@@ -1486,55 +1488,169 @@ const Lab = {
     this.initQ4();
   },
 
-  // ── Q4: Overprecision ────────────────────────────────────
+  // ── Q4: Overprecision (click-to-place timeline) ──────────
   initQ4() {
-    this.state.confLow  = 1982;
-    this.state.confHigh = 2005;
-    this.updateDualSlider();
+    this.state.confLow  = null;
+    this.state.confHigh = null;
+    this._q4Phase = 'low'; // 'low' → 'high' → 'done'
     this.show('screen-q4');
-    requestAnimationFrame(() => {
-      this.syncDualSliderZ();
-      const container = document.querySelector('.ds-track-container');
-      if (container) {
-        container.addEventListener('touchstart', () => this.syncDualSliderZ(), { passive: true });
+    requestAnimationFrame(() => this._initTimeline());
+  },
+
+  _initTimeline() {
+    const canvas = document.getElementById('ci-timeline');
+    if (!canvas) return;
+    const wrap = document.getElementById('ci-timeline-wrap');
+    canvas.width = wrap.offsetWidth * (window.devicePixelRatio || 1);
+    canvas.height = 56 * (window.devicePixelRatio || 1);
+    canvas.style.height = '56px';
+    this._drawTimeline();
+
+    const getYear = e => {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      return Math.round(1900 + ratio * 120);
+    };
+
+    const handler = e => {
+      e.preventDefault();
+      const year = getYear(e);
+      if (this._q4Phase === 'low') {
+        this.state.confLow = year;
+        this._q4Phase = 'high';
+        document.getElementById('q4-prompt').innerHTML =
+          'Now click your <strong>latest</strong> bound — the latest year it could possibly be.';
+        document.getElementById('q4-state-display').textContent = year + ' –';
+      } else if (this._q4Phase === 'high') {
+        const lo = this.state.confLow;
+        const hi = year;
+        if (hi <= lo) {
+          // clicked left of low — treat as new low, reset
+          this.state.confLow = year;
+          document.getElementById('q4-state-display').textContent = year + ' –';
+          return;
+        }
+        this.state.confHigh = hi;
+        this._q4Phase = 'done';
+        document.getElementById('q4-prompt').innerHTML =
+          'Your 90% interval: <strong>' + lo + ' – ' + hi + '</strong>. Click either end to adjust.';
+        document.getElementById('q4-state-display').textContent = lo + ' – ' + hi;
+        document.getElementById('q4-err').classList.remove('show');
+      } else {
+        // 'done' — allow re-clicking to adjust nearest handle
+        const lo = this.state.confLow;
+        const hi = this.state.confHigh;
+        const distLo = Math.abs(year - lo);
+        const distHi = Math.abs(year - hi);
+        if (distLo <= distHi) {
+          this.state.confLow = Math.min(year, hi - 1);
+        } else {
+          this.state.confHigh = Math.max(year, lo + 1);
+        }
+        const newLo = this.state.confLow;
+        const newHi = this.state.confHigh;
+        document.getElementById('q4-prompt').innerHTML =
+          'Your 90% interval: <strong>' + newLo + ' – ' + newHi + '</strong>. Click either end to adjust.';
+        document.getElementById('q4-state-display').textContent = newLo + ' – ' + newHi;
       }
-    });
+      this._drawTimeline();
+    };
+
+    canvas.addEventListener('click', handler);
+    canvas.addEventListener('touchend', handler, { passive: false });
+    this._timelineHandler = handler; // keep ref if needed
   },
-  syncDualSliderZ() {
-    const lo = document.getElementById('ds-lo');
-    const hi = document.getElementById('ds-hi');
-    if (!lo || !hi) return;
-    const loRatio = (parseInt(lo.value) - 1900) / 120;
-    lo.style.zIndex = loRatio > 0.5 ? 3 : 2;
-    hi.style.zIndex = loRatio > 0.5 ? 2 : 3;
-  },
-  onDualSlider() {
-    let lo = parseInt(document.getElementById('ds-lo').value);
-    let hi = parseInt(document.getElementById('ds-hi').value);
-    if (lo >= hi) {
-      lo = hi - 1;
-      document.getElementById('ds-lo').value = lo;
+
+  _drawTimeline() {
+    const canvas = document.getElementById('ci-timeline');
+    if (!canvas) return;
+    const dpr  = window.devicePixelRatio || 1;
+    const W    = canvas.width;
+    const H    = canvas.height;
+    const ctx  = canvas.getContext('2d');
+    const lo   = this.state.confLow;
+    const hi   = this.state.confHigh;
+    const MIN  = 1900, MAX = 2020, RANGE = MAX - MIN;
+
+    const xOf = yr => ((yr - MIN) / RANGE) * W;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Track background
+    const trackY = H * 0.55, trackH = 4 * dpr;
+    ctx.fillStyle = 'rgba(255,255,255,0.10)';
+    ctx.beginPath();
+    ctx.roundRect(0, trackY - trackH / 2, W, trackH, trackH / 2);
+    ctx.fill();
+
+    // Decade ticks
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    for (let yr = 1910; yr < 2020; yr += 10) {
+      const x = xOf(yr);
+      ctx.fillRect(x - dpr * 0.5, trackY - 6 * dpr, dpr, 6 * dpr);
     }
-    this.state.confLow  = lo;
-    this.state.confHigh = hi;
-    this.updateDualSlider();
-    this.syncDualSliderZ();
-  },
-  updateDualSlider() {
-    const lo = this.state.confLow;
-    const hi = this.state.confHigh;
-    document.getElementById('ds-low-val').textContent  = lo;
-    document.getElementById('ds-high-val').textContent = hi;
-    const range    = 2020 - 1900;
-    const leftPct  = ((lo - 1900) / range) * 100;
-    const rightPct = ((2020 - hi)  / range) * 100;
-    const fill = document.getElementById('ds-fill');
-    if (fill) {
-      fill.style.left  = leftPct  + '%';
-      fill.style.right = rightPct + '%';
+
+    // Filled interval
+    if (lo !== null && hi !== null) {
+      const x0 = xOf(lo), x1 = xOf(hi);
+      ctx.fillStyle = 'rgba(68,184,243,0.22)';
+      ctx.beginPath();
+      ctx.roundRect(x0, trackY - trackH / 2, x1 - x0, trackH, 0);
+      ctx.fill();
+      ctx.fillStyle = '#44B8F3';
+      ctx.beginPath();
+      ctx.roundRect(x0, trackY - trackH / 2, x1 - x0, trackH, 0);
+      ctx.fill();
+    } else if (lo !== null) {
+      // Just low bound set — draw a dot
+      const x0 = xOf(lo);
+      ctx.fillStyle = '#44B8F3';
+      ctx.beginPath();
+      ctx.arc(x0, trackY, 5 * dpr, 0, Math.PI * 2);
+      ctx.fill();
     }
+
+    // Handle dots
+    const drawHandle = (yr, label) => {
+      const x = xOf(yr);
+      // Glow
+      const grad = ctx.createRadialGradient(x, trackY, 0, x, trackY, 16 * dpr);
+      grad.addColorStop(0, 'rgba(68,184,243,0.45)');
+      grad.addColorStop(1, 'rgba(68,184,243,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, trackY, 16 * dpr, 0, Math.PI * 2);
+      ctx.fill();
+      // Circle
+      ctx.fillStyle = '#44B8F3';
+      ctx.beginPath();
+      ctx.arc(x, trackY, 9 * dpr, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#04111f';
+      ctx.beginPath();
+      ctx.arc(x, trackY, 5 * dpr, 0, Math.PI * 2);
+      ctx.fill();
+      // Year label above
+      ctx.fillStyle = '#eeeef4';
+      ctx.font = `bold ${11 * dpr}px "Source Sans 3", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x, trackY - 14 * dpr);
+    };
+
+    if (lo !== null) drawHandle(lo, String(lo));
+    if (hi !== null) drawHandle(hi, String(hi));
   },
+
+  onDualSlider() {}, // legacy no-op — kept so old hash replays still call without error
+  updateDualSlider() {},
+  syncDualSliderZ() {},
+
   nextQ4() {
+    if (this.state.confLow === null || this.state.confHigh === null) {
+      document.getElementById('q4-err').classList.add('show');
+      return;
+    }
     this.showAnalyzing();
   },
 
@@ -1686,7 +1802,7 @@ const Lab = {
 
     const captured   = confLow !== null && confHigh !== null && confLow <= 1971 && confHigh >= 1971;
     const overprecise = !captured;
-    const intervalWidth = (confHigh || 0) - (confLow || 0);
+    const intervalWidth = (confLow !== null && confHigh !== null) ? confHigh - confLow : 0;
 
     let html = '';
 
@@ -1703,7 +1819,7 @@ const Lab = {
         { name: 'High anchor (65)', pct: 69, hi: this.anchorCondition === 'high', label: '~45% avg' },
       ],
       explanation: `
-        <p><strong>The true answer is 28%.</strong> You were shown a placeholder of ${anchor}% and estimated ${estimate}%. ${anchorPulled ? `That's closer to the anchor than to the true value. Textbook anchoring.` : `You adjusted far enough past the anchor to end up closer to the true answer.`}</p>
+        <p><strong>The true answer is 28%</strong> (54 of 193 UN member states as of 2024). You estimated ${estimate}%. The slider started at ${anchor}% — your implicit anchor. ${anchorPulled ? `Your estimate stayed closer to that starting point than to the true value. That's anchoring even without a number being shown to you.` : `You adjusted far enough from the starting point to land closer to the true answer.`}</p>
         <p>In the original study, participants watched a rigged wheel of fortune stop at 10 or 65, then estimated what percentage of UN member states are from Africa. Those who saw 65 averaged about 45%. Those who saw 10 averaged about 25%. The wheel was obviously random, yet it moved estimates by 20 points.</p>
         <p>Where it shows up: Salary negotiations, retail pricing ("was $299, now $199"), real estate listing prices. The first number sets the expectation. People don't adjust nearly far enough.</p>`
     });
@@ -1751,7 +1867,7 @@ const Lab = {
 
     // ── Q3: Mental accounting ──
     html += this.resultBlock({
-      label: 'Task 3 · Mental Accounting', title: 'A theater decision.',
+      label: 'Task 3 · Sunk Cost & Mental Accounting', title: 'A theater decision.',
       verdict: showedMentalAccounting
         ? { cls:'verdict-bias', text:'Mental account effect' }
         : { cls:'verdict-ok',   text: bought ? '✓ Bought regardless' : '✓ Skipped regardless' },
@@ -1779,11 +1895,11 @@ const Lab = {
       bmLabel: 'Calibration research benchmark',
       bmRows: [
         { name: captured ? 'Your CI captured 1971' : 'Your CI missed 1971', pct: captured ? 100 : 0, hi: captured, label: captured ? '✓' : '✗' },
-        { name: 'Typical 90% CI hit rate', pct: 45, hi: false, label: '~40–50%' },
+        { name: 'Typical 90% CI hit rate', pct: 45, hi: false, label: '~30–60%' },
       ],
       explanation: `
         <p>The first networked email was sent in <strong>1971</strong> by Ray Tomlinson, a programmer at BBN Technologies. Your interval was ${confLow}–${confHigh}. ${captured ? 'It captured the right answer. You are in the minority.' : 'It didn\'t, even though you asked for a 90% confidence interval. Most people place email firmly in the 1980s or 90s. Their intervals look confident and land a decade too late.'}</p>
-        <p>In calibration research, when people give 90% confidence intervals across many factual questions, those intervals contain the true answer only about 40–50% of the time. A well-calibrated 90% interval should hit 9 out of 10. Most people's 90% intervals behave more like 50% intervals. Overprecision has been called the "mother of all biases."</p>
+        <p>In calibration research, when people give 90% confidence intervals across many factual questions, those intervals contain the true answer only about 30–60% of the time — well below the 90% they should hit. Most people's 90% intervals behave more like 50% intervals. Overprecision has been called "the mother of all biases" (Moore, 2015), because excessive certainty amplifies the damage done by every other bias.</p>
         <p>Where it shows up: Engineering project timelines, earnings forecasts, medical prognoses, legal outcome assessments. When experts say "I'm 90% confident," they're usually closer to 60%. The intervals look precise; the confidence is not earned.</p>`
     });
 
