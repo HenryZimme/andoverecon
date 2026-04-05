@@ -1562,7 +1562,7 @@ const Lab = {
   },
 
   submitDemo() {
-    const VALID_CODES = ['bias26', 'econ26']; // compare as lowercase // add/remove codes each run; any length, numeric
+    const VALID_CODES = ['bias26', 'econ26', 'test26']; // compare as lowercase // add/remove codes each run; any length, numeric
     const code = (document.getElementById('demo-code')?.value || '').trim();
     if (!VALID_CODES.includes(code.toLowerCase())) {
       document.getElementById('code-err').classList.add('show');
