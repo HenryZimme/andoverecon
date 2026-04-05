@@ -1764,9 +1764,9 @@ const Lab = {
     return { key: String(score), score, anchorPulled, followedFraming, showedMentalAccounting, overprecise, ...map[score] };
   },
 
-  // ── Results rendering ────────────────────────────────────
+  // ── results rendering ────────────────────────────────────
   renderResults() {
-    // ── Submit response (replace YOUR_APPS_SCRIPT_URL) ──
+    // ── submit response
     fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
