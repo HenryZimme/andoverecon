@@ -10,15 +10,15 @@ The site is plain HTML and CSS — no framework, no build step, no npm. There ar
 
 ```
 index.html          — homepage
-fed-challenge.html  — Fed Challenge page
+fed_challenge.html  — Fed Challenge page
 colloquium.html     — Research Colloquium / speaker archive
 journal.html        — Journal archive
 resources.html      — Links and reading list
-board.html          — Board bios
+leadership.html     — Board bios (renders from board.json)
+board.json          — board data source (incoming, current, past arrays)
 style.css           — all visual styles, edit this for design changes
 nav.js              — auto-injects the navigation bar and footer into every page
-assets/
-  pdfs/             — put journal PDFs and other documents here
+pdfs/             — put journal PDFs and other documents here
 ```
 
 To make any change: edit the relevant `.html` file, commit, and push to GitHub. GitHub Pages serves the site automatically.
@@ -29,11 +29,11 @@ To make any change: edit the relevant `.html` file, commit, and push to GitHub. 
 
 ### Add a new journal issue
 
-1. Put the PDF in `assets/pdfs/` (e.g., `aer-spring-2026.pdf`).
+1. Put the PDF in `pdfs/` (e.g., `aer-spring-2026.pdf`).
 2. Open `journal.html`.
 3. Find the archive section (look for the comment `<!-- Issue archive -->`).
 4. Copy one of the existing `<div class="card">` blocks and update the text.
-5. Change the PDF link in the button: `href="assets/pdfs/aer-spring-2026.pdf"`.
+5. Change the PDF link in the button: `href="pdfs/aer-spring-2026.pdf"`.
 
 ### Add a colloquium speaker
 
@@ -44,17 +44,15 @@ To make any change: edit the relevant `.html` file, commit, and push to GitHub. 
 
 ### Update the board
 
-1. Open `board.html`.
-2. Update each `<div class="board-member">` block with the new person's name, role, and bio.
-3. To add a photo, place a headshot (square crop, at least 200×200px) in `assets/photos/firstname.jpg`.
-4. Replace `<div class="board-avatar">G</div>` with:
-   ```html
-   <div class="board-avatar"><img src="assets/photos/firstname.jpg" alt="Name"></div>
-   ```
+1. Open `board.json`.
+2. Update the `incoming` array for the next year's board, and the `current` array for the present board.
+3. Each entry supports `name`, `role`, `year`, `bio`, `photo`, and `url` fields.
+4. To add a photo, place a headshot (square crop, at least 200×200px, saved as `.webp`) in `photos/`.
+5. Set `"photo": "/photos/firstname.webp"` in the relevant `board.json` entry.
 
 ### Update Fed Challenge info
 
-1. Open `fed-challenge.html`.
+1. Open `fed_challenge.html`.
 2. Update the card in the right column with the current year's theme and deadline.
 3. At the end of the year, add a row to the "past entries" section with a link to the published piece.
 
@@ -113,7 +111,7 @@ With a custom domain via Cloudflare:
 
 ## Handoff checklist (for outgoing boards)
 
-- [ ] Update `board.html` with new board members and remove outgoing ones
+- [ ] Update `board.json` with new board members (incoming/current arrays) and remove outgoing ones from `leadership.html` references
 - [ ] Archive the current Fed Challenge entry on `fed-challenge.html`
 - [ ] Add the latest journal issue to `journal.html` and `assets/pdfs/`
 - [ ] Update `colloquium.html` with all speakers from the current year
