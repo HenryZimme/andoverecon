@@ -69,8 +69,19 @@
 <script src="nav.js" defer></script>
 
 <script>
-  function getInitial(name) {
-    return name.trim().charAt(0).toUpperCase();
+  /* Returns "HZ" for "Henry Zimmerman", "LB" for "Lisa de Boer" */
+  function getInitials(name) {
+    const parts = name.trim().split(/\s+/);
+    const first = parts[0].charAt(0).toUpperCase();
+    const last  = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : '';
+    return first + last;
+  }
+
+  function avatarContent(member) {
+    if (member.photo) {
+      return `<img src="${member.photo}" alt="${member.name}">`;
+    }
+    return getInitials(member.name);
   }
 
   function renderMemberCard(member, showYear) {
@@ -82,7 +93,7 @@
       : '';
     return `
       <div class="board-member">
-        <div class="board-avatar">${getInitial(member.name)}</div>
+        <div class="board-avatar">${avatarContent(member)}</div>
         <h3>${displayName}</h3>
         <p class="role">${member.role}</p>
         ${bio}
