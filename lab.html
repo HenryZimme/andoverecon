@@ -209,6 +209,7 @@
       transition: all 0.2s;
       display: inline-block;
       text-decoration: none;
+      touch-action: manipulation;
     }
     .lab-btn-white {
       background: #fff;
@@ -324,6 +325,7 @@
       display: flex;
       align-items: flex-start;
       gap: 0.9rem;
+      touch-action: manipulation;
     }
     .choice-btn:hover {
       border-color: var(--lab-accent);
@@ -408,6 +410,7 @@
       font-family: var(--sans);
       color: var(--lab-text);
       transition: all 0.18s;
+      touch-action: manipulation;
     }
     .bias-choice:hover {
       border-color: var(--lab-accent);
@@ -741,13 +744,15 @@
       font-family: var(--sans);
       font-size: 0.78rem;
       font-weight: 600;
-      padding: 0.4rem 0.85rem;
+      padding: 0.6rem 0.9rem;
+      min-height: 44px;
       border-radius: 2px;
       border: 1px solid var(--lab-border);
       background: transparent;
       color: var(--lab-muted);
       cursor: pointer;
       transition: all 0.15s;
+      touch-action: manipulation;
     }
     .demo-chip:hover { border-color: var(--lab-accent); color: var(--lab-text); }
     .demo-chip.selected { border-color: var(--lab-accent); background: rgba(68,184,243,0.12); color: var(--lab-accent); }
@@ -760,7 +765,9 @@
       cursor: pointer;
       text-decoration: underline;
       opacity: 0.55;
-      padding: 0.25rem 0.5rem;
+      padding: 0.65rem 0.75rem;
+      min-height: 44px;
+      touch-action: manipulation;
     }
     .demo-skip:hover { opacity: 0.85; }
     .demo-note {
@@ -1147,6 +1154,8 @@
       .bm-name { width: 100px; }
       .bm-pct  { width: 36px; font-size: 0.7rem; }
       .rb-answer { white-space: normal; max-width: none; text-align: left; }
+      .lab-btn { min-height: 48px; width: 100%; text-align: center; }
+      .action-row { flex-direction: column; align-items: stretch; }
     }
   </style>
 
@@ -1425,6 +1434,7 @@
 
     <div class="demo-q">
       <p class="demo-label">Economics background</p>
+      <p style="font-size:0.72rem;color:var(--lab-muted);margin-bottom:0.55rem;">Informal = self-study, reading, or work experience; Coursework = formal classes; Extensive = major, graduate work, or career.</p>
       <div class="demo-chips" id="demo-econ"></div>
     </div>
 
@@ -1491,17 +1501,66 @@ const Lab = {
   state: {
     anchorEstimate: null,
     gammaChoice:    null,
-    framingChoice:    null,
-    theatreChoice:    null,
-    confLow:          null,
-    confHigh:         null,
+    framingChoice:  null,
+    theatreChoice:  null,
+    confLow:        null,
+    confHigh:       null,
+  },
+
+  // questionOrder: shuffled array of [1,2,3,4] set at start.
+  // Element i is the task number shown at presentation position i.
+  // Randomized to control for survey fatigue / order effects.
+  questionOrder: null,
+  _qStep: 0, // 0-indexed position in questionOrder
+
+  _shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  },
+
+  // Update Task N / 04 counter and progress dots for the given screen.
+  _setTaskMeta(screenId, step) {
+    const screen = document.getElementById(screenId);
+    if (!screen) return;
+    const num = String(step + 1).padStart(2, '0');
+    const numEl = screen.querySelector('.task-number');
+    if (numEl) numEl.textContent = `Task ${num} / 04`;
+    screen.querySelectorAll('.task-dot').forEach((dot, i) => {
+      dot.className = 'task-dot';
+      if (i < step) dot.classList.add('done');
+      else if (i === step) dot.classList.add('active');
+    });
+  },
+
+  _initQByStep(step) {
+    const q = this.questionOrder[step];
+    this.setProgress(25 + step * 25, step === 0);
+    this._setTaskMeta('screen-q' + q, step);
+    if (q === 1) this.initQ1();
+    else if (q === 2) this.initQ2();
+    else if (q === 3) this.initQ3();
+    else if (q === 4) this.initQ4();
+  },
+
+  _advanceStep() {
+    this._qStep++;
+    if (this._qStep < 4) {
+      this._initQByStep(this._qStep);
+    } else {
+      this.showAnalyzing();
+    }
   },
 
   // ── Navigation ──────────────────────────────────────────
   start() {
+    this.questionOrder = this._shuffle([1, 2, 3, 4]);
+    this._qStep = 0;
     this.timestamps.start = Date.now();
-    this.setProgress(25, true);
-    this.initQ1();
+    this._initQByStep(0);
   },
 
   submitDemo() {
@@ -1538,6 +1597,27 @@ const Lab = {
     if (already) return;
     const t0 = this.timestamps.start || Date.now();
     const rel = ts => ts ? Math.round((ts - t0) / 1000) : null;
+
+    // qord: which task (1–4) was shown at each position, e.g. "3-1-4-2".
+    // Used to detect survey fatigue / order effects in analysis.
+    const qord = (this.questionOrder || [1, 2, 3, 4]).join('-');
+
+    // tp1–tp4: time spent (seconds) at presentation positions 1–4.
+    // These are the position-based equivalents of ts1–ts4, which are by task number.
+    const tsMap = {
+      1: rel(this.timestamps.q1),
+      2: rel(this.timestamps.q2),
+      3: rel(this.timestamps.q3),
+      4: rel(this.timestamps.q4),
+    };
+    const order = this.questionOrder || [1, 2, 3, 4];
+    const positionTimes = order.map((q, i) => {
+      const cumulative = tsMap[q];
+      if (cumulative === null) return null;
+      const prev = i === 0 ? 0 : tsMap[order[i - 1]];
+      return prev === null ? null : cumulative - prev;
+    });
+
     fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain' },
@@ -1558,6 +1638,11 @@ const Lab = {
         ts3: rel(this.timestamps.q3),
         ts4: rel(this.timestamps.q4),
         tsd: rel(this.timestamps.demo),
+        qord,
+        tp1: positionTimes[0],
+        tp2: positionTimes[1],
+        tp3: positionTimes[2],
+        tp4: positionTimes[3],
       })
     }).catch(() => {});
     localStorage.setItem(STORE_KEY, did);
@@ -1591,8 +1676,7 @@ const Lab = {
   },
   nextQ1() {
     this.timestamps.q1 = Date.now();
-    this.setProgress(50);
-    this.initQ2();
+    this._advanceStep();
   },
 
   // ── Q2: Framing effect (with gamma calibration) ──────────
@@ -1628,8 +1712,7 @@ const Lab = {
       return;
     }
     this.timestamps.q2 = Date.now();
-    this.setProgress(75);
-    this.initQ3();
+    this._advanceStep();
   },
 
   // ── Q3: Mental accounting ────────────────────────────────
@@ -1652,8 +1735,7 @@ const Lab = {
       return;
     }
     this.timestamps.q3 = Date.now();
-    this.setProgress(100);
-    this.initQ4();
+    this._advanceStep();
   },
 
   // ── Q4: Overprecision (click-to-place timeline) ──────────
@@ -1851,7 +1933,7 @@ const Lab = {
       return;
     }
     this.timestamps.q4 = Date.now();
-    this.showAnalyzing();
+    this._advanceStep();
   },
 
   // ── Analyzing screen ─────────────────────────────────────
@@ -1875,7 +1957,7 @@ const Lab = {
   showDemo() {
     const questions = [
       { id: 'demo-gender', key: 'gender', opts: ['Male','Female','Non-binary','Prefer not to say'] },
-      { id: 'demo-econ',   key: 'econ',   opts: ['None','One class','Multiple classes'] },
+      { id: 'demo-econ',   key: 'econ',   opts: ['None','Informal','Coursework','Extensive'] },
     ];
     questions.forEach(({ id, key, opts }) => {
       const wrap = document.getElementById(id);
@@ -1892,7 +1974,7 @@ const Lab = {
     const ageWrap = document.getElementById('demo-age');
     ageWrap.innerHTML = `
       <div style="display:flex;align-items:center;gap:1rem;">
-        <input type="range" min="13" max="70" step="1" value="17"
+        <input type="range" min="13" max="100" step="1" value="17"
                id="demo-age-slider"
                style="flex:1;accent-color:var(--lab-accent);"
                oninput="Lab.onAgeSlider(this.value)">
@@ -2223,6 +2305,7 @@ const Lab = {
       ac:  this.anchorCondition,
       frc: this.framingCondition,
       thc: this.theatreCondition,
+      qo:  this.questionOrder || [1, 2, 3, 4],
     };
     history.replaceState(null,'','#' + btoa(JSON.stringify(d)));
   },
@@ -2274,6 +2357,7 @@ const Lab = {
       this.anchorCondition        = d.ac;
       this.framingCondition       = d.frc;
       this.theatreCondition       = d.thc;
+      this.questionOrder          = d.qo || [1, 2, 3, 4];
       return true;
     } catch(e) { return false; }
   },
