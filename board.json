@@ -3,20 +3,23 @@
     {
       "name": "Henry Zimmerman",
       "role": "Co-President",
-      "photo": "",
+      "photo": "https://www.henryzimmerman.net/photos/hzimmerman_pfp.webp",
+      "url": "https://www.henryzimmerman.net",
       "bio": "Henry founded AES's first Fed Challenge team, which competed in the Federal Reserve Bank of New York's national research competition on this year's theme: the economics of music. He also helped launch the research colloquium, which puts students in front of Boston policymakers to defend their policy briefs. Outside AES, he does astrophysics research, captains the cross country team, and tutors at the Writing Center."
     },
     {
       "name": "Kachi Ikekpeazu",
       "role": "Co-President",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Andrew Liu",
       "role": "Co-President",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     }
   ],
   "current": [
@@ -25,41 +28,47 @@
       "year": "26",
       "role": "Co-President",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Sophia Tabibian",
       "year": "26",
       "role": "Co-President",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Andrew Liu",
       "year": "27",
       "role": "Senior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Kachi Ikekpeazu",
       "year": "27",
       "role": "Senior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Kai Wang",
       "year": "27",
       "role": "Senior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Henry Zimmerman",
       "year": "27",
       "role": "Senior Board",
-      "photo": "",
+      "photo": "https://www.henryzimmerman.net/photos/hzimmerman_pfp.webp",
+      "url": "https://www.henryzimmerman.net",
       "bio": ""
     },
     {
@@ -67,35 +76,40 @@
       "year": "26",
       "role": "Senior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Konnor Fortini",
       "year": "28",
       "role": "Junior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Bella Huang",
       "year": "28",
       "role": "Junior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Pia Chhabra",
       "year": "28",
       "role": "Junior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     },
     {
       "name": "Anna Lu",
       "year": "27",
       "role": "Junior Board",
       "photo": "",
-      "bio": ""
+      "bio": "",
+      "url": ""
     }
   ],
   "past": [
