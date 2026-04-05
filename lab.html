@@ -725,6 +725,53 @@
     }
     .val-msg.show { opacity: 1; }
 
+    /* ── Demo screen ──────────────────────────────────────── */
+    .demo-q { margin-bottom: 1.5rem; }
+    .demo-label {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lab-muted);
+      margin-bottom: 0.55rem;
+    }
+    .demo-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .demo-chip {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 2px;
+      border: 1px solid var(--lab-border);
+      background: transparent;
+      color: var(--lab-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .demo-chip:hover { border-color: var(--lab-accent); color: var(--lab-text); }
+    .demo-chip.selected { border-color: var(--lab-accent); background: rgba(68,184,243,0.12); color: var(--lab-accent); }
+    .demo-skip {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      color: var(--lab-muted);
+      cursor: pointer;
+      text-decoration: underline;
+      opacity: 0.55;
+      padding: 0.25rem 0.5rem;
+    }
+    .demo-skip:hover { opacity: 0.85; }
+    .demo-note {
+      font-size: 0.68rem;
+      color: var(--lab-muted);
+      opacity: 0.5;
+      text-align: center;
+      margin-top: 1.75rem;
+      line-height: 1.5;
+    }
+
     /* ── Analyzing screen ─────────────────────────────────── */
     #screen-analyzing { text-align: center; padding: 3rem 2rem; max-width: 420px; }
 
@@ -1154,7 +1201,7 @@
       <a href="index.html" class="intro-badge" style="text-decoration:none;">← Andover Economics Society</a>
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
       <p class="intro-sub">Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.</p>
-      <p class="intro-meta">~4 minutes · Anonymous responses collected for academic research</p>
+      <p class="intro-meta">~5 minutes · Anonymous responses collected for academic research</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
   </div>
@@ -1352,6 +1399,49 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════
+       DEMOGRAPHICS (optional)
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-demo" class="lab-screen" style="max-width:480px;">
+    <h2 class="q-headline" style="margin-bottom:0.25rem;">One more thing.</h2>
+    <p class="q-sub" style="margin-bottom:2rem;">Optional. Takes 20 seconds. Helps contextualize the data.</p>
+
+    <div class="demo-q">
+      <p class="demo-label">Session code</p>
+      <p style="font-size:0.72rem;color:var(--lab-muted);margin-bottom:0.55rem;">From the flyer. Required to submit your responses to the study.</p>
+      <input id="demo-code" type="text" inputmode="numeric" maxlength="6"
+             placeholder="······"
+             style="font-family:var(--serif);font-size:1.6rem;font-weight:700;letter-spacing:0.25em;
+                    width:100%;background:transparent;border:none;
+                    border-bottom:2px solid var(--lab-border);color:var(--lab-text);
+                    padding:0.4rem 0;outline:none;caret-color:var(--lab-accent);"
+             oninput="this.value=this.value.replace(/\D/g,'')">
+      <div id="code-err" class="val-msg">Incorrect code. Your results won't be submitted.</div>
+    </div>
+
+    <div class="demo-q">
+      <p class="demo-label">Gender</p>
+      <div class="demo-chips" id="demo-gender"></div>
+    </div>
+
+    <div class="demo-q">
+      <p class="demo-label">Economics background</p>
+      <div class="demo-chips" id="demo-econ"></div>
+    </div>
+
+    <div class="demo-q">
+      <p class="demo-label">Age</p>
+      <div class="demo-chips" id="demo-age"></div>
+    </div>
+
+    <div class="action-row" style="flex-direction:column;align-items:center;gap:0.6rem;">
+      <button class="lab-btn lab-btn-accent" id="demo-submit-btn" onclick="Lab.submitDemo()">See my results</button>
+      <button class="demo-skip" onclick="Lab.skipDemo()">Just show my results</button>
+    </div>
+
+    <p class="demo-note">Your answers only contribute to the study if you complete this section.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
        RESULTS
        ══════════════════════════════════════════════════════ -->
   <div id="screen-results" class="lab-screen" style="max-width:680px;">
@@ -1396,6 +1486,8 @@ const Lab = {
   anchorCondition:  Math.random() > 0.5 ? 'high' : 'low',
   framingCondition: Math.random() > 0.5 ? 'gain' : 'loss',
   theatreCondition: Math.random() > 0.5 ? 'cash' : 'ticket',
+  demoState: { grade: null, gender: null, econ: null, age: null },
+  timestamps: { start: null, q1: null, q2: null, q3: null, q4: null, demo: null },
   state: {
     anchorEstimate: null,
     gammaChoice:    null,
@@ -1407,8 +1499,68 @@ const Lab = {
 
   // ── Navigation ──────────────────────────────────────────
   start() {
+    this.timestamps.start = Date.now();
     this.setProgress(25, true);
     this.initQ1();
+  },
+
+  submitDemo() {
+    const SESSION_CODE = '2025'; // ← change each flyer run
+    const code = (document.getElementById('demo-code')?.value || '').trim();
+    if (code !== SESSION_CODE) {
+      document.getElementById('code-err').classList.add('show');
+      setTimeout(() => this.renderResults(), 800);
+      return;
+    }
+    this.timestamps.demo = Date.now();
+    const btn = document.getElementById('demo-submit-btn');
+    if (btn) { btn.textContent = 'Submitted.'; btn.disabled = true; }
+    this._submitToSheets();
+    setTimeout(() => this.renderResults(), 600);
+  },
+
+  skipDemo() {
+    this.demoState.skipped = true;
+    this.renderResults();
+  },
+
+  _submitToSheets() {
+    const _fp = () => {
+      const s = [navigator.userAgent, screen.width, screen.height,
+                 screen.colorDepth, navigator.language,
+                 Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
+      return s.split('').reduce((a, c) => (Math.imul(31, a) + c.charCodeAt(0)) | 0, 0)
+              .toString(36).replace('-', '0');
+    };
+    const STORE_KEY = 'aes_lab_v1';
+    const did = _fp();
+    const already = localStorage.getItem(STORE_KEY) === did;
+    if (already) return;
+    const t0 = this.timestamps.start || Date.now();
+    const rel = ts => ts ? Math.round((ts - t0) / 1000) : null;
+    fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        ac: this.anchorCondition, aa: this.state.anchorEstimate,
+        fc: this.framingCondition, fch: this.state.framingChoice,
+        gc: this.state.gammaChoice,
+        tc: this.theatreCondition, tch: this.state.theatreChoice,
+        cl: this.state.confLow,   ch: this.state.confHigh,
+        ua: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        did,
+        dgen: this.demoState.gender,
+        dec:  this.demoState.econ,
+        da:   this.demoState.age,
+        sc:   document.getElementById('demo-code')?.value || null,
+        ts1: rel(this.timestamps.q1),
+        ts2: rel(this.timestamps.q2),
+        ts3: rel(this.timestamps.q3),
+        ts4: rel(this.timestamps.q4),
+        tsd: rel(this.timestamps.demo),
+      })
+    }).catch(() => {});
+    localStorage.setItem(STORE_KEY, did);
   },
 
   show(id) {
@@ -1438,6 +1590,7 @@ const Lab = {
     document.getElementById('anchor-val').textContent = val + '%';
   },
   nextQ1() {
+    this.timestamps.q1 = Date.now();
     this.setProgress(50);
     this.initQ2();
   },
@@ -1474,6 +1627,7 @@ const Lab = {
       document.getElementById('q2-err').classList.add('show');
       return;
     }
+    this.timestamps.q2 = Date.now();
     this.setProgress(75);
     this.initQ3();
   },
@@ -1497,6 +1651,7 @@ const Lab = {
       document.getElementById('q3-err').classList.add('show');
       return;
     }
+    this.timestamps.q3 = Date.now();
     this.setProgress(100);
     this.initQ4();
   },
@@ -1695,6 +1850,7 @@ const Lab = {
       document.getElementById('q4-err').classList.add('show');
       return;
     }
+    this.timestamps.q4 = Date.now();
     this.showAnalyzing();
   },
 
@@ -1710,9 +1866,51 @@ const Lab = {
         document.getElementById(msgs[i]).classList.add('show');
       } else {
         clearInterval(tick);
-        setTimeout(() => this.renderResults(), 420);
+        setTimeout(() => this.showDemo(), 420);
       }
     }, 720);
+  },
+
+  // ── Demographics screen ──────────────────────────────────
+  showDemo() {
+    const questions = [
+      { id: 'demo-gender', key: 'gender', opts: ['Male','Female','Non-binary','Prefer not to say'] },
+      { id: 'demo-econ',   key: 'econ',   opts: ['None','One class','Multiple classes'] },
+    ];
+    questions.forEach(({ id, key, opts }) => {
+      const wrap = document.getElementById(id);
+      wrap.innerHTML = '';
+      opts.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'demo-chip';
+        btn.textContent = opt;
+        btn.onclick = () => this.selectDemo(key, opt, wrap);
+        wrap.appendChild(btn);
+      });
+    });
+    // Age slider
+    const ageWrap = document.getElementById('demo-age');
+    ageWrap.innerHTML = `
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <input type="range" min="13" max="70" step="1" value="17"
+               id="demo-age-slider"
+               style="flex:1;accent-color:var(--lab-accent);"
+               oninput="Lab.onAgeSlider(this.value)">
+        <span id="demo-age-val" style="font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--lab-accent);min-width:2.5rem;text-align:right;">17</span>
+      </div>`;
+    this.demoState.age = 17;
+    this.show('screen-demo');
+  },
+
+  onAgeSlider(val) {
+    this.demoState.age = parseInt(val);
+    document.getElementById('demo-age-val').textContent = val;
+  },
+
+  selectDemo(key, val, wrap) {
+    this.demoState[key] = val;
+    wrap.querySelectorAll('.demo-chip').forEach(b => b.classList.remove('selected'));
+    [...wrap.querySelectorAll('.demo-chip')].find(b => b.textContent === val)?.classList.add('selected');
   },
 
   // ── Profile computation ──────────────────────────────────
@@ -1766,34 +1964,6 @@ const Lab = {
 
   // ── Results rendering ────────────────────────────────────
   renderResults() {
-    // ── Device fingerprint + dedup ───────────────────────
-    const _fp = () => {
-      const s = [navigator.userAgent, screen.width, screen.height,
-                 screen.colorDepth, navigator.language,
-                 Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
-      return s.split('').reduce((a, c) => (Math.imul(31, a) + c.charCodeAt(0)) | 0, 0)
-              .toString(36).replace('-', '0');
-    };
-    const STORE_KEY = 'aes_lab_v1';
-    const did = _fp();
-    const already = localStorage.getItem(STORE_KEY) === did;
-    if (!already) {
-      fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({
-          ac: this.anchorCondition, aa: this.state.anchorEstimate,
-          fc: this.framingCondition, fch: this.state.framingChoice,
-          gc: this.state.gammaChoice,
-          tc: this.theatreCondition, tch: this.state.theatreChoice,
-          cl: this.state.confLow,   ch: this.state.confHigh,
-          ua: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-          did
-        })
-      }).catch(() => {});
-      localStorage.setItem(STORE_KEY, did);
-    }
-    // ────────────────────────────────────────────────────
     document.body.classList.add('results-mode');
     document.getElementById('progress-bar').style.opacity = '0';
     const root = document.getElementById('lab-root');
