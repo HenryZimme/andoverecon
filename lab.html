@@ -1564,7 +1564,7 @@ const Lab = {
   },
 
   submitDemo() {
-    const SESSION_CODE = '2026'; // 4 digits, change every flyer run
+    const SESSION_CODE = '2026'; // ← change each flyer run
     const code = (document.getElementById('demo-code')?.value || '').trim();
     if (code !== SESSION_CODE) {
       document.getElementById('code-err').classList.add('show');
