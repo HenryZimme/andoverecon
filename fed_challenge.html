@@ -67,12 +67,12 @@
 
     /* ── progress bar ────────────────────────────────────── */
     .reader-progress-track {
-      height: 2px;
-      background: rgba(255,255,255,0.05);
+      height: 3px;
+      background: rgba(255,255,255,0.07);
     }
     .reader-progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #6c5e21, #b8a94a);
+      background: linear-gradient(90deg, #8a7828, #d4c05a);
       width: 0%;
       transition: width 0.08s linear;
     }
@@ -110,13 +110,21 @@
       display: grid;
       grid-template-columns: 82px 1fr;
       gap: 1.1rem;
-      padding: 1.1rem 0;
+      padding: 1.1rem 0 1.1rem 0.85rem;
       border-bottom: 1px solid rgba(255,255,255,0.04);
       align-items: start;
+      border-left: 2px solid transparent;
+      margin-left: -0.85rem;
     }
     .script-exchange:last-child {
       border-bottom: none;
       padding-bottom: 0.5rem;
+    }
+    .script-exchange.exchange-r {
+      border-left-color: rgba(184,169,74,0.35);
+    }
+    .script-exchange.exchange-f {
+      border-left-color: rgba(68,184,243,0.28);
     }
 
     /* ── speaker pills ───────────────────────────────────── */
@@ -149,9 +157,16 @@
       font-family: 'Libre Baskerville', Georgia, serif;
       font-size: 0.92rem;
       line-height: 1.85;
-      color: rgba(255,255,255,0.75);
     }
-    .script-line em { font-style: italic; color: rgba(255,255,255,0.55); }
+    .script-line em { font-style: italic; }
+    .exchange-r .script-line {
+      color: rgba(222,207,148,0.82);
+    }
+    .exchange-r .script-line em { color: rgba(222,207,148,0.52); }
+    .exchange-f .script-line {
+      color: rgba(190,225,248,0.78);
+    }
+    .exchange-f .script-line em { color: rgba(190,225,248,0.48); }
 
     /* ── footnote superscripts ───────────────────────────── */
     sup.fn {
@@ -215,15 +230,82 @@
     }
 
     /* ── authors & meta strip ────────────────────────────── */
-    .script-authors {
-      margin-top: 0.75rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.6;
+    .script-byline {
+      margin-top: 1rem;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 0.85rem 0;
     }
-    .script-authors span {
+    .script-byline-authors {
+      font-size: 0.83rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 0.35rem;
+    }
+    .script-byline-authors .byline-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-right: 0.4rem;
+    }
+    .script-byline-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 1.25rem;
+      line-height: 1.8;
+    }
+    .script-byline-meta span {
       color: var(--text);
       font-weight: 600;
+    }
+
+    /* ── team card meta ──────────────────────────────────── */
+    .card-meta-list {
+      margin-top: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .card-meta-item {
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: flex;
+      gap: 0.5rem;
+    }
+    .card-meta-item .cml {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.65;
+      flex-shrink: 0;
+      padding-top: 0.12rem;
+      min-width: 62px;
+    }
+
+    /* ── script reader badge ─────────────────────────────── */
+    .script-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .submission-badge {
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.6rem;
+      border-radius: 3px;
+      background: rgba(184,169,74,0.12);
+      border: 1px solid rgba(184,169,74,0.28);
+      color: #b8a94a;
+      flex-shrink: 0;
     }
 
     /* ── references accordion ────────────────────────────── */
@@ -279,11 +361,12 @@
     /* ── mobile ──────────────────────────────────────────── */
     @media (max-width: 600px) {
       .script-body { height: 440px; padding: 1.25rem 1rem 2rem; }
-      .script-exchange { grid-template-columns: 68px 1fr; gap: 0.75rem; }
+      .script-exchange { grid-template-columns: 68px 1fr; gap: 0.75rem; padding-left: 0.65rem; margin-left: -0.65rem; }
       .speaker-pill { font-size: 0.52rem; padding: 0.25rem 0.4rem; }
       .script-line { font-size: 0.87rem; }
       .script-reader-header { padding: 0.75rem 1rem; }
       .fn-bar { padding: 0.5rem 1rem; }
+      .script-byline-meta { gap: 0 0.85rem; }
     }
   </style>
 </head>
@@ -319,9 +402,11 @@
         <p class="card-label">2026 Team</p>
         <h3>Economics of Music</h3>
         <p>This year's theme examined the economics of the music industry. The team produced a podcast script analyzing market structures, incentive design, and policy questions in the streaming era.</p>
-        <p style="margin-top:0.75rem; font-size:0.85rem; color:#888;">Founded by Henry Zimmerman '27</p>
-        <p style="margin-top:0.4rem; font-size:0.85rem; color:#888;">Submitted March 2026</p>
-        <p style="margin-top:0.4rem; font-size:0.85rem; color:#888;">Sponsored by the Federal Reserve Bank of New York</p>
+        <div class="card-meta-list">
+          <div class="card-meta-item"><span class="cml">Founded</span> Henry Zimmerman '27</div>
+          <div class="card-meta-item"><span class="cml">Submitted</span> March 2026</div>
+          <div class="card-meta-item"><span class="cml">Sponsor</span> Federal Reserve Bank of New York</div>
+        </div>
         <a href="#the-script" class="card-link" style="margin-top:1rem;">Read the script ↓</a>
       </div>
     </div>
@@ -334,16 +419,24 @@
     <p class="section-label">The submission</p>
     <h2 class="section-title">The Price of the Pit: The Economics of Live Concert Ticketing</h2>
 
-    <div class="script-authors">
-      <span>Authors:</span> Crispin Black, Pia Chhabra, Konnor Fortini, Bella Huang, Anna Lu, Philip Molina, Anoushka Pandey, Henry Zimmerman
-      &nbsp;&middot;&nbsp; <span>Faculty advisor:</span> Theodore Parker
-      &nbsp;&middot;&nbsp; <span>2,492 words</span>
-      &nbsp;&middot;&nbsp; Chicago Manual of Style, 18th ed.
+    <div class="script-byline">
+      <div class="script-byline-authors">
+        <span class="byline-label">Authors</span>
+        Crispin Black, Pia Chhabra, Konnor Fortini, Bella Huang, Anna Lu, Philip Molina, Anoushka Pandey, Henry Zimmerman
+      </div>
+      <div class="script-byline-meta">
+        <span><span>Faculty advisor</span> Theodore Parker</span>
+        <span><span>2,492 words</span></span>
+        <span>Chicago Manual of Style, 18th ed.</span>
+      </div>
     </div>
 
     <div class="script-reader-wrap">
       <div class="script-reader-header">
-        <div class="script-show-title"><strong>Sound Money</strong>: a podcast on the economics of the music industry</div>
+        <div class="script-header-left">
+          <span class="submission-badge">2026 Fed Challenge</span>
+          <div class="script-show-title"><strong>Sound Money</strong>: a podcast on the economics of the music industry</div>
+        </div>
         <div class="speaker-legend">
           <span class="legend-pill legend-rophone">Rophone (host)</span>
           <span class="legend-pill legend-flayshun">Flay-Shun (guest)</span>
@@ -548,7 +641,7 @@ function renderScript() {
   const items = SCRIPT.map(({ s, t }) => {
     const isR = s === 'r';
     return `
-      <div class="script-exchange">
+      <div class="script-exchange ${isR ? 'exchange-r' : 'exchange-f'}">
         <div class="speaker-pill ${isR ? 'pill-rophone' : 'pill-flayshun'}">
           ${isR ? 'Rophone' : 'Flay-Shun'}
         </div>
