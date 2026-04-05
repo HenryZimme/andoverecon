@@ -3,12 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leadership · Andover Economics Society</title>
-  <meta name="description" content="Meet the 2025–2026 AES board.">
+  <title>Board of Directors 2025–2026 | Andover Economics Society</title>
+  <meta name="description" content="Meet the 2025–2026 AES board. Co-presidents Henry Zimmerman, Kachi Ikekpeazu, and Andrew Liu lead an eleven-member team that plans curriculum, organizes the speaker series, edits the journal, and recruits new members each fall.">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap">
+
+  <!-- ── SEO ──────────────────────────────────────────────── -->
+  <link rel="canonical" href="https://andoverecon.org/leadership.html">
+
+  <!-- Open Graph -->
+  <meta property="og:site_name"    content="Andover Economics Society">
+  <meta property="og:type"         content="website">
+  <meta property="og:url"          content="https://andoverecon.org/leadership.html">
+  <meta property="og:title"        content="AES Board 2025–2026 | Andover Economics Society">
+  <meta property="og:description"  content="The eleven-member student leadership team running the Andover Economics Society for the 2025–2026 academic year.">
+  <meta property="og:image"        content="https://andoverecon.org/images/og-default.jpg">
+  <meta property="og:locale"       content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="AES Board 2025–2026 | Andover Economics Society">
+  <meta name="twitter:description" content="The eleven-member student leadership team running the Andover Economics Society for the 2025–2026 academic year.">
+  <meta name="twitter:image"       content="https://andoverecon.org/images/og-default.jpg">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "AES Board of Directors 2025–2026",
+    "description": "Student leadership of the Andover Economics Society for the 2025–2026 academic year at Phillips Academy Andover.",
+    "url": "https://andoverecon.org/leadership.html",
+    "about": {
+        "@type": "Organization",
+        "name": "Andover Economics Society",
+        "url": "https://andoverecon.org"
+    }
+}
+  </script>
+  <!-- ── /SEO ─────────────────────────────────────────────── -->
 </head>
 <body>
 
@@ -69,19 +104,8 @@
 <script src="nav.js" defer></script>
 
 <script>
-  /* Returns "HZ" for "Henry Zimmerman", "LB" for "Lisa de Boer" */
-  function getInitials(name) {
-    const parts = name.trim().split(/\s+/);
-    const first = parts[0].charAt(0).toUpperCase();
-    const last  = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : '';
-    return first + last;
-  }
-
-  function avatarContent(member) {
-    if (member.photo) {
-      return `<img src="${member.photo}" alt="${member.name}">`;
-    }
-    return getInitials(member.name);
+  function getInitial(name) {
+    return name.trim().charAt(0).toUpperCase();
   }
 
   function renderMemberCard(member, showYear) {
@@ -93,7 +117,7 @@
       : '';
     return `
       <div class="board-member">
-        <div class="board-avatar">${avatarContent(member)}</div>
+        <div class="board-avatar">${getInitial(member.name)}</div>
         <h3>${displayName}</h3>
         <p class="role">${member.role}</p>
         ${bio}
