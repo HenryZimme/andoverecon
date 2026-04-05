@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 80" width="380" height="80">
+
+  <!-- Icon mark -->
+  <rect width="80" height="80" rx="6" fill="rgba(255,255,255,0.15)"/>
+
+  <text
+    x="40" y="31"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="21"
+    font-weight="700"
+    fill="#ffffff">A</text>
+
+  <text
+    x="40" y="49"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="21"
+    font-weight="700"
+    fill="#d4bc5a">E</text>
+
+  <text
+    x="40" y="67"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="21"
+    font-weight="700"
+    fill="#ffffff">S</text>
+
+  <!-- Vertical rule separator -->
+  <line x1="102" y1="14" x2="102" y2="66" stroke="#d4bc5a" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Wordmark -->
+  <text
+    x="118" y="30"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="13"
+    font-weight="700"
+    fill="#ffffff"
+    letter-spacing="2">ANDOVER</text>
+
+  <text
+    x="118" y="48"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="13"
+    font-weight="700"
+    fill="#ffffff"
+    letter-spacing="2">ECONOMICS</text>
+
+  <text
+    x="118" y="66"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="13"
+    font-weight="700"
+    fill="#d4bc5a"
+    letter-spacing="2">SOCIETY</text>
+
+</svg>
