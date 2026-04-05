@@ -1154,7 +1154,7 @@
       <a href="index.html" class="intro-badge" style="text-decoration:none;">← Andover Economics Society</a>
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
       <p class="intro-sub">Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.</p>
-      <p class="intro-meta">~4 minutes</p>
+      <p class="intro-meta">~4 minutes · Anonymous responses collected for academic research</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
   </div>
@@ -1766,6 +1766,20 @@ const Lab = {
 
   // ── Results rendering ────────────────────────────────────
   renderResults() {
+    // ── Submit response (replace YOUR_APPS_SCRIPT_URL) ──
+    fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ac: this.anchorCondition, aa: this.state.anchorEstimate,
+        fc: this.framingCondition, fch: this.state.framingChoice,
+        gc: this.state.gammaChoice,
+        tc: this.theatreCondition, tch: this.state.theatreChoice,
+        cl: this.state.confLow,   ch: this.state.confHigh,
+        ua: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
+      })
+    }).catch(() => {});
+    // ────────────────────────────────────────────────────
     document.body.classList.add('results-mode');
     document.getElementById('progress-bar').style.opacity = '0';
     const root = document.getElementById('lab-root');
