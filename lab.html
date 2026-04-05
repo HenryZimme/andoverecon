@@ -1304,7 +1304,7 @@
     </div>
 
     <h2 class="q-headline">A knowledge question.</h2>
-    <p class="q-sub">Don't look it up. Click your earliest plausible year, then your latest.</p>
+    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt">Click to set your <strong>earliest</strong> bound — the earliest year you think it could possibly be.</p>
 
     <div class="scope-scenario">
       What year was the first networked email sent?
@@ -1506,60 +1506,91 @@ const Lab = {
     canvas.style.height = '56px';
     this._drawTimeline();
 
-    const getYear = e => {
+    const getYear = clientX => {
       const rect = canvas.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
       return Math.round(1900 + ratio * 120);
     };
 
-    const handler = e => {
-      e.preventDefault();
-      const year = getYear(e);
+    const updatePrompt = () => {
+      const lo = this.state.confLow, hi = this.state.confHigh;
+      document.getElementById('q4-prompt').innerHTML =
+        'Your 90% interval: <strong>' + lo + '\u2013' + hi + '</strong>. Drag either handle to adjust.';
+      document.getElementById('q4-state-display').textContent = lo + ' \u2013 ' + hi;
+      document.getElementById('q4-err').classList.remove('show');
+    };
+
+    let dragging = null; // 'lo' | 'hi' | null
+
+    const onDown = clientX => {
+      const year = getYear(clientX);
+
+      // Phase: place low bound
       if (this._q4Phase === 'low') {
         this.state.confLow = year;
         this._q4Phase = 'high';
         document.getElementById('q4-prompt').innerHTML =
-          'Now click your <strong>latest</strong> bound — the latest year it could possibly be.';
-        document.getElementById('q4-state-display').textContent = year + ' –';
-      } else if (this._q4Phase === 'high') {
+          'Now click your <strong>latest</strong> bound.';
+        document.getElementById('q4-state-display').textContent = year + ' \u2013';
+        this._drawTimeline();
+        return;
+      }
+
+      // Phase: place high bound
+      if (this._q4Phase === 'high') {
         const lo = this.state.confLow;
-        const hi = year;
-        if (hi <= lo) {
-          // clicked left of low — treat as new low, reset
+        if (year <= lo) {
+          // clicked left of low — reset low instead
           this.state.confLow = year;
-          document.getElementById('q4-state-display').textContent = year + ' –';
+          document.getElementById('q4-state-display').textContent = year + ' \u2013';
+          this._drawTimeline();
           return;
         }
-        this.state.confHigh = hi;
+        this.state.confHigh = year;
         this._q4Phase = 'done';
-        document.getElementById('q4-prompt').innerHTML =
-          'Your 90% interval: <strong>' + lo + ' – ' + hi + '</strong>. Click either end to adjust.';
-        document.getElementById('q4-state-display').textContent = lo + ' – ' + hi;
-        document.getElementById('q4-err').classList.remove('show');
-      } else {
-        // 'done' — allow re-clicking to adjust nearest handle
-        const lo = this.state.confLow;
-        const hi = this.state.confHigh;
-        const distLo = Math.abs(year - lo);
-        const distHi = Math.abs(year - hi);
-        if (distLo <= distHi) {
-          this.state.confLow = Math.min(year, hi - 1);
-        } else {
-          this.state.confHigh = Math.max(year, lo + 1);
-        }
-        const newLo = this.state.confLow;
-        const newHi = this.state.confHigh;
-        document.getElementById('q4-prompt').innerHTML =
-          'Your 90% interval: <strong>' + newLo + ' – ' + newHi + '</strong>. Click either end to adjust.';
-        document.getElementById('q4-state-display').textContent = newLo + ' – ' + newHi;
+        updatePrompt();
+        this._drawTimeline();
+        return;
       }
+
+      // Phase: done — pick nearest handle to drag
+      const lo = this.state.confLow, hi = this.state.confHigh;
+      const dpr   = window.devicePixelRatio || 1;
+      const W     = canvas.width;
+      const xOf   = yr => ((yr - 1900) / 120) * W;
+      const pxLo  = xOf(lo) / dpr;
+      const pxHi  = xOf(hi) / dpr;
+      const rect  = canvas.getBoundingClientRect();
+      const pxX   = clientX - rect.left;
+      dragging = Math.abs(pxX - pxLo) <= Math.abs(pxX - pxHi) ? 'lo' : 'hi';
+      canvas.style.cursor = 'grabbing';
+    };
+
+    const onMove = clientX => {
+      if (!dragging) return;
+      const year = getYear(clientX);
+      if (dragging === 'lo') {
+        this.state.confLow = Math.min(year, this.state.confHigh - 1);
+      } else {
+        this.state.confHigh = Math.max(year, this.state.confLow + 1);
+      }
+      updatePrompt();
       this._drawTimeline();
     };
 
-    canvas.addEventListener('click', handler);
-    canvas.addEventListener('touchend', handler, { passive: false });
-    this._timelineHandler = handler; // keep ref if needed
+    const onUp = () => {
+      if (dragging) { dragging = null; canvas.style.cursor = 'crosshair'; }
+    };
+
+    // Mouse
+    canvas.addEventListener('mousedown',  e => { e.preventDefault(); onDown(e.clientX); });
+    window.addEventListener('mousemove',  e => onMove(e.clientX));
+    window.addEventListener('mouseup',    onUp);
+
+    // Touch
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); onDown(e.touches[0].clientX); }, { passive: false });
+    window.addEventListener('touchmove',  e => { if (dragging) { e.preventDefault(); onMove(e.touches[0].clientX); } }, { passive: false });
+    window.addEventListener('touchend',   onUp);
   },
 
   _drawTimeline() {
