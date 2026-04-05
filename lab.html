@@ -1101,14 +1101,14 @@
   <meta property="og:type"         content="website">
   <meta property="og:url"          content="https://andoverecon.org/lab.html">
   <meta property="og:title"        content="Decision Lab · Andover Economics Society">
-  <meta property="og:description"  content="Four short experiments on anchoring, framing, mental accounting, and calibration. Each one tests a different way judgment gets distorted.">
+  <meta property="og:description"  content="Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.">
   <meta property="og:image"        content="https://andoverecon.org/images/og-default.jpg">
   <meta property="og:locale"       content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary">
   <meta name="twitter:title"       content="Decision Lab · Andover Economics Society">
-  <meta name="twitter:description" content="Four short experiments on anchoring, framing, mental accounting, and calibration. Each one tests a different way judgment gets distorted.">
+  <meta name="twitter:description" content="Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.">
   <meta name="twitter:image"       content="https://andoverecon.org/images/og-default.jpg">
 
   <!-- Structured data -->
@@ -1143,7 +1143,7 @@
     <div style="text-align:center;">
       <a href="index.html" class="intro-badge" style="text-decoration:none;">← Andover Economics Society</a>
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
-      <p class="intro-sub">Four short experiments on anchoring, framing, mental accounting, and calibration. Each one tests a different way judgment gets distorted.</p>
+      <p class="intro-sub">Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.</p>
       <p class="intro-meta">~4 minutes</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
@@ -1261,7 +1261,7 @@
     </div>
 
     <h2 class="q-headline">A theater decision.</h2>
-    <p class="q-sub">Read the scenario, then answer.</p>
+    <p class="q-sub">Read it once.</p>
 
     <div class="scope-scenario" id="theatre-scenario"></div>
 
@@ -1342,7 +1342,7 @@
       <div class="a-dot"></div>
     </div>
     <div class="analyzing-wrap">
-      <div class="a-msg show" id="amsg-0">Mapping your decision patterns…</div>
+      <div class="a-msg show" id="amsg-0">Scoring your four responses…</div>
       <div class="a-msg" id="amsg-1">Measuring your anchoring response…</div>
       <div class="a-msg" id="amsg-2">Checking framing and sunk costs…</div>
       <div class="a-msg" id="amsg-3">Building your bias profile…</div>
@@ -1580,7 +1580,7 @@ const Lab = {
       0: { name: 'The Outlier',
            color: '#7eda92',
            headline: 'Resisted all four.',
-           desc: 'You avoided every pattern in this experiment. This is genuinely rare: either you\'ve studied behavioral economics closely, your heuristics fired well today, or both. Kahneman himself says he still falls for the ones he identified.' },
+           desc: 'You avoided every pattern in this experiment. This is rare: either you\'ve studied behavioral economics closely, your heuristics fired well today, or both. Kahneman himself says he still falls for the ones he identified.' },
       1: { name: 'The Resistant',
            color: '#7cd4f8',
            headline: 'One pattern showed. Three didn\'t.',
@@ -1596,7 +1596,7 @@ const Lab = {
       4: { name: 'The Predictable',
            color: '#e06565',
            headline: 'Every pattern predicted correctly.',
-           desc: 'All four fired. Kahneman would not be surprised. These are among the most replicated findings in experimental psychology, and you reproduced every one of them. Knowing the pattern is the first step to catching it in high-stakes decisions.' },
+           desc: 'All four fired. Kahneman would not be surprised. These are among the most replicated findings in experimental psychology, and you reproduced every one of them.' },
     };
 
     return { key: String(score), score, anchorPulled, followedFraming, showedMentalAccounting, overprecise, ...map[score] };
@@ -1703,7 +1703,7 @@ const Lab = {
       explanation: `
         <p><strong>The true answer is 28%.</strong> You were shown a placeholder of ${anchor}% and estimated ${estimate}%. ${anchorPulled ? `That's closer to the anchor than to the true value. Textbook anchoring.` : `You adjusted far enough past the anchor to end up closer to the true answer.`}</p>
         <p>In the original study, participants watched a rigged wheel of fortune stop at 10 or 65, then estimated what percentage of UN member states are from Africa. Those who saw 65 averaged about 45%. Those who saw 10 averaged about 25%. The wheel was obviously random, yet it moved estimates by 20 points.</p>
-        <p>Where it shows up: Salary negotiations, retail pricing ("was $299, now $199"), real estate listing prices. First numbers set expectations, and most people don't adjust away from them by nearly enough.</p>`
+        <p>Where it shows up: Salary negotiations, retail pricing ("was $299, now $199"), real estate listing prices. The first number sets the expectation. People don't adjust nearly far enough.</p>`
     });
 
     const choseCertain = framingChoice === 'certain';
@@ -1781,7 +1781,7 @@ const Lab = {
       ],
       explanation: `
         <p>The first networked email was sent in <strong>1971</strong> by Ray Tomlinson, a programmer at BBN Technologies. Your interval was ${confLow}–${confHigh}. ${captured ? 'It captured the right answer. You are in the minority.' : 'It didn\'t, even though you asked for a 90% confidence interval. Most people place email firmly in the 1980s or 90s. Their intervals look confident and land a decade too late.'}</p>
-        <p>In calibration research, when people give 90% confidence intervals across many factual questions, those intervals contain the true answer only about 40–50% of the time. A well-calibrated 90% interval should hit 9 out of 10. Most people's 90% intervals behave more like 50% intervals. Overprecision has been called the "mother of all biases" for its consistency across domains and populations.</p>
+        <p>In calibration research, when people give 90% confidence intervals across many factual questions, those intervals contain the true answer only about 40–50% of the time. A well-calibrated 90% interval should hit 9 out of 10. Most people's 90% intervals behave more like 50% intervals. Overprecision has been called the "mother of all biases."</p>
         <p>Where it shows up: Engineering project timelines, earnings forecasts, medical prognoses, legal outcome assessments. When experts say "I'm 90% confident," they're usually closer to 60%. The intervals look precise; the confidence is not earned.</p>`
     });
 
@@ -1826,7 +1826,7 @@ const Lab = {
     document.getElementById('closing-note-wrap').innerHTML = `
       <div class="closing-note">
         <p class="cn-label">A note on all of this</p>
-        <p class="cn-text">These patterns appear in courtrooms, hospitals, financial markets, and policy debates. Knowing they exist doesn't make you immune. Kahneman himself said he still falls for many of them. Note that Task 3 only detects mental accounting in the ticket-lost condition; if you were assigned the cash scenario, that dimension wasn't measured. The profile score reflects what could be tested with your specific random assignment.</p>
+        <p class="cn-text">These patterns appear in courtrooms, hospitals, financial markets, and policy debates. Knowing they exist doesn't make you immune. Kahneman himself said he still falls for many of them. Note that Task 3 only detects mental accounting in the ticket-lost condition; if you were assigned the cash scenario, that dimension wasn't measured. Your score reflects what your random assignment made testable.</p>
       </div>`;
   },
 
