@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect width="100" height="100" rx="8" fill="#001f6b"/>
+
+  <!-- Vertical center: 50. Three letters, each ~22px cap height, total ~66px, so start at y=17 -->
+  <!-- A: baseline at 38, E: baseline at 60, S: baseline at 82 -->
+
+  <text
+    x="50" y="39"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="26"
+    font-weight="700"
+    fill="#ffffff"
+    letter-spacing="0">A</text>
+
+  <text
+    x="50" y="61"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="26"
+    font-weight="700"
+    fill="#b8a94a"
+    letter-spacing="0">E</text>
+
+  <text
+    x="50" y="83"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="26"
+    font-weight="700"
+    fill="#ffffff"
+    letter-spacing="0">S</text>
+</svg>
