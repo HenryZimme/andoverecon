@@ -1417,13 +1417,8 @@
     <div class="demo-q">
       <p class="demo-label">Session code</p>
       <p style="font-size:0.72rem;color:var(--lab-muted);margin-bottom:0.55rem;">From the flyer. Required to submit your responses to the study.</p>
-      <input id="demo-code" type="text" inputmode="numeric" maxlength="6"
-             placeholder="······"
-             style="font-family:var(--serif);font-size:1.6rem;font-weight:700;letter-spacing:0.25em;
-                    width:100%;background:transparent;border:none;
-                    border-bottom:2px solid var(--lab-border);color:var(--lab-text);
-                    padding:0.4rem 0;outline:none;caret-color:var(--lab-accent);"
-             oninput="this.value=this.value.replace(/\D/g,'')">
+      <input id="demo-code" type="text" inputmode="text" maxlength="12" autocapitalize="characters" style="text-transform:uppercase;font-family:var(--serif);font-size:1.6rem;font-weight:700;letter-spacing:0.25em;width:100%;background:transparent;border:none;border-bottom:2px solid var(--lab-border);color:var(--lab-text);padding:0.4rem 0;outline:none;caret-color:var(--lab-accent);"
+             placeholder="······">
       <div id="code-err" class="val-msg">Incorrect code. Your results won't be submitted.</div>
     </div>
 
@@ -1564,9 +1559,9 @@ const Lab = {
   },
 
   submitDemo() {
-    const SESSION_CODE = '2026'; // ← change each flyer run
+    const VALID_CODES = ['bias26', 'econ26']; // compare as lowercase // add/remove codes each run; any length, numeric
     const code = (document.getElementById('demo-code')?.value || '').trim();
-    if (code !== SESSION_CODE) {
+    if (!VALID_CODES.includes(code.toLowerCase())) {
       document.getElementById('code-err').classList.add('show');
       setTimeout(() => this.renderResults(), 800);
       return;
@@ -2364,6 +2359,18 @@ const Lab = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  // pre-fill session code from ?session= url param (e.g. andoverecon.org/lab?session=2026)
+  const urlSession = new URLSearchParams(window.location.search).get('session');
+  if (urlSession) {
+    const codeInput = document.getElementById('demo-code');
+    if (codeInput) {
+      codeInput.value = urlSession.slice(0, 12).toUpperCase();
+      // hide the "from the flyer" helper text since code is already filled
+      const hint = codeInput.previousElementSibling;
+      if (hint && hint.tagName === 'P') hint.style.display = 'none';
+    }
+  }
+
   if (Lab.initFromHash()) {
     document.getElementById('shared-banner-container').innerHTML =
       `<div class="shared-banner">You're viewing a shared result. <button onclick="Lab.restart()" style="background:none;border:none;color:var(--blue);font-weight:700;cursor:pointer;font-size:inherit;">Take the experiment yourself →</button></div>`;
