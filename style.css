@@ -1,11 +1,11 @@
 /* =========================================================
    Andover Economics Society — style.css
    PA Blue: #0031A7  |  Abbot Blue: #44B8F3  |  Gold: #6C5E21
-   Fonts: Libre Baskerville (serif/Miller stand-in),
-          Source Sans 3 (sans/Benton stand-in) — both free on Google Fonts
+   fonts: Libre Baskerville (serif/Miller stand-in),
+          Source Sans 3 (sans/Benton stand-in), both free on Google Fonts
    ========================================================= */
 
-/* ---- Fallback font metric overrides ---------------------- */
+/* ---- fallback font metric overrides ---------------------- */
 /* Georgia stands in for Libre Baskerville; size-adjust + metric */
 /* overrides minimise layout shift while the web font loads.    */
 @font-face {
