@@ -151,14 +151,20 @@
     .then(res => res.json())
     .then(data => {
 
-      // ── Incoming board ──────────────────────────────────────────
-      const incomingCards = data.incoming.map(m => renderMemberCard(m, false)).join('');
-      const incomingHTML = `
-        <p class="section-label">2026–2027</p>
-        <h2 class="section-title">Incoming board</h2>
-        <div class="board-grid mt-4">${incomingCards}</div>
-        <hr class="rule">
-      `;
+      // ── Incoming co-presidents (populated end of fall only) ─────
+      // When incoming is non-empty, the next co-presidents have been
+      // announced but the full board hasn't turned over yet.
+      let incomingHTML = '';
+      if (data.incoming && data.incoming.length > 0) {
+        const incomingCards = data.incoming.map(m => renderMemberCard(m, false)).join('');
+        incomingHTML = `
+          <p class="section-label">Incoming</p>
+          <h2 class="section-title">Incoming co-presidents</h2>
+          <p style="max-width:560px; color:var(--muted); font-size:0.92rem; margin-bottom:1.5rem;">Co-presidents transition in January. The incoming co-presidents serve alongside the current board through the spring term before the full board turns over.</p>
+          <div class="board-grid mt-4">${incomingCards}</div>
+          <hr class="rule">
+        `;
+      }
 
       // ── Current board ───────────────────────────────────────────
       const currentCards = data.current.map(m => renderMemberCard(m, true)).join('');
