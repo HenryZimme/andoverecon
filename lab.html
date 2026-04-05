@@ -1780,7 +1780,7 @@ const Lab = {
     if (!already) {
       fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
         method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({
           ac: this.anchorCondition, aa: this.state.anchorEstimate,
           fc: this.framingCondition, fch: this.state.framingChoice,
