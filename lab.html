@@ -1304,13 +1304,13 @@
     </div>
 
     <h2 class="q-headline">A knowledge question.</h2>
-    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt">Click to set your <strong>earliest</strong> bound — the earliest year you think it could possibly be.</p>
+    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt">Click to set your <strong>earliest</strong> bound: the earliest year you think it could possibly be.</p>
 
     <div class="scope-scenario">
       What year was the first networked email sent?
     </div>
 
-    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt">Click to set your <strong>earliest</strong> bound — the earliest year you think it could possibly be.</p>
+    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt-2">Click to set your <strong>latest</strong> bound: the latest year you think it could possibly be.</p>
 
     <!-- Click-to-place timeline -->
     <div class="ci-timeline-wrap" id="ci-timeline-wrap">
@@ -1373,6 +1373,19 @@
     <div class="results-footer">
       <a href="index.html" class="rf-btn rf-btn-primary">Back to AES</a>
       <button class="rf-btn rf-btn-ghost" onclick="Lab.restart()">Try again</button>
+    </div>
+
+    <!-- Bibliography -->
+    <div id="bibliography" style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule);font-size:0.78rem;line-height:1.75;color:var(--muted);">
+      <p style="font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.85rem;">Bibliography</p>
+      <p>Campbell, S., &amp; Moore, D. A. (2024). Overprecision in the Survey of Professional Forecasters. <em>Collabra: Psychology</em>, <em>10</em>(1), 92953. https://doi.org/10.1525/collabra.92953</p>
+      <p>Kahneman, D., &amp; Tversky, A. (1979). Prospect theory: An analysis of decision under risk. <em>Econometrica</em>, <em>47</em>(2), 263–291.</p>
+      <p>Li, C., &amp; Feldman, G. (2025). Revisiting mental accounting classic paradigms: Replication Registered Report of the problems reviewed in Thaler (1999). <em>Royal Society Open Science</em>, <em>12</em>(9), 250979. https://doi.org/10.1098/rsos.250979</p>
+      <p>Moore, D. A., &amp; Healy, P. J. (2008). The trouble with overconfidence. <em>Psychological Review</em>, <em>115</em>(2), 502–517.</p>
+      <p>Simmons, J. P., &amp; Nelson, L. D. (2014). The "Exactly" replication: Tversky &amp; Kahneman's (1981) framing effect is robust to precise wording. <em>Data Colada</em>. http://datacolada.org/11</p>
+      <p>Thaler, R. H. (1999). Mental accounting matters. <em>Journal of Behavioral Decision Making</em>, <em>12</em>(3), 183–206.</p>
+      <p>Tversky, A., &amp; Kahneman, D. (1974). Judgment under uncertainty: Heuristics and biases. <em>Science</em>, <em>185</em>(4157), 1124–1131.</p>
+      <p>Tversky, A., &amp; Kahneman, D. (1981). The framing of decisions and the psychology of choice. <em>Science</em>, <em>211</em>(4481), 453–458.</p>
     </div>
   </div>
 
@@ -1850,9 +1863,9 @@ const Lab = {
         { name: 'High anchor (65)', pct: 69, hi: this.anchorCondition === 'high', label: '~45% avg' },
       ],
       explanation: `
-        <p><strong>The true answer is 28%</strong> (54 of 193 UN member states as of 2024). You estimated ${estimate}%. The slider started at ${anchor}% — your implicit anchor. ${anchorPulled ? `Your estimate stayed closer to that starting point than to the true value. That's anchoring even without a number being shown to you.` : `You adjusted far enough from the starting point to land closer to the true answer.`}</p>
-        <p>In the original study, participants watched a rigged wheel of fortune stop at 10 or 65, then estimated what percentage of UN member states are from Africa. Those who saw 65 averaged about 45%. Those who saw 10 averaged about 25%. The wheel was obviously random, yet it moved estimates by 20 points.</p>
-        <p>Where it shows up: Salary negotiations, retail pricing ("was $299, now $199"), real estate listing prices. The first number sets the expectation. People don't adjust nearly far enough.</p>`
+        <p><strong>The true answer is 28%</strong> (54 of 193 UN member states as of 2024). You estimated ${estimate}%. The slider started at ${anchor}%, your implicit anchor. ${anchorPulled ? `Your estimate stayed closer to that starting point than to the true value. That's the anchoring effect, operating even without a number being explicitly put in front of you.` : `You adjusted far enough from the starting point to land closer to the true answer. That puts you in the minority.`}</p>
+        <p>In the original 1974 study, Tversky and Kahneman rigged a wheel of fortune to stop at either 10 or 65, then asked participants what percentage of UN member states were from Africa. Those who saw 65 averaged about 45%; those who saw 10 averaged about 25%. The wheel was obviously random, yet it moved estimates by 20 points. Subsequent research has confirmed two mechanisms: unconscious priming from the number itself, and a deliberate adjustment process that stops too soon.</p>
+        <p>It shows up in salary negotiations (whoever names a number first anchors the conversation), retail pricing ("was $299, now $199"), and real estate listing prices. The first number sets the reference point. People adjust away from it, but rarely far enough.</p>`
     });
 
     const choseCertain = framingChoice === 'certain';
@@ -1872,11 +1885,11 @@ const Lab = {
     const gammaLabel = riskAverse ? 'risk-averse ($50 certain)' : 'risk-seeking ($100 or nothing)';
     let framingExp = '';
     if (followedFraming) {
-      framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>. The ${gain ? 'gain' : 'loss'} frame flipped you: you chose the ${choseCertain ? 'certain' : 'risky'} option, which runs against your baseline. That's the framing effect: the same math, reworded, reversed your preference.</p>`;
+      framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>. The ${gain ? 'gain' : 'loss'} frame flipped you: you chose the ${choseCertain ? 'certain' : 'risky'} option, which runs against your baseline. Same math, different wording, reversed preference.</p>`;
     } else if (baselineConsistent) {
       framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>, and your public health choice was consistent with it. You chose the ${choseCertain ? 'certain' : 'risky'} option in the ${gain ? 'gain' : 'loss'} frame, which matches your baseline. The frame didn't shift you.</p>`;
     } else {
-      framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>, but you chose the ${choseCertain ? 'certain' : 'risky'} option in the ${gain ? 'gain' : 'loss'} frame. Your choice runs against both the typical framing effect and your own baseline. An unusual pattern, suggesting deliberate reasoning about the scenario.</p>`;
+      framingExp = `<p>Your baseline preference was <strong>${gammaLabel}</strong>, but you chose the ${choseCertain ? 'certain' : 'risky'} option in the ${gain ? 'gain' : 'loss'} frame. Your choice runs against both the typical framing effect and your own baseline, suggesting deliberate reasoning about the scenario rather than an automatic response to the wording.</p>`;
     }
 
     html += this.resultBlock({
@@ -1892,8 +1905,8 @@ const Lab = {
       ],
       explanation: `
         ${framingExp}
-        <p>The first question established your baseline risk preference, with no gain or loss language, just two options with the same expected value. The second question repackaged identical outcomes in a ${gain ? 'gain' : 'loss'} frame. In the original study, 72% chose the certain option in the gain frame; 78% gambled in the loss frame. The effect has been widely replicated across labs and countries, though subsequent studies typically find a smaller magnitude than the original.</p>
-        <p>Where it shows up: "90% fat-free" vs. "10% fat." Medical consent forms that describe survival rates vs. mortality rates. Budget proposals framed as savings vs. cuts. The frame shapes the feeling before the reasoning starts.</p>`
+        <p>The first question established your baseline risk preference: no gain or loss language, just two options with the same expected value. The second question wrapped identical outcomes in a ${gain ? 'gain' : 'loss'} frame. In the original 1981 study, 72% chose the certain option in the gain frame and 78% gambled in the loss frame. The effect holds across labs and countries, though most replications find a smaller gap than the original numbers suggest.</p>
+        <p>It shows up as "90% fat-free" vs. "10% fat." Medical consent forms describe survival rates or mortality rates. Budget proposals are savings or cuts depending on who's writing them. The frame shapes the emotional response before any reasoning starts.</p>`
     });
 
     // ── Q3: Mental accounting ──
@@ -1903,7 +1916,7 @@ const Lab = {
         ? { cls:'verdict-bias', text:'Mental account effect' }
         : { cls:'verdict-ok',   text: bought ? '✓ Bought regardless' : '✓ Skipped regardless' },
       answer: `${cash ? 'Lost $10 cash' : 'Lost pre-bought ticket'} · ${bought ? 'Bought new ticket' : 'Skipped the show'}`,
-      bmLabel: '2024 registered replication, Kahneman & Tversky theater ticket',
+      bmLabel: '2025 registered replication, Kahneman & Tversky theater ticket',
       bmRows: [
         { name: 'Cash lost: buy ticket',  pct: 90, hi:  cash &&  bought, label: '90%' },
         { name: 'Cash lost: skip',        pct: 10, hi:  cash && !bought, label: '10%' },
@@ -1911,9 +1924,9 @@ const Lab = {
         { name: 'Ticket lost: skip',      pct: 23, hi: !cash && !bought, label: '23%' },
       ],
       explanation: `
-        <p>You ${cash ? 'lost $10 cash on the way there' : 'lost a pre-bought $10 ticket'} and chose to ${bought ? 'buy a new ticket' : 'skip the show'}. In a 2024 registered replication of Kahneman and Tversky's original experiment, 90% of people bought a ticket after losing cash, but only 77% did after losing a pre-bought ticket.</p>
-        <p>The dollar cost is identical in both scenarios: seeing the show costs $10 on top of what was lost. But people who lose a ticket mentally charge it to a "theater" account that already feels debited. Paying again feels like paying twice. Losing cash feels like a separate event in a different account.</p>
-        <p>Where it shows up: Continuing to fund a failing project because of money already spent. Finishing a meal you don't want because you paid for it. The logic is always the same: the cost is sunk, but the account isn't closed.</p>`
+        <p>You ${cash ? 'lost $10 cash on the way there' : 'lost a pre-bought $10 ticket'} and chose to ${bought ? 'buy a new ticket' : 'skip the show'}. In a 2025 registered replication of Kahneman and Tversky's theater ticket experiment, published in Royal Society Open Science, 90% of participants bought a ticket after losing cash, but only 77% did after losing a pre-bought ticket.</p>
+        <p>The dollar cost is identical in both scenarios: seeing the show costs $10 on top of whatever was already lost. But people who lose a ticket mentally charge it to a "theater" account that already feels spent. Paying again feels like paying twice. Losing cash sits in a different mental account, one with no connection to the show.</p>
+        <p>It shows up when people keep funding a failing project because of money already committed, or finish a meal they don't want because they paid for it. The lost money is gone either way. The account, though, doesn't close.</p>`
     });
 
     // ── Q4: Overprecision ──
@@ -1929,9 +1942,9 @@ const Lab = {
         { name: 'Typical 90% CI hit rate', pct: 45, hi: false, label: '~30–60%' },
       ],
       explanation: `
-        <p>The first networked email was sent in <strong>1971</strong> by Ray Tomlinson, a programmer at BBN Technologies. Your interval was ${confLow}–${confHigh}. ${captured ? 'It captured the right answer. You are in the minority.' : 'It didn\'t, even though you asked for a 90% confidence interval. Most people place email firmly in the 1980s or 90s. Their intervals look confident and land a decade too late.'}</p>
-        <p>In calibration research, when people give 90% confidence intervals across many factual questions, those intervals contain the true answer only about 30–60% of the time — well below the 90% they should hit. Most people's 90% intervals behave more like 50% intervals. Overprecision has been called "the mother of all biases" (Moore, 2015), because excessive certainty amplifies the damage done by every other bias.</p>
-        <p>Where it shows up: Engineering project timelines, earnings forecasts, medical prognoses, legal outcome assessments. When experts say "I'm 90% confident," they're usually closer to 60%. The intervals look precise; the confidence is not earned.</p>`
+        <p>The first networked email was sent in <strong>1971</strong> by Ray Tomlinson, a computer engineer at Bolt, Beranek and Newman (BBN Technologies) in Cambridge, Massachusetts. He merged two existing ARPANET programs, SNDMSG and CPYNET, to route messages between different computers, then chose the @ symbol to separate a user's name from their machine address. Your interval was ${confLow}–${confHigh}. ${captured ? 'It captured the right answer. That puts you in the minority.' : 'It didn\'t, even though you were asked for a 90% confidence interval. Most people place email in the 1980s or later. Their intervals look confident and land a decade too late.'}</p>
+        <p>In calibration research, 90% confidence intervals across many factual questions contain the true answer only about 30 to 60% of the time, well below the 90% they should hit. Most 90% intervals behave more like 50% intervals. A 2024 study of professional economic forecasters found they reported 53% confidence in their forecasts but were correct only 23% of the time. Overprecision has been called "the mother of all biases" because excessive certainty amplifies the damage done by every other cognitive error (Moore & Healy, 2008).</p>
+        <p>It shows up in engineering project timelines, earnings forecasts, medical prognoses, and legal outcome assessments. When experts say they are 90% confident, they are usually closer to 60%. The intervals look precise; the confidence is not earned.</p>`
     });
 
     document.getElementById('results-detail').innerHTML = html;
