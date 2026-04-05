@@ -987,11 +987,9 @@
       border: 1px solid rgba(0,49,167,0.14);
       border-radius: 3px;
       padding: 0.25rem 0.6rem;
-      white-space: nowrap;
-      max-width: 200px;
+      max-width: 240px;
       text-align: right;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.5;
     }
 
     /* Benchmark */
@@ -1085,6 +1083,13 @@
       .rb-meta { align-items: flex-start; }
       .rb-answer { text-align: left; }
       .rn-links { display: none; }
+      input[type="range"]::-webkit-slider-thumb { width: 28px; height: 28px; }
+      input[type="range"]::-moz-range-thumb      { width: 28px; height: 28px; }
+      .ds-input::-webkit-slider-thumb { width: 30px; height: 30px; }
+      .ds-input::-moz-range-thumb     { width: 30px; height: 30px; border: 3px solid var(--lab-bg); }
+      .bm-name { width: 100px; }
+      .bm-pct  { width: 36px; font-size: 0.7rem; }
+      .rb-answer { white-space: normal; max-width: none; text-align: left; }
     }
   </style>
 
@@ -1485,6 +1490,21 @@ const Lab = {
     this.state.confHigh = 2005;
     this.updateDualSlider();
     this.show('screen-q4');
+    requestAnimationFrame(() => {
+      this.syncDualSliderZ();
+      const container = document.querySelector('.ds-track-container');
+      if (container) {
+        container.addEventListener('touchstart', () => this.syncDualSliderZ(), { passive: true });
+      }
+    });
+  },
+  syncDualSliderZ() {
+    const lo = document.getElementById('ds-lo');
+    const hi = document.getElementById('ds-hi');
+    if (!lo || !hi) return;
+    const loRatio = (parseInt(lo.value) - 1900) / 120;
+    lo.style.zIndex = loRatio > 0.5 ? 3 : 2;
+    hi.style.zIndex = loRatio > 0.5 ? 2 : 3;
   },
   onDualSlider() {
     let lo = parseInt(document.getElementById('ds-lo').value);
@@ -1496,6 +1516,7 @@ const Lab = {
     this.state.confLow  = lo;
     this.state.confHigh = hi;
     this.updateDualSlider();
+    this.syncDualSliderZ();
   },
   updateDualSlider() {
     const lo = this.state.confLow;
@@ -1813,7 +1834,7 @@ const Lab = {
     const pages = [
       ['index.html','Home'],['fed_challenge.html','Fed Challenge'],
       ['colloquium.html','Colloquium'],['journal.html','Journal'],
-      ['resources.html','Resources'],['board.html','Board'],
+      ['resources.html','Resources'],['leadership.html','Leadership'],
     ];
     const linksHtml = pages.map(([h,l]) =>
       `<li><a href="${h}">${l}</a></li>`
