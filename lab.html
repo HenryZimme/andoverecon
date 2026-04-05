@@ -1764,21 +1764,35 @@ const Lab = {
     return { key: String(score), score, anchorPulled, followedFraming, showedMentalAccounting, overprecise, ...map[score] };
   },
 
-  // ── results rendering ────────────────────────────────────
+  // ── Results rendering ────────────────────────────────────
   renderResults() {
-    // ── submit response
-    fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ac: this.anchorCondition, aa: this.state.anchorEstimate,
-        fc: this.framingCondition, fch: this.state.framingChoice,
-        gc: this.state.gammaChoice,
-        tc: this.theatreCondition, tch: this.state.theatreChoice,
-        cl: this.state.confLow,   ch: this.state.confHigh,
-        ua: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
-      })
-    }).catch(() => {});
+    // ── Device fingerprint + dedup ───────────────────────
+    const _fp = () => {
+      const s = [navigator.userAgent, screen.width, screen.height,
+                 screen.colorDepth, navigator.language,
+                 Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
+      return s.split('').reduce((a, c) => (Math.imul(31, a) + c.charCodeAt(0)) | 0, 0)
+              .toString(36).replace('-', '0');
+    };
+    const STORE_KEY = 'aes_lab_v1';
+    const did = _fp();
+    const already = localStorage.getItem(STORE_KEY) === did;
+    if (!already) {
+      fetch('https://script.google.com/macros/s/AKfycbyQeQSckAzzO5EcwXuoXqtFOMGBC9Sk9hMxocHYqM6STkXN4clXmpPybPkyGkkV6oMWbQ/exec', {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ac: this.anchorCondition, aa: this.state.anchorEstimate,
+          fc: this.framingCondition, fch: this.state.framingChoice,
+          gc: this.state.gammaChoice,
+          tc: this.theatreCondition, tch: this.state.theatreChoice,
+          cl: this.state.confLow,   ch: this.state.confHigh,
+          ua: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+          did
+        })
+      }).catch(() => {});
+      localStorage.setItem(STORE_KEY, did);
+    }
     // ────────────────────────────────────────────────────
     document.body.classList.add('results-mode');
     document.getElementById('progress-bar').style.opacity = '0';
