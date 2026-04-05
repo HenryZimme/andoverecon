@@ -1,7 +1,9 @@
 {
-  "incoming": [
+  "incoming": [],
+  "current": [
     {
       "name": "Henry Zimmerman",
+      "year": "27",
       "role": "Co-President",
       "photo": "/photos/hzimmerman_pfp.webp",
       "url": "https://www.henryzimmerman.net",
@@ -9,51 +11,19 @@
     },
     {
       "name": "Kachi Ikekpeazu",
+      "year": "27",
       "role": "Co-President",
       "photo": "/photos/oikekpeazu_pfp.webp",
-      "bio": "Kachi Ikekpeazu is a leader in the Andover Economics Society, where he supports student groups in presenting research for the Economics Research Colloquium and leads the overall direction of the program, engaging with policy ideas and communicating them to broader audiences. Outside of economics, Kachi is actively involved in campus leadership as President of Aflatam and Flagstaff Cluster Co-President, where he helps foster community and global awareness initiatives. He is also a dedicated problem-solver who enjoys tackling Rubik’s cubes, and a creative writer who performs slam poetry.",
-      "url": "https://www.linkedin.com/in/kachi-ikekpeazu-971417344/"
+      "url": "https://www.linkedin.com/in/kachi-ikekpeazu-971417344/",
+      "bio": "Kachi supports student groups in presenting research for the Economics Research Colloquium and leads the overall direction of the program, engaging with policy ideas and communicating them to broader audiences. Outside of economics, Kachi is actively involved in campus leadership as President of Aflatam and Flagstaff Cluster Co-President. He is also a dedicated problem-solver who enjoys tackling Rubik's cubes, and a creative writer who performs slam poetry."
     },
     {
       "name": "Andrew Liu",
+      "year": "27",
       "role": "Co-President",
       "photo": "/photos/aliu_pfp.webp",
-      "bio": "",
-      "url": "https://www.linkedin.com/in/andrew-liu-910870318/"
-    }
-  ],
-  "current": [
-    {
-      "name": "Gavin Spencer",
-      "year": "26",
-      "role": "Co-President",
-      "photo": "",
-      "bio": "",
-      "url": ""
-    },
-    {
-      "name": "Sophia Tabibian",
-      "year": "26",
-      "role": "Co-President",
-      "photo": "",
-      "bio": "",
-      "url": ""
-    },
-    {
-      "name": "Andrew Liu",
-      "year": "27",
-      "role": "Senior Board",
-      "photo": "",
-      "bio": "",
-      "url": ""
-    },
-    {
-      "name": "Kachi Ikekpeazu",
-      "year": "27",
-      "role": "Senior Board",
-      "photo": "",
-      "bio": "",
-      "url": ""
+      "url": "https://www.linkedin.com/in/andrew-liu-910870318/",
+      "bio": ""
     },
     {
       "name": "Kai Wang",
@@ -62,14 +32,6 @@
       "photo": "",
       "bio": "",
       "url": ""
-    },
-    {
-      "name": "Henry Zimmerman",
-      "year": "27",
-      "role": "Senior Board",
-      "photo": "",
-      "url": "",
-      "bio": ""
     },
     {
       "name": "Lisa de Boer",
@@ -113,6 +75,12 @@
     }
   ],
   "past": [
+    {
+      "year": "2025–26",
+      "presidents": "Gavin Spencer '26 & Sophia Tabibian '26",
+      "title": "Co-Presidents",
+      "members": "Board: Henry Zimmerman '27, Kachi Ikekpeazu '27, Andrew Liu '27, Kai Wang '27, Lisa de Boer '26. Junior Board: Konnor Fortini '28, Bella Huang '28, Pia Chhabra '28, Anna Lu '27."
+    },
     {
       "year": "2024–25",
       "presidents": "Grant DeHoog '25 & Robert Simkus '25",
