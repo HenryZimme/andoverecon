@@ -1496,7 +1496,7 @@ const Lab = {
   anchorCondition:  Math.random() > 0.5 ? 'high' : 'low',
   framingCondition: Math.random() > 0.5 ? 'gain' : 'loss',
   theatreCondition: Math.random() > 0.5 ? 'cash' : 'ticket',
-  demoState: { grade: null, gender: null, econ: null, age: null },
+  demoState: { gender: null, econ: null, age: null },
   timestamps: { start: null, q1: null, q2: null, q3: null, q4: null, demo: null },
   state: {
     anchorEstimate: null,
@@ -2132,7 +2132,7 @@ const Lab = {
 
     // ── Q1: Anchoring ──
     html += this.resultBlock({
-      label: 'Task 1 · Anchoring', title: 'A quick estimate.',
+      label: 'Task A · Anchoring', title: 'A quick estimate.',
       verdict: anchorPulled
         ? { cls:'verdict-bias', text:'Anchor pulled' }
         : { cls:'verdict-ok',   text:'✓ Adjusted correctly' },
@@ -2173,7 +2173,7 @@ const Lab = {
     }
 
     html += this.resultBlock({
-      label: 'Task 2 · Framing Effect', title: 'Two decisions.',
+      label: 'Task B · Framing Effect', title: 'Two decisions.',
       verdict: { cls: framingVerdict, text: framingVerdictText },
       answer: `Baseline: ${riskAverse ? '$50 certain' : '$100 or nothing'} · ${gain ? 'Gain' : 'Loss'} frame · Chose ${choseCertain ? 'certain (A)' : 'risky (B)'}`,
       bmLabel: 'Kahneman & Tversky (1981), Asian Disease Problem',
@@ -2191,7 +2191,7 @@ const Lab = {
 
     // ── Q3: Mental accounting ──
     html += this.resultBlock({
-      label: 'Task 3 · Sunk Cost & Mental Accounting', title: 'A theater decision.',
+      label: 'Task C · Sunk Cost & Mental Accounting', title: 'A theater decision.',
       verdict: showedMentalAccounting
         ? { cls:'verdict-bias', text:'Mental account effect' }
         : { cls:'verdict-ok',   text: bought ? '✓ Bought regardless' : '✓ Skipped regardless' },
@@ -2211,7 +2211,7 @@ const Lab = {
 
     // ── Q4: Overprecision ──
     html += this.resultBlock({
-      label: 'Task 4 · Overprecision', title: 'A knowledge question.',
+      label: 'Task D · Overprecision', title: 'A knowledge question.',
       verdict: overprecise
         ? { cls:'verdict-bias', text:'Interval too narrow' }
         : { cls:'verdict-ok',   text:'✓ Well-calibrated' },
@@ -2268,7 +2268,7 @@ const Lab = {
     document.getElementById('closing-note-wrap').innerHTML = `
       <div class="closing-note">
         <p class="cn-label">A note on all of this</p>
-        <p class="cn-text">These patterns appear in courtrooms, hospitals, financial markets, and policy debates. Knowing they exist doesn't make you immune. Kahneman himself said he still falls for many of them. Note that Task 3 only detects mental accounting in the ticket-lost condition; if you were assigned the cash scenario, that dimension wasn't measured. Your score reflects what your random assignment made testable.</p>
+        <p class="cn-text">These patterns appear in courtrooms, hospitals, financial markets, and policy debates. Knowing they exist doesn't make you immune. Kahneman himself said he still falls for many of them. Note that Task C only detects mental accounting in the ticket-lost condition; if you were assigned the cash scenario, that dimension wasn't measured. Your score reflects what your random assignment made testable.</p>
       </div>`;
   },
 
