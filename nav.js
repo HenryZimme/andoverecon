@@ -1,13 +1,13 @@
 /* nav.js — injects shared nav and footer, marks active page */
 (function () {
   const pages = [
-    { href: 'index.html',         label: 'Home' },
-    { href: 'fed_challenge.html', label: 'Fed Challenge' },
-    { href: 'colloquium.html',    label: 'Colloquium' },
-    { href: 'journal.html',       label: 'Journal' },
-    { href: 'lab.html',           label: 'Lab' },
-    { href: 'resources.html',     label: 'Resources' },
-    { href: 'leadership.html',    label: 'Leadership' },
+    { href: 'index',         label: 'Home' },
+    { href: 'fed_challenge', label: 'Fed Challenge' },
+    { href: 'colloquium',    label: 'Colloquium' },
+    { href: 'journal',       label: 'Journal' },
+    { href: 'lab',           label: 'Lab' },
+    { href: 'resources',     label: 'Resources' },
+    { href: 'leadership',    label: 'Leadership' },
   ];
   const current = location.pathname.split('/').pop() || 'index.html';
 
