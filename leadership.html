@@ -113,4 +113,19 @@
       // ── Past boards ─────────────────────────────────────────────
       const pastItems = data.past.map(entry => `
         <li class="event-item">
-          <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color:var(--muted);
+          <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color:var(--muted);">${entry.year}</div>
+          <div class="event-body">
+            <h3>${entry.presidents}</h3>
+            <p class="role" style="font-size:0.78rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin-bottom:0.35rem;">${entry.title}</p>
+            <p style="font-size:0.88rem; color:var(--muted);">${entry.members}</p>
+          </div>
+        </li>
+      `).join('');
+      document.getElementById('past-board-list').innerHTML = pastItems;
+
+    })
+    .catch(err => console.error('Failed to load board.json:', err));
+</script>
+
+</body>
+</html>
