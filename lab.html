@@ -1247,7 +1247,7 @@
     </div>
 
     <div class="action-row">
-      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ1()">Continue</button>
+      <button class="lab-btn lab-btn-accent" id="q1-next-btn" onclick="Lab.nextQ1()">Continue</button>
     </div>
   </div>
 
@@ -1304,7 +1304,7 @@
     <div id="q2-err" class="val-msg">Please answer both decisions before continuing.</div>
 
     <div class="action-row">
-      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ2()">Continue</button>
+      <button class="lab-btn lab-btn-accent" id="q2-next-btn" onclick="Lab.nextQ2()">Continue</button>
     </div>
   </div>
 
@@ -1341,7 +1341,7 @@
     <div id="q3-err" class="val-msg">Please select one of the options above.</div>
 
     <div class="action-row">
-      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ3()">Continue</button>
+      <button class="lab-btn lab-btn-accent" id="q3-next-btn" onclick="Lab.nextQ3()">Continue</button>
     </div>
   </div>
 
@@ -1385,7 +1385,7 @@
     <div id="q4-err" class="val-msg" style="text-align:center;">Set both endpoints before continuing.</div>
 
     <div class="action-row">
-      <button class="lab-btn lab-btn-accent" onclick="Lab.nextQ4()">See my results</button>
+      <button class="lab-btn lab-btn-accent" id="q4-next-btn" onclick="Lab.nextQ4()">Continue</button>
     </div>
   </div>
 
@@ -1539,6 +1539,9 @@ const Lab = {
     else if (q === 2) this.initQ2();
     else if (q === 3) this.initQ3();
     else if (q === 4) this.initQ4();
+    // update button label based on position, not question number
+    const btn = document.getElementById('q' + q + '-next-btn');
+    if (btn) btn.textContent = step === 3 ? 'See my results' : 'Continue';
   },
 
   _advanceStep() {
