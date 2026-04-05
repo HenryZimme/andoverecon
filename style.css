@@ -5,7 +5,47 @@
           Source Sans 3 (sans/Benton stand-in) — both free on Google Fonts
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+/* ---- Fallback font metric overrides ---------------------- */
+/* Georgia stands in for Libre Baskerville; size-adjust + metric */
+/* overrides minimise layout shift while the web font loads.    */
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: local('Georgia');
+  size-adjust: 103%;
+  ascent-override: 94%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  font-style: normal;
+  font-weight: 400 700;
+}
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: local('Georgia Italic'), local('Georgia-Italic');
+  size-adjust: 103%;
+  ascent-override: 94%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  font-style: italic;
+  font-weight: 400;
+}
+/* Arial stands in for Source Sans 3 */
+@font-face {
+  font-family: 'Source Sans 3';
+  src: local('Arial');
+  size-adjust: 97%;
+  ascent-override: 105%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+  font-style: normal;
+  font-weight: 300 700;
+}
+
+/* ---- Placeholder height reservations (CLS prevention) ---- */
+/* Reserve space before JS injects nav/footer/board so the     */
+/* page doesn't shift when those elements are painted.         */
+#nav-placeholder    { min-height: calc(var(--nav-height) + 3px); }
+#footer-placeholder { min-height: 180px; }
+#board-root         { min-height: 680px; }
 
 /* ---- Reset & base ---------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
