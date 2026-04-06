@@ -1652,10 +1652,19 @@ const Lab = {
     this._initQByStep(0);
   },
 
-  submitDemo() {
-    const VALID_CODES = ['bias26', 'econ26', 'test26']; // compare as lowercase // add/remove codes each run; any length, numeric
-    const code = (document.getElementById('demo-code')?.value || '').trim();
-    if (!VALID_CODES.includes(code.toLowerCase())) {
+  async submitDemo() {
+    // SHA-256 digests of valid session codes (lowercase). To add a code:
+    // echo -n "yourcode" | sha256sum
+    const VALID_HASHES = [
+      'e36a98461eecdb78788f2f2e1760e436c4e3babeb0d75b5b3dcf6ad9784a6256', // bias26
+      '802b83f92fca1deff1955f00587d10f00bab900966efd95f583c9a6803a8503a', // econ26
+      'bac8ab1286b879dca5039beba1a4c5ac7828b703e2fc4ea42284b93af2dfbf8b', // advise
+    ];
+    const code = (document.getElementById('demo-code')?.value || '').trim().toLowerCase();
+    const encoded = new TextEncoder().encode(code);
+    const hashBuf = await crypto.subtle.digest('SHA-256', encoded);
+    const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    if (!VALID_HASHES.includes(hashHex)) {
       document.getElementById('code-err').classList.add('show');
       setTimeout(() => this.renderResults(), 800);
       return;
@@ -1672,16 +1681,29 @@ const Lab = {
     this.renderResults();
   },
 
-  _submitToSheets() {
-    const _fp = () => {
-      const s = [navigator.userAgent, screen.width, screen.height,
-                 screen.colorDepth, navigator.language,
-                 Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');
-      return s.split('').reduce((a, c) => (Math.imul(31, a) + c.charCodeAt(0)) | 0, 0)
-              .toString(36).replace('-', '0');
+  async _submitToSheets() {
+    const _fp = async () => {
+      const s = [
+        navigator.userAgent,
+        screen.width,
+        screen.height,
+        screen.colorDepth,
+        screen.pixelDepth,
+        navigator.language,
+        navigator.hardwareConcurrency,
+        navigator.deviceMemory || '',
+        navigator.platform,
+        navigator.maxTouchPoints,
+        window.devicePixelRatio,
+        new Date().getTimezoneOffset(),
+        Intl.DateTimeFormat().resolvedOptions().timeZone,
+      ].join('|');
+      const encoded = new TextEncoder().encode(s);
+      const hashBuf = await crypto.subtle.digest('SHA-256', encoded);
+      return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
     };
     const STORE_KEY = 'aes_lab_v1';
-    const did = _fp();
+    const did = await _fp();
     const already = localStorage.getItem(STORE_KEY) === did;
     const repeatMode = ['true', 'True'].includes(new URLSearchParams(window.location.search).get('repeat'));
     if (already && !repeatMode) return;
@@ -2042,10 +2064,6 @@ const Lab = {
     if (lo !== null) drawHandle(lo, String(lo));
     if (hi !== null) drawHandle(hi, String(hi));
   },
-
-  onDualSlider() {}, // legacy no-op — kept so old hash replays still call without error
-  updateDualSlider() {},
-  syncDualSliderZ() {},
 
   nextQ4() {
     if (this.state.confLow === null || this.state.confHigh === null) {
