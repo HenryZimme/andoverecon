@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Decision Lab · Andover Economics Society</title>
-  <meta name="description" content="Four experiments that reveal how cognitive biases shape your decisions. Built by the Andover Economics Society.">
+  <meta name="description" content="Five experiments that reveal how cognitive biases shape your decisions. Built by the Andover Economics Society.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="icon" href="/aes-favicon.ico" sizes="any">
   <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
@@ -642,6 +642,7 @@
     }
     .anchor-number { opacity: 1; transition: opacity 0.4s; }
     .anchor-number.resolving { opacity: 0; }
+    .anchor-display {
       text-align: center;
       margin-bottom: 2rem;
     }
@@ -1316,14 +1317,14 @@
   <meta property="og:type"         content="website">
   <meta property="og:url"          content="https://andoverecon.org/lab.html">
   <meta property="og:title"        content="Decision Lab · Andover Economics Society">
-  <meta property="og:description"  content="Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.">
+  <meta property="og:description"  content="Five short experiments on anchoring, framing, mental accounting, overprecision, and risk preference. Each one targets a different failure mode.">
   <meta property="og:image"        content="https://andoverecon.org/images/og-default.jpg">
   <meta property="og:locale"       content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary">
   <meta name="twitter:title"       content="Decision Lab · Andover Economics Society">
-  <meta name="twitter:description" content="Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.">
+  <meta name="twitter:description" content="Five short experiments on anchoring, framing, mental accounting, overprecision, and risk preference. Each one targets a different failure mode.">
   <meta name="twitter:image"       content="https://andoverecon.org/images/og-default.jpg">
 
   <!-- Structured data -->
@@ -1332,7 +1333,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Decision Lab",
-    "description": "Interactive behavioral economics experiments on anchoring, framing, mental accounting, and overprecision. Benchmarks from peer-reviewed research.",
+    "description": "Interactive behavioral economics experiments on anchoring, framing, mental accounting, overprecision, and risk preference. Benchmarks from peer-reviewed research.",
     "url": "https://andoverecon.org/lab.html",
     "applicationCategory": "EducationalApplication",
     "inLanguage": "en-US",
@@ -1367,9 +1368,9 @@
     <div style="text-align:center;">
       <a href="index.html" class="intro-badge" style="text-decoration:none;">← Andover Economics Society</a>
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
-      <p class="intro-sub">Four decisions. Each one reveals something different about how you think under uncertainty.</p>
+      <p class="intro-sub">Five tasks. Each one reveals something different about how you think under uncertainty.</p>
       <p class="intro-meta">~5 minutes · Five tasks · Anonymous responses collected for research</p>
-      <p style="font-size:0.68rem;color:rgba(255,255,255,0.3);line-height:1.6;max-width:340px;margin:0 auto 2.75rem;">This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible to AES members and may be included in published findings.</p>
+      <p style="font-size:0.68rem;color:rgba(255,255,255,0.3);line-height:1.6;max-width:340px;margin:0 auto 2.75rem;">This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible to AES and may be included in published findings.</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
   </div>
@@ -1641,7 +1642,7 @@
   <div id="screen-analyzing" class="lab-screen" style="text-align:center;padding:3rem 2rem;max-width:420px;">
     <div class="analyzing-ring"></div>
     <div class="analyzing-wrap">
-      <div class="a-msg show" id="amsg-0">Scoring your four responses…</div>
+      <div class="a-msg show" id="amsg-0">Scoring your five responses...</div>
       <div class="a-msg" id="amsg-1">Measuring your anchoring response…</div>
       <div class="a-msg" id="amsg-2">Checking framing and sunk costs…</div>
       <div class="a-msg" id="amsg-3">Building your bias profile…</div>
@@ -1679,7 +1680,7 @@
       <div class="demo-chips" id="demo-age"></div>
     </div>
 
-    <p style="font-size:0.72rem;color:var(--lab-muted);line-height:1.6;text-align:center;margin:1.5rem 0 0.5rem;">All responses are anonymous — we do not collect your name, email address, or any directly identifying information. We collect an anonymized device signature solely to prevent duplicate submissions. This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible to AES members and may be included in published findings. You may stop at any time.</p>
+    <p style="font-size:0.72rem;color:var(--lab-muted);line-height:1.6;text-align:center;margin:1.5rem 0 0.5rem;">All responses are anonymous. We do not collect your name, email address, or any directly identifying information. We collect an anonymized device signature solely to prevent duplicate submissions. This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible to AES and may be included in published findings. You may stop at any time.</p>
 
     <div class="action-row" style="flex-direction:column;align-items:center;gap:0.6rem;">
       <button class="lab-btn lab-btn-accent" id="demo-submit-btn" onclick="Lab.submitDemo()">See my results</button>
@@ -2192,7 +2193,8 @@ const Lab = {
       const lo = this.state.confLow, hi = this.state.confHigh;
       const dpr   = window.devicePixelRatio || 1;
       const W     = canvas.width;
-      const xOf   = yr => ((yr - 1900) / 120) * W;
+      const MIN   = this.timelineMin, RANGE = this.timelineMax - this.timelineMin;
+      const xOf   = yr => ((yr - MIN) / RANGE) * W;
       const pxLo  = xOf(lo) / dpr;
       const pxHi  = xOf(hi) / dpr;
       const rect  = canvas.getBoundingClientRect();
@@ -2813,10 +2815,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isBias) {
       kicker.textContent = 'Behavioral economics experiment · Spring 2026';
-      headline.innerHTML = 'We\'re studying four cognitive biases: <em>anchoring</em>, <em>gain/loss framing</em>, <em>mental accounting</em>, and <em>overprecision</em>.';
+      headline.innerHTML = 'We\'re studying five cognitive patterns: <em>anchoring</em>, <em>gain/loss framing</em>, <em>mental accounting</em>, <em>overprecision</em>, and <em>risk preference</em>.';
     } else {
       kicker.textContent = 'Judgment and decision study · Spring 2026';
-      headline.innerHTML = 'You\'ll complete four tasks: <em>a numerical estimation</em>, <em>two economic choices</em>, <em>a real-world judgment</em>, and <em>a confidence interval</em>.';
+      headline.innerHTML = 'You\'ll complete five tasks: <em>a numerical estimation</em>, <em>two economic choices</em>, <em>a real-world judgment</em>, <em>a confidence interval</em>, and <em>a risk preference question</em>.';
     }
 
     poster.style.display = 'flex';
