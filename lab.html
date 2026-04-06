@@ -1683,7 +1683,7 @@ const Lab = {
     const STORE_KEY = 'aes_lab_v1';
     const did = _fp();
     const already = localStorage.getItem(STORE_KEY) === did;
-    const repeatMode = new URLSearchParams(window.location.search).get('repeat') === 'true';
+    const repeatMode = ['true', 'True'].includes(new URLSearchParams(window.location.search).get('repeat'));
     if (already && !repeatMode) return;
     const t0 = this.timestamps.start || Date.now();
     const rel = ts => ts ? Math.round((ts - t0) / 1000) : null;
