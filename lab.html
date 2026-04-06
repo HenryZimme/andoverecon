@@ -229,6 +229,11 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 16px rgba(68,184,243,0.45);
     }
+    .lab-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
     .lab-btn-ghost {
       background: transparent;
       color: var(--lab-muted);
@@ -1209,7 +1214,7 @@
     <div style="text-align:center;">
       <a href="index.html" class="intro-badge" style="text-decoration:none;">← Andover Economics Society</a>
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
-      <p class="intro-sub">Four short experiments on anchoring, framing, mental accounting, and calibration. Each one targets a different failure mode.</p>
+      <p class="intro-sub">Four decisions. Each one reveals something different about how you think under uncertainty.</p>
       <p class="intro-meta">~5 minutes · Anonymous responses collected for research</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
@@ -1360,13 +1365,13 @@
     </div>
 
     <h2 class="q-headline">A knowledge question.</h2>
-    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt">Click to set your <strong>earliest</strong> bound: the earliest year you think it could possibly be.</p>
+    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt">Click to set your <strong>earliest</strong> bound — the lowest year your 90% confidence interval should include.</p>
 
     <div class="scope-scenario">
       What year was the first networked email sent?
     </div>
 
-    <p class="scope-q" style="margin-bottom:0.9rem;" id="q4-prompt-2">Click to set your <strong>latest</strong> bound: the latest year you think it could possibly be.</p>
+    <p class="scope-q" style="margin-bottom:0.9rem;font-size:0.82rem;" id="q4-prompt-2">Set your bounds so you're <strong>90% confident</strong> the true year falls between them.</p>
 
     <!-- Click-to-place timeline -->
     <div class="ci-timeline-wrap" id="ci-timeline-wrap">
@@ -1386,6 +1391,37 @@
 
     <div class="action-row">
       <button class="lab-btn lab-btn-accent" id="q4-next-btn" onclick="Lab.nextQ4()">Continue</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ATTENTION CHECK
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-attn" class="lab-screen" style="max-width:480px;">
+    <h2 class="q-headline">One quick check.</h2>
+    <p class="q-sub" style="margin-bottom:1.5rem;">Select the option that matches the instruction.</p>
+    <p class="scope-q" style="margin-bottom:1.25rem;">For this question, select <strong>"Confirm"</strong>.</p>
+    <div class="choice-stack" id="attn-choices">
+      <button class="choice-btn" onclick="Lab.selectAttn('Skip')">
+        <div class="choice-letter">A</div>
+        <div class="choice-text">Skip</div>
+      </button>
+      <button class="choice-btn" onclick="Lab.selectAttn('Confirm')">
+        <div class="choice-letter">B</div>
+        <div class="choice-text">Confirm</div>
+      </button>
+      <button class="choice-btn" onclick="Lab.selectAttn('Pass')">
+        <div class="choice-letter">C</div>
+        <div class="choice-text">Pass</div>
+      </button>
+      <button class="choice-btn" onclick="Lab.selectAttn('Next')">
+        <div class="choice-letter">D</div>
+        <div class="choice-text">Next</div>
+      </button>
+    </div>
+    <div id="attn-err" class="val-msg">Please select an option to continue.</div>
+    <div class="action-row">
+      <button class="lab-btn lab-btn-accent" onclick="Lab.nextAttn()">Continue</button>
     </div>
   </div>
 
@@ -1438,7 +1474,7 @@
       <div class="demo-chips" id="demo-age"></div>
     </div>
 
-    <p style="font-size:0.72rem;color:var(--lab-muted);line-height:1.6;text-align:center;margin:1.5rem 0 0.5rem;">All responses are anonymous. We aggregate results by session code. You may stop at any time.</p>
+    <p style="font-size:0.72rem;color:var(--lab-muted);line-height:1.6;text-align:center;margin:1.5rem 0 0.5rem;">All responses are anonymous. This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible only to AES leadership and may be included in published findings. We do not collect your name or any identifying information. You may stop at any time.</p>
 
     <div class="action-row" style="flex-direction:column;align-items:center;gap:0.6rem;">
       <button class="lab-btn lab-btn-accent" id="demo-submit-btn" onclick="Lab.submitDemo()">See my results</button>
@@ -1495,6 +1531,7 @@ const Lab = {
   theatreCondition: Math.random() > 0.5 ? 'cash' : 'ticket',
   demoState: { gender: null, econ: null, age: null },
   timestamps: { start: null, q1: null, q2: null, q3: null, q4: null, demo: null },
+  _attnChoice: null,
   state: {
     anchorEstimate: null,
     gammaChoice:    null,
@@ -1502,6 +1539,7 @@ const Lab = {
     theatreChoice:  null,
     confLow:        null,
     confHigh:       null,
+    attnPass:       null,
   },
 
   // questionOrder: shuffled array of [1,2,3,4] set at start.
@@ -1551,7 +1589,7 @@ const Lab = {
     if (this._qStep < 4) {
       this._initQByStep(this._qStep);
     } else {
-      this.showAnalyzing();
+      this.showAttn();
     }
   },
 
@@ -1634,6 +1672,7 @@ const Lab = {
         dec:  this.demoState.econ,
         da:   this.demoState.age,
         sc:   document.getElementById('demo-code')?.value || null,
+        attn: this.state.attnPass,
         ts1: rel(this.timestamps.q1),
         ts2: rel(this.timestamps.q2),
         ts3: rel(this.timestamps.q3),
@@ -1665,15 +1704,20 @@ const Lab = {
   initQ1() {
     const anchor = this.anchorCondition === 'high' ? 65 : 10;
     const slider = document.getElementById('anchor-slider');
-    // Slider starts at the anchor value — the implicit anchor, not shown on screen
     slider.value = anchor;
     document.getElementById('anchor-val').textContent = anchor + '%';
     this.state.anchorEstimate = anchor;
+    this._anchorMoved = false;
+    document.getElementById('q1-next-btn').disabled = true;
     this.show('screen-q1');
   },
   onAnchorSlider(val) {
     this.state.anchorEstimate = parseInt(val);
     document.getElementById('anchor-val').textContent = val + '%';
+    if (!this._anchorMoved) {
+      this._anchorMoved = true;
+      document.getElementById('q1-next-btn').disabled = false;
+    }
   },
   nextQ1() {
     this.timestamps.q1 = Date.now();
@@ -1781,7 +1825,7 @@ const Lab = {
         this.state.confLow = year;
         this._q4Phase = 'high';
         document.getElementById('q4-prompt').innerHTML =
-          'Now click your <strong>latest</strong> bound.';
+          'Now click your <strong>latest</strong> bound to complete the 90% interval.';
         document.getElementById('q4-prompt-2').style.display = 'none';
         document.getElementById('q4-state-display').textContent = year + ' \u2013';
         this._drawTimeline();
@@ -1936,6 +1980,31 @@ const Lab = {
     }
     this.timestamps.q4 = Date.now();
     this._advanceStep();
+  },
+
+  // ── Attention check ──────────────────────────────────────
+  showAttn() {
+    this._attnChoice = null;
+    this.setProgress(100, false);
+    this.show('screen-attn');
+  },
+
+  selectAttn(val) {
+    this._attnChoice = val;
+    document.querySelectorAll('#attn-choices .choice-btn').forEach(b => b.classList.remove('selected'));
+    [...document.querySelectorAll('#attn-choices .choice-btn')]
+      .find(b => b.querySelector('.choice-text').textContent === val)
+      ?.classList.add('selected');
+    document.getElementById('attn-err').classList.remove('show');
+  },
+
+  nextAttn() {
+    if (!this._attnChoice) {
+      document.getElementById('attn-err').classList.add('show');
+      return;
+    }
+    this.state.attnPass = this._attnChoice === 'Confirm' ? 1 : 0;
+    this.showAnalyzing();
   },
 
   // ── Analyzing screen ─────────────────────────────────────
