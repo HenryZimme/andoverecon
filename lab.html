@@ -1953,6 +1953,8 @@ const Lab = {
     const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScNKGDou1_nF57ApS6frElhyEcEOQJSTBA8d4rPheao7zRHbw/formResponse';
     const str = v => (v === null || v === undefined) ? '' : String(v);
     const payload = new URLSearchParams({
+      'fvv': '1',
+      'fbzx': Math.floor(Math.random() * 9e15).toString(),
       'entry.1430147413': str(this.anchorCondition),
       'entry.258805287':  str(this.state.anchorEstimate),
       'entry.1135780779': str(this.framingCondition),
