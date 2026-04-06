@@ -1572,6 +1572,13 @@ const Lab = {
   anchorCondition:  Math.random() > 0.5 ? 'high' : 'low',
   framingCondition: Math.random() > 0.5 ? 'gain' : 'loss',
   theatreCondition: Math.random() > 0.5 ? 'cash' : 'ticket',
+  q2flip: Math.random() < 0.5,  // randomize option order for Q2 choices
+  q3flip: Math.random() < 0.5,  // randomize option order for Q3 choices
+
+  // Task identity letters. 1–4 are internal IDs (DOM/dispatch); A–D are the
+  // scientific labels used in display, data submission, and the results page.
+  // Presentation order (1st shown, 2nd shown…) is tracked separately via _qStep.
+  _taskLetter: { 1: 'A', 2: 'B', 3: 'C', 4: 'D' },
   demoState: { gender: null, econ: null, age: null },
   timestamps: { start: null, q1: null, q2: null, q3: null, q4: null, demo: null },
   _attnChoice: null,
@@ -1600,13 +1607,13 @@ const Lab = {
     return a;
   },
 
-  // Update Task N / 04 counter and progress dots for the given screen.
-  _setTaskMeta(screenId, step) {
+  // Update task label and progress dots for the given screen.
+  // letter = task identity (A–D); step = 0-indexed presentation position.
+  _setTaskMeta(screenId, step, letter) {
     const screen = document.getElementById(screenId);
     if (!screen) return;
-    const num = String(step + 1).padStart(2, '0');
     const numEl = screen.querySelector('.task-number');
-    if (numEl) numEl.textContent = `Task ${num} / 04`;
+    if (numEl) numEl.textContent = `Task ${letter} · ${step + 1} of 4`;
     screen.querySelectorAll('.task-dot').forEach((dot, i) => {
       dot.className = 'task-dot';
       if (i < step) dot.classList.add('done');
@@ -1616,8 +1623,9 @@ const Lab = {
 
   _initQByStep(step) {
     const q = this.questionOrder[step];
+    const letter = this._taskLetter[q];
     this.setProgress(25 + step * 25, step === 0);
-    this._setTaskMeta('screen-q' + q, step);
+    this._setTaskMeta('screen-q' + q, step, letter);
     if (q === 1) this.initQ1();
     else if (q === 2) this.initQ2();
     else if (q === 3) this.initQ3();
@@ -1680,9 +1688,10 @@ const Lab = {
     const t0 = this.timestamps.start || Date.now();
     const rel = ts => ts ? Math.round((ts - t0) / 1000) : null;
 
-    // qord: which task (1–4) was shown at each position, e.g. "3-1-4-2".
+    // qord: which task (A–D) was shown at each position, e.g. "C-A-D-B".
+    // Letters = task identity; position in the string = presentation order.
     // Used to detect survey fatigue / order effects in analysis.
-    const qord = (this.questionOrder || [1, 2, 3, 4]).join('-');
+    const qord = (this.questionOrder || [1, 2, 3, 4]).map(q => this._taskLetter[q] || q).join('-');
 
     // tp1–tp4: time spent (seconds) at presentation positions 1–4.
     // These are the position-based equivalents of ts1–ts4, which are by task number.
@@ -1726,6 +1735,8 @@ const Lab = {
         tp2: positionTimes[1],
         tp3: positionTimes[2],
         tp4: positionTimes[3],
+        q2f: this.q2flip ? 1 : 0,
+        q3f: this.q3flip ? 1 : 0,
       })
     }).catch(() => {});
     localStorage.setItem(STORE_KEY, did);
@@ -1778,6 +1789,17 @@ const Lab = {
     document.getElementById('q2-text-risky').textContent = gain
       ? 'Program B: 1/3 chance all 600 are saved, 2/3 chance nobody is saved.'
       : 'Program B: 1/3 chance nobody dies, 2/3 chance all 600 die.';
+
+    // Randomize option order for Decision A (gamma) and Decision B (framing)
+    if (this.q2flip) {
+      const gc = document.getElementById('gamma-choices');
+      gc.appendChild(gc.firstElementChild); // move 'certain' after 'risky'
+      const q2c = document.getElementById('q2-choices');
+      q2c.appendChild(q2c.firstElementChild); // move 'certain' after 'risky'
+      document.querySelector('#q2-certain .choice-letter').textContent = 'B';
+      document.querySelector('#q2-risky .choice-letter').textContent = 'A';
+    }
+
     this.show('screen-q2');
   },
   selectGamma(val) {
@@ -1809,6 +1831,15 @@ const Lab = {
     document.getElementById('theatre-scenario').innerHTML = cash
       ? 'You decide to see a play. Tickets cost $10. On the way to the theater, you discover you\'ve lost $10 from your wallet. Do you still pay $10 for a ticket?'
       : 'You buy a $10 ticket to a play in advance. On the way to the theater, you discover you\'ve lost the ticket. It\'s gone. Do you pay $10 for a new one?';
+
+    // Randomize yes/no order
+    if (this.q3flip) {
+      const q3c = document.getElementById('q3-choices');
+      q3c.appendChild(q3c.firstElementChild); // move 'yes' after 'no'
+      document.querySelector('#q3-yes .choice-letter').textContent = 'B';
+      document.querySelector('#q3-no .choice-letter').textContent = 'A';
+    }
+
     this.show('screen-q3');
   },
   selectQ3(val) {
@@ -2434,6 +2465,8 @@ const Lab = {
       frc: this.framingCondition,
       thc: this.theatreCondition,
       qo:  this.questionOrder || [1, 2, 3, 4],
+      q2f: this.q2flip,
+      q3f: this.q3flip,
     };
     history.replaceState(null,'','#' + btoa(JSON.stringify(d)));
   },
@@ -2486,6 +2519,8 @@ const Lab = {
       this.framingCondition       = d.frc;
       this.theatreCondition       = d.thc;
       this.questionOrder          = d.qo || [1, 2, 3, 4];
+      this.q2flip                 = d.q2f || false;
+      this.q3flip                 = d.q3f || false;
       return true;
     } catch(e) { return false; }
   },
