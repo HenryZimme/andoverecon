@@ -1205,6 +1205,78 @@
       .lab-btn { min-height: 48px; width: 100%; text-align: center; }
       .action-row { flex-direction: column; align-items: stretch; }
     }
+
+    /* ── Session Poster ───────────────────────────────────── */
+    #aes-poster {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #f2ede4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem;
+      clip-path: inset(0 0 0 0);
+      transition: clip-path 0.7s cubic-bezier(0.76, 0, 0.24, 1),
+                  opacity 0.5s 0.3s;
+    }
+    #aes-poster.dismissed {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #aes-poster-inner {
+      max-width: 640px;
+      width: 100%;
+      text-align: left;
+    }
+    #aes-poster-kicker {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8a7f72;
+      margin-bottom: 2.5rem;
+    }
+    #aes-poster-headline {
+      font-family: var(--sans);
+      font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #0d0d0d;
+      margin-bottom: 3rem;
+      max-width: 560px;
+    }
+    #aes-poster-headline em {
+      font-style: normal;
+      color: #c41a1a;
+    }
+    #aes-poster-cta {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #0d0d0d;
+      margin-bottom: 1.25rem;
+    }
+    #aes-poster-bar {
+      height: 2px;
+      background: #d9d3c8;
+      width: 100%;
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    #aes-poster-bar-fill {
+      height: 100%;
+      width: 100%;
+      background: #c41a1a;
+      transform-origin: left;
+      transform: scaleX(1);
+      transition: transform linear;
+    }
   </style>
 
   <!-- ── SEO ──────────────────────────────────────────────── -->
@@ -1245,6 +1317,15 @@
   <!-- ── /SEO ─────────────────────────────────────────────── -->
 </head>
 <body>
+
+<div id="aes-poster" style="display:none;" aria-modal="true" role="dialog">
+  <div id="aes-poster-inner">
+    <p id="aes-poster-kicker"></p>
+    <p id="aes-poster-headline"></p>
+    <p id="aes-poster-cta">Take the experiment below.</p>
+    <div id="aes-poster-bar"><div id="aes-poster-bar-fill"></div></div>
+  </div>
+</div>
 
 <div id="progress-bar"></div>
 
@@ -2547,6 +2628,46 @@ const Lab = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  // ── Session poster ───────────────────────────────────────
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const isBias = params.has('bias26');
+    const isEcon = params.has('econ26');
+    if (!isBias && !isEcon) return;
+
+    const code = isBias ? 'BIAS26' : 'ECON26';
+    sessionStorage.setItem('aes_sc', code);
+
+    const DURATION = 6000; // ms before auto-dismiss
+
+    const poster = document.getElementById('aes-poster');
+    const kicker = document.getElementById('aes-poster-kicker');
+    const headline = document.getElementById('aes-poster-headline');
+    const fill = document.getElementById('aes-poster-bar-fill');
+
+    if (isBias) {
+      kicker.textContent = 'Behavioral economics experiment · Spring 2026';
+      headline.innerHTML = 'We\'re studying four cognitive biases: <em>anchoring</em>, <em>gain/loss framing</em>, <em>mental accounting</em>, and <em>overprecision</em>.';
+    } else {
+      kicker.textContent = 'Judgment and decision study · Spring 2026';
+      headline.innerHTML = 'You\'ll complete four tasks: <em>a numerical estimation</em>, <em>two economic choices</em>, <em>a real-world judgment</em>, and <em>a confidence interval</em>.';
+    }
+
+    poster.style.display = 'flex';
+
+    requestAnimationFrame(() => {
+      fill.style.transition = `transform ${DURATION}ms linear`;
+      fill.style.transform = 'scaleX(0)';
+    });
+
+    setTimeout(() => {
+      poster.classList.add('dismissed');
+      poster.addEventListener('transitionend', () => {
+        poster.style.display = 'none';
+      }, { once: true });
+    }, DURATION);
+  })();
+
   // pre-fill session code from ?session= url param (e.g. andoverecon.org/lab?session=2026)
   const urlSession = new URLSearchParams(window.location.search).get('session');
   if (urlSession) {
