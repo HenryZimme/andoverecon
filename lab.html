@@ -2631,8 +2631,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Session poster ───────────────────────────────────────
   (function() {
     const params = new URLSearchParams(window.location.search);
-    const isBias = params.has('bias26');
-    const isEcon = params.has('econ26');
+    const source = params.get('source') || '';
+    const isBias = source === 'bias26';
+    const isEcon = source === 'econ26';
     if (!isBias && !isEcon) return;
 
     const code = isBias ? 'BIAS26' : 'ECON26';
