@@ -799,27 +799,16 @@
     /* ── Analyzing screen ─────────────────────────────────── */
     #screen-analyzing { text-align: center; padding: 3rem 2rem; max-width: 420px; }
 
-    .analyzing-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-      width: 44px;
-      margin: 0 auto 2.25rem;
-    }
-    .a-dot {
-      width: 20px; height: 20px;
+    .analyzing-ring {
+      width: 48px; height: 48px;
       border-radius: 50%;
-      background: var(--lab-accent);
-      opacity: 0;
-      animation: aDot 1.3s ease infinite;
+      border: 3px solid rgba(68,184,243,0.15);
+      border-top-color: var(--lab-accent);
+      margin: 0 auto 2.25rem;
+      animation: ringSpin 0.85s linear infinite;
     }
-    .a-dot:nth-child(1) { animation-delay: 0s; }
-    .a-dot:nth-child(2) { animation-delay: 0.2s; }
-    .a-dot:nth-child(3) { animation-delay: 0.1s; }
-    .a-dot:nth-child(4) { animation-delay: 0.3s; }
-    @keyframes aDot {
-      0%,100% { opacity: 0.1; transform: scale(0.75); }
-      50%      { opacity: 1;   transform: scale(1); }
+    @keyframes ringSpin {
+      to { transform: rotate(360deg); }
     }
 
     .analyzing-wrap {
@@ -1284,7 +1273,7 @@
     #aes-poster-bar-fill {
       height: 100%;
       width: 100%;
-      background: #c41a1a;
+      background: #b8a94a;
       transform-origin: left;
       transform: scaleX(1);
       transition: transform linear;
@@ -1603,12 +1592,7 @@
        ANALYZING
        ══════════════════════════════════════════════════════ -->
   <div id="screen-analyzing" class="lab-screen" style="text-align:center;padding:3rem 2rem;max-width:420px;">
-    <div class="analyzing-grid">
-      <div class="a-dot"></div>
-      <div class="a-dot"></div>
-      <div class="a-dot"></div>
-      <div class="a-dot"></div>
-    </div>
+    <div class="analyzing-ring"></div>
     <div class="analyzing-wrap">
       <div class="a-msg show" id="amsg-0">Scoring your four responses…</div>
       <div class="a-msg" id="amsg-1">Measuring your anchoring response…</div>
@@ -2771,7 +2755,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Session poster ───────────────────────────────────────
   (function() {
     const params = new URLSearchParams(window.location.search);
-    const session = params.get('session') || '';
+    const session = (params.get('session') || '').toLowerCase();
     const isBias = session === 'bias26';
     const isEcon = session === 'econ26';
     if (!isBias && !isEcon) return;
