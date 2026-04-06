@@ -612,8 +612,36 @@
       margin-top: 0.55rem;
     }
 
-    /* ── Anchor display (Q1) ─────────────────────────────── */
-    .anchor-display {
+    /* ── Anchor drum ──────────────────────────────────────── */
+    .anchor-drum {
+      background: var(--lab-surface);
+      border: 1px solid var(--lab-border);
+      border-radius: 6px;
+      padding: 1.5rem 2rem 1.25rem;
+      display: inline-block;
+      min-width: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+    .anchor-drum::before,
+    .anchor-drum::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 28px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .anchor-drum::before {
+      top: 0;
+      background: linear-gradient(to bottom, var(--lab-surface), transparent);
+    }
+    .anchor-drum::after {
+      bottom: 0;
+      background: linear-gradient(to top, var(--lab-surface), transparent);
+    }
+    .anchor-number { opacity: 1; transition: opacity 0.4s; }
+    .anchor-number.resolving { opacity: 0; }
       text-align: center;
       margin-bottom: 2rem;
     }
@@ -1341,6 +1369,7 @@
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
       <p class="intro-sub">Four decisions. Each one reveals something different about how you think under uncertainty.</p>
       <p class="intro-meta">~5 minutes · Five tasks · Anonymous responses collected for research</p>
+      <p style="font-size:0.68rem;color:rgba(255,255,255,0.3);line-height:1.6;max-width:340px;margin:0 auto 2.75rem;">This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible to AES members and may be included in published findings.</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
   </div>
@@ -1350,9 +1379,10 @@
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q1" class="lab-screen">
     <div class="task-meta">
-      <span class="task-number">Task 01 / 04</span>
+      <span class="task-number">Task A · 1 of 6</span>
       <div class="task-dots">
         <div class="task-dot active"></div>
+        <div class="task-dot"></div>
         <div class="task-dot"></div>
         <div class="task-dot"></div>
         <div class="task-dot"></div>
@@ -1366,9 +1396,11 @@
     <p class="scope-q">What percentage of UN member states are from Africa?</p>
 
     <div class="anchor-display">
-      <p class="anchor-display-label" id="anchor-display-label">Generating random number…</p>
-      <div class="anchor-number" id="anchor-ref-display">–</div>
-      <p id="anchor-sublabel" style="font-size:0.68rem;color:var(--lab-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-top:0.45rem;opacity:0;transition:opacity 0.5s;">Wheel stopped · 0 – 100</p>
+      <p class="anchor-display-label" id="anchor-display-label">Drawing anchor…</p>
+      <div class="anchor-drum">
+        <div class="anchor-number spinning" id="anchor-ref-display">–</div>
+      </div>
+      <p id="anchor-sublabel" style="font-size:0.68rem;color:var(--lab-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-top:0.7rem;opacity:0;transition:opacity 0.5s;">Range: 0 – 100</p>
     </div>
 
     <p class="scope-q" style="margin-bottom:1.25rem;">Is the actual percentage higher or lower than this? Move the slider to show your estimate.</p>
@@ -1399,8 +1431,9 @@
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q2" class="lab-screen">
     <div class="task-meta">
-      <span class="task-number">Task B · 1 of 5</span>
+      <span class="task-number">Task B · 2 of 6</span>
       <div class="task-dots">
+        <div class="task-dot done"></div>
         <div class="task-dot active"></div>
         <div class="task-dot"></div>
         <div class="task-dot"></div>
@@ -1439,11 +1472,12 @@
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q3" class="lab-screen">
     <div class="task-meta">
-      <span class="task-number">Task 03 / 04</span>
+      <span class="task-number">Task C · 3 of 6</span>
       <div class="task-dots">
         <div class="task-dot done"></div>
         <div class="task-dot done"></div>
         <div class="task-dot active"></div>
+        <div class="task-dot"></div>
         <div class="task-dot"></div>
         <div class="task-dot"></div>
       </div>
@@ -1477,12 +1511,13 @@
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q4" class="lab-screen">
     <div class="task-meta">
-      <span class="task-number">Task 04 / 04</span>
+      <span class="task-number">Task D · 4 of 6</span>
       <div class="task-dots">
         <div class="task-dot done"></div>
         <div class="task-dot done"></div>
         <div class="task-dot done"></div>
         <div class="task-dot active"></div>
+        <div class="task-dot"></div>
         <div class="task-dot"></div>
       </div>
     </div>
@@ -1522,12 +1557,13 @@
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q5" class="lab-screen">
     <div class="task-meta">
-      <span class="task-number">Task E · 1 of 5</span>
+      <span class="task-number">Task E · 5 of 6</span>
       <div class="task-dots">
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
         <div class="task-dot active"></div>
-        <div class="task-dot"></div>
-        <div class="task-dot"></div>
-        <div class="task-dot"></div>
         <div class="task-dot"></div>
       </div>
     </div>
@@ -1561,6 +1597,17 @@
        ATTENTION CHECK
        ══════════════════════════════════════════════════════ -->
   <div id="screen-attn" class="lab-screen" style="max-width:480px;">
+    <div class="task-meta">
+      <span class="task-number">Attention · 6 of 6</span>
+      <div class="task-dots">
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot done"></div>
+        <div class="task-dot active"></div>
+      </div>
+    </div>
     <h2 class="q-headline">One quick check.</h2>
     <p class="q-sub" style="margin-bottom:1.5rem;">Select the option that matches the instruction.</p>
     <p class="scope-q" style="margin-bottom:1.25rem;">For this question, select <strong>"Confirm"</strong>.</p>
@@ -1632,7 +1679,7 @@
       <div class="demo-chips" id="demo-age"></div>
     </div>
 
-    <p style="font-size:0.72rem;color:var(--lab-muted);line-height:1.6;text-align:center;margin:1.5rem 0 0.5rem;">All responses are anonymous. This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible only to AES leadership and may be included in published findings. We do not collect your name or any identifying information. You may stop at any time.</p>
+    <p style="font-size:0.72rem;color:var(--lab-muted);line-height:1.6;text-align:center;margin:1.5rem 0 0.5rem;">All responses are anonymous — we do not collect your name, email address, or any directly identifying information. We collect an anonymized device signature solely to prevent duplicate submissions. This data is collected for research on decision-making conducted by the Andover Economics Society. Responses are accessible to AES members and may be included in published findings. You may stop at any time.</p>
 
     <div class="action-row" style="flex-direction:column;align-items:center;gap:0.6rem;">
       <button class="lab-btn lab-btn-accent" id="demo-submit-btn" onclick="Lab.submitDemo()">See my results</button>
@@ -1921,26 +1968,18 @@ const Lab = {
     const labelEl  = document.getElementById('anchor-display-label');
     const sublabel = document.getElementById('anchor-sublabel');
 
-    // Build frame schedule: fast random numbers, then decelerate, then land.
-    const frames = [];
-    for (let i = 0; i < 22; i++) frames.push([55, Math.floor(Math.random() * 101)]);
-    [90, 120, 160, 210, 270, 340, 420, 510].forEach(d =>
-      frames.push([d, Math.floor(Math.random() * 101)]));
-    frames.push([600, target]); // final landing
+    display.textContent = '?';
 
-    let idx = 0;
-    const step = () => {
-      const [delay, val] = frames[idx++];
-      display.textContent = val + '%';
-      if (idx < frames.length) {
-        setTimeout(step, delay);
-      } else {
-        labelEl.textContent = 'Random number';
+    setTimeout(() => {
+      display.classList.add('resolving');
+      setTimeout(() => {
+        display.textContent = target + '%';
+        display.classList.remove('resolving');
+        labelEl.textContent = 'Anchor';
         sublabel.style.opacity = '1';
         onDone();
-      }
-    };
-    setTimeout(step, 80);
+      }, 400);
+    }, 1200);
   },
 
   initQ1() {
@@ -1948,8 +1987,10 @@ const Lab = {
     const slider = document.getElementById('anchor-slider');
 
     // Reset display to spinning state
-    document.getElementById('anchor-display-label').textContent = 'Generating random number…';
-    document.getElementById('anchor-ref-display').textContent = '–';
+    document.getElementById('anchor-display-label').textContent = 'Drawing anchor…';
+    const refDisplay = document.getElementById('anchor-ref-display');
+    refDisplay.textContent = '?';
+    refDisplay.classList.remove('resolving');
     document.getElementById('anchor-sublabel').style.opacity = '0';
     document.getElementById('anchor-val').textContent = '–';
     document.getElementById('anchor-diff').textContent = '–';
@@ -2763,7 +2804,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const code = isBias ? 'BIAS26' : 'ECON26';
     sessionStorage.setItem('aes_sc', code);
 
-    const DURATION = 6000; // ms before auto-dismiss
+    const DURATION = 4000; // ms before auto-dismiss
 
     const poster = document.getElementById('aes-poster');
     const kicker = document.getElementById('aes-poster-kicker');
