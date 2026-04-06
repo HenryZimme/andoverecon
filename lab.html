@@ -1989,26 +1989,35 @@ const Lab = {
       'entry.2043229836': str(this.timelineMin),
     });
 
-    const submitToForms = (attempt) => {
-      fetch(FORM_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: payload,
-      }).then(() => {
-        localStorage.removeItem('aes_lab_pending');
-      }).catch(err => {
-        console.error('Forms submission attempt ' + attempt + ' failed:', err);
-        if (attempt < 3) {
-          setTimeout(() => submitToForms(attempt + 1), 2000 * attempt);
-        } else {
-          // Store payload locally as fallback after all retries exhausted
-          localStorage.setItem('aes_lab_pending', payload.toString());
-          console.error('All retries failed. Payload saved to localStorage under aes_lab_pending.');
-        }
-      });
-    };
+    // Hidden iframe form POST — most reliable cross-origin method for Google Forms.
+    // fetch/no-cors is inconsistent across browsers; a native form POST is not.
+    const iframe = document.createElement('iframe');
+    iframe.name = '_forms_sink';
+    iframe.style.cssText = 'display:none;position:absolute;width:0;height:0;border:0';
+    document.body.appendChild(iframe);
 
-    submitToForms(1);
+    const form = document.createElement('form');
+    form.method  = 'POST';
+    form.action  = FORM_URL;
+    form.target  = '_forms_sink';
+    form.style.display = 'none';
+
+    for (const [name, value] of payload.entries()) {
+      const input = document.createElement('input');
+      input.type  = 'hidden';
+      input.name  = name;
+      input.value = value;
+      form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+
+    setTimeout(() => {
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+      localStorage.removeItem('aes_lab_pending');
+    }, 5000);
     localStorage.setItem(STORE_KEY, did);
   },
 
