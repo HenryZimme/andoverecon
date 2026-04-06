@@ -1895,7 +1895,7 @@ const Lab = {
     // qord: which task (A–D) was shown at each position, e.g. "C-A-D-B".
     // Letters = task identity; position in the string = presentation order.
     // Used to detect survey fatigue / order effects in analysis.
-    const qord = (this.questionOrder || [1, 2, 3, 4]).map(q => this._taskLetter[q] || q).join('-');
+    const qord = (this.questionOrder || [1, 2, 3, 4, 5]).map(q => this._taskLetter[q] || q).join('-');
 
     // tp1–tp4: time spent (seconds) at presentation positions 1–4.
     // These are the position-based equivalents of ts1–ts4, which are by task number.
@@ -1948,6 +1948,66 @@ const Lab = {
         tlm: this.timelineMin,
       })
     }).catch(() => {});
+
+    // ── Google Forms submission (primary, handles concurrent load) ──
+    const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScNKGDou1_nF57ApS6frElhyEcEOQJSTBA8d4rPheao7zRHbw/formResponse';
+    const str = v => (v === null || v === undefined) ? '' : String(v);
+    const payload = new URLSearchParams({
+      'entry.1430147413': str(this.anchorCondition),
+      'entry.258805287':  str(this.state.anchorEstimate),
+      'entry.1135780779': str(this.framingCondition),
+      'entry.1564965790': str(this.state.framingChoice),
+      'entry.1591346402': str(this.state.gammaChoice),
+      'entry.676484287':  str(this.theatreCondition),
+      'entry.320732567':  str(this.state.theatreChoice),
+      'entry.597276917':  str(this.state.confLow),
+      'entry.1363189479': str(this.state.confHigh),
+      'entry.1134127349': str(/Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop'),
+      'entry.721070626':  str(did),
+      'entry.217816556':  str(this.demoState.gender),
+      'entry.1963272697': str(this.demoState.econ),
+      'entry.1510101169': str(this.demoState.age),
+      'entry.332351153':  str(document.getElementById('demo-code')?.value || ''),
+      'entry.1227196810': str(this.state.attnPass),
+      'entry.2102060036': str(rel(this.timestamps.q1)),
+      'entry.1911202456': str(rel(this.timestamps.q2)),
+      'entry.1032782484': str(rel(this.timestamps.q3)),
+      'entry.2030896864': str(rel(this.timestamps.q4)),
+      'entry.2126806796': str(rel(this.timestamps.q5)),
+      'entry.30382070':   str(rel(this.timestamps.demo)),
+      'entry.1497458902': str(qord),
+      'entry.1750500424': str(positionTimes[0]),
+      'entry.679529074':  str(positionTimes[1]),
+      'entry.1751670138': str(positionTimes[2]),
+      'entry.1376694951': str(positionTimes[3]),
+      'entry.1772831791': str(positionTimes[4]),
+      'entry.1490093661': str(this.q2flip ? 1 : 0),
+      'entry.1214055953': str(this.q3flip ? 1 : 0),
+      'entry.1445869679': str(this.q5flip ? 1 : 0),
+      'entry.2043229836': str(this.timelineMin),
+    });
+
+    const submitToForms = (attempt) => {
+      fetch(FORM_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: payload.toString(),
+      }).then(() => {
+        localStorage.removeItem('aes_lab_pending');
+      }).catch(err => {
+        console.error('Forms submission attempt ' + attempt + ' failed:', err);
+        if (attempt < 3) {
+          setTimeout(() => submitToForms(attempt + 1), 2000 * attempt);
+        } else {
+          // Store payload locally as fallback after all retries exhausted
+          localStorage.setItem('aes_lab_pending', payload.toString());
+          console.error('All retries failed. Payload saved to localStorage under aes_lab_pending.');
+        }
+      });
+    };
+
+    submitToForms(1);
     localStorage.setItem(STORE_KEY, did);
   },
 
