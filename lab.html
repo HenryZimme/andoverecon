@@ -784,6 +784,18 @@
       line-height: 1.5;
     }
 
+    .code-input-invalid {
+      border-bottom-color: var(--lab-danger) !important;
+      animation: shake 0.35s ease;
+    }
+    .demo-skip-callout {
+      opacity: 1 !important;
+      color: var(--lab-accent) !important;
+      font-weight: 700 !important;
+      text-decoration: none;
+    }
+    .demo-skip-callout::before { content: '↑ '; }
+
     /* ── Analyzing screen ─────────────────────────────────── */
     #screen-analyzing { text-align: center; padding: 3rem 2rem; max-width: 420px; }
 
@@ -1339,7 +1351,7 @@
       <a href="index.html" class="intro-badge" style="text-decoration:none;">← Andover Economics Society</a>
       <h1 class="intro-title">Decision<br><span class="underlined">Lab.</span></h1>
       <p class="intro-sub">Four decisions. Each one reveals something different about how you think under uncertainty.</p>
-      <p class="intro-meta">~5 minutes · Anonymous responses collected for research</p>
+      <p class="intro-meta">~6 minutes · Five tasks · Anonymous responses collected for research</p>
       <button class="lab-btn lab-btn-white" onclick="Lab.start()">Begin the experiment</button>
     </div>
   </div>
@@ -1355,13 +1367,23 @@
         <div class="task-dot"></div>
         <div class="task-dot"></div>
         <div class="task-dot"></div>
+        <div class="task-dot"></div>
       </div>
     </div>
 
-    <h2 class="q-headline">A quick estimate.</h2>
+    <h2 class="q-headline">Higher or lower?</h2>
     <p class="q-sub">Don't look it up. Go with your gut.</p>
 
     <p class="scope-q">What percentage of UN member states are from Africa?</p>
+
+    <div class="anchor-display">
+      <p class="anchor-display-label" id="anchor-display-label">Generating random number…</p>
+      <div class="anchor-number" id="anchor-ref-display">–</div>
+      <p id="anchor-sublabel" style="font-size:0.68rem;color:var(--lab-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-top:0.45rem;opacity:0;transition:opacity 0.5s;">Wheel stopped · 0 – 100</p>
+    </div>
+
+    <p class="scope-q" style="margin-bottom:1.25rem;">Is the actual percentage higher or lower than this? Move the slider to show your estimate.</p>
+
     <div class="slider-box">
       <div class="slider-head">
         <span class="slider-label-text">Your estimate</span>
@@ -1373,6 +1395,9 @@
         <span>0%</span>
         <span>100%</span>
       </div>
+      <div style="text-align:center;margin-top:0.75rem;font-size:0.8rem;color:var(--lab-muted);letter-spacing:0.04em;">
+        Difference from anchor: <span id="anchor-diff" style="color:var(--lab-accent);font-weight:700;">0</span>
+      </div>
     </div>
 
     <div class="action-row">
@@ -1381,42 +1406,25 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       Q2: FRAMING EFFECT (with gamma calibration)
+       Q2: FRAMING EFFECT
        ══════════════════════════════════════════════════════ -->
   <div id="screen-q2" class="lab-screen">
     <div class="task-meta">
-      <span class="task-number">Task 02 / 04</span>
+      <span class="task-number">Task B · 1 of 5</span>
       <div class="task-dots">
-        <div class="task-dot done"></div>
         <div class="task-dot active"></div>
         <div class="task-dot"></div>
         <div class="task-dot"></div>
+        <div class="task-dot"></div>
+        <div class="task-dot"></div>
       </div>
     </div>
 
-    <h2 class="q-headline">Two decisions.</h2>
-    <p class="q-sub">Answer each one independently.</p>
+    <h2 class="q-headline">A public health decision.</h2>
+    <p class="q-sub">Read carefully and choose.</p>
 
-    <!-- Gamma calibration panel -->
-    <div class="bias-panel" style="margin-bottom:1.25rem;">
-      <p class="bias-panel-label">Decision A</p>
-      <p class="bias-panel-desc">Same expected value. Which would you choose?</p>
-      <div class="bias-panel-choices" id="gamma-choices">
-        <button class="bias-choice" onclick="Lab.selectGamma('certain')" id="gamma-certain">
-          <div class="bias-amount" style="font-size:1.1rem;">$50</div>
-          <div class="bias-timing">For certain</div>
-        </button>
-        <button class="bias-choice" onclick="Lab.selectGamma('risky')" id="gamma-risky">
-          <div class="bias-amount" style="font-size:1.1rem;">50 / 50</div>
-          <div class="bias-timing">$100 or nothing</div>
-        </button>
-      </div>
-    </div>
-
-    <!-- Framing panel: visible from start -->
-    <!-- Framing panel: hidden until Decision A is answered to prevent frame contamination -->
-    <div id="framing-panel" class="bias-panel framing-hidden" style="margin-top:1.25rem;">
-      <p class="bias-panel-label">Decision B</p>
+    <div id="framing-panel" class="bias-panel">
+      <p class="bias-panel-label">Decision</p>
       <p class="bias-panel-desc" id="framing-scenario"></p>
       <div class="choice-stack" id="q2-choices" style="margin-top:0.75rem;">
         <button class="choice-btn" onclick="Lab.selectQ2('certain')" id="q2-certain">
@@ -1430,7 +1438,7 @@
       </div>
     </div>
 
-    <div id="q2-err" class="val-msg">Please answer both decisions before continuing.</div>
+    <div id="q2-err" class="val-msg">Please make a selection before continuing.</div>
 
     <div class="action-row">
       <button class="lab-btn lab-btn-accent" id="q2-next-btn" onclick="Lab.nextQ2()">Continue</button>
@@ -1447,6 +1455,7 @@
         <div class="task-dot done"></div>
         <div class="task-dot done"></div>
         <div class="task-dot active"></div>
+        <div class="task-dot"></div>
         <div class="task-dot"></div>
       </div>
     </div>
@@ -1485,6 +1494,7 @@
         <div class="task-dot done"></div>
         <div class="task-dot done"></div>
         <div class="task-dot active"></div>
+        <div class="task-dot"></div>
       </div>
     </div>
 
@@ -1501,9 +1511,9 @@
     <div class="ci-timeline-wrap" id="ci-timeline-wrap">
       <canvas id="ci-timeline" height="56" style="width:100%;cursor:crosshair;display:block;"></canvas>
       <div class="slider-ends" style="margin-top:0.4rem;">
-        <span>1900</span>
-        <span>1960</span>
-        <span>2020</span>
+        <span id="q4-label-min">1940</span>
+        <span id="q4-label-mid">1983</span>
+        <span id="q4-label-max">2026</span>
       </div>
     </div>
 
@@ -1515,6 +1525,46 @@
 
     <div class="action-row">
       <button class="lab-btn lab-btn-accent" id="q4-next-btn" onclick="Lab.nextQ4()">Continue</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       Q5: RISK PREFERENCE CALIBRATION
+       ══════════════════════════════════════════════════════ -->
+  <div id="screen-q5" class="lab-screen">
+    <div class="task-meta">
+      <span class="task-number">Task E · 1 of 5</span>
+      <div class="task-dots">
+        <div class="task-dot active"></div>
+        <div class="task-dot"></div>
+        <div class="task-dot"></div>
+        <div class="task-dot"></div>
+        <div class="task-dot"></div>
+      </div>
+    </div>
+
+    <h2 class="q-headline">A simple choice.</h2>
+    <p class="q-sub">Same expected value. Go with your instinct.</p>
+
+    <div class="bias-panel" style="margin-bottom:1.25rem;">
+      <p class="bias-panel-label">Decision</p>
+      <p class="bias-panel-desc">Both options have the same expected value. Which do you prefer?</p>
+      <div class="bias-panel-choices" id="gamma-choices">
+        <button class="bias-choice" onclick="Lab.selectGamma('certain')" id="gamma-certain">
+          <div class="bias-amount" style="font-size:1.1rem;">$50</div>
+          <div class="bias-timing">For certain</div>
+        </button>
+        <button class="bias-choice" onclick="Lab.selectGamma('risky')" id="gamma-risky">
+          <div class="bias-amount" style="font-size:1.1rem;">50 / 50</div>
+          <div class="bias-timing">$100 or nothing</div>
+        </button>
+      </div>
+    </div>
+
+    <div id="q5-err" class="val-msg">Please make a selection before continuing.</div>
+
+    <div class="action-row">
+      <button class="lab-btn lab-btn-accent" id="q5-next-btn" onclick="Lab.nextQ5()">Continue</button>
     </div>
   </div>
 
@@ -1653,15 +1703,20 @@ const Lab = {
   anchorCondition:  Math.random() > 0.5 ? 'high' : 'low',
   framingCondition: Math.random() > 0.5 ? 'gain' : 'loss',
   theatreCondition: Math.random() > 0.5 ? 'cash' : 'ticket',
-  q2flip: Math.random() < 0.5,  // randomize option order for Q2 choices
+  q2flip: Math.random() < 0.5,  // randomize option order for Q2 (framing) choices
   q3flip: Math.random() < 0.5,  // randomize option order for Q3 choices
+  q5flip: Math.random() < 0.5,  // randomize option order for Q5 (gamma) choices
+  // Timeline range for Q4: max fixed at current year; min randomised across {1940,1945,1950,1955}
+  // to prevent endpoint-anchoring bias from a fixed scale.
+  timelineMin: [1940, 1945, 1950, 1955][Math.floor(Math.random() * 4)],
+  timelineMax: 2026,
 
   // Task identity letters. 1–4 are internal IDs (DOM/dispatch); A–D are the
   // scientific labels used in display, data submission, and the results page.
   // Presentation order (1st shown, 2nd shown…) is tracked separately via _qStep.
-  _taskLetter: { 1: 'A', 2: 'B', 3: 'C', 4: 'D' },
+  _taskLetter: { 1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E' },
   demoState: { gender: null, econ: null, age: null },
-  timestamps: { start: null, q1: null, q2: null, q3: null, q4: null, demo: null },
+  timestamps: { start: null, q1: null, q2: null, q3: null, q4: null, q5: null, demo: null },
   _attnChoice: null,
   state: {
     anchorEstimate: null,
@@ -1694,7 +1749,7 @@ const Lab = {
     const screen = document.getElementById(screenId);
     if (!screen) return;
     const numEl = screen.querySelector('.task-number');
-    if (numEl) numEl.textContent = `Task ${letter} · ${step + 1} of 4`;
+    if (numEl) numEl.textContent = `Task ${letter} · ${step + 1} of 5`;
     screen.querySelectorAll('.task-dot').forEach((dot, i) => {
       dot.className = 'task-dot';
       if (i < step) dot.classList.add('done');
@@ -1705,20 +1760,21 @@ const Lab = {
   _initQByStep(step) {
     const q = this.questionOrder[step];
     const letter = this._taskLetter[q];
-    this.setProgress(25 + step * 25, step === 0);
+    this.setProgress(20 * (step + 1), step === 0);
     this._setTaskMeta('screen-q' + q, step, letter);
     if (q === 1) this.initQ1();
     else if (q === 2) this.initQ2();
     else if (q === 3) this.initQ3();
     else if (q === 4) this.initQ4();
+    else if (q === 5) this.initQ5();
     // update button label based on position, not question number
     const btn = document.getElementById('q' + q + '-next-btn');
-    if (btn) btn.textContent = step === 3 ? 'See my results' : 'Continue';
+    if (btn) btn.textContent = step === 4 ? 'See my results' : 'Continue';
   },
 
   _advanceStep() {
     this._qStep++;
-    if (this._qStep < 4) {
+    if (this._qStep < 5) {
       this._initQByStep(this._qStep);
     } else {
       this.showAttn();
@@ -1727,7 +1783,7 @@ const Lab = {
 
   // ── Navigation ──────────────────────────────────────────
   start() {
-    this.questionOrder = this._shuffle([1, 2, 3, 4]);
+    this.questionOrder = this._shuffle([1, 2, 3, 4, 5]);
     this._qStep = 0;
     this.timestamps.start = Date.now();
     this._initQByStep(0);
@@ -1749,8 +1805,19 @@ const Lab = {
     const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
     if (!VALID_HASHES.includes(hashHex)) {
       document.getElementById('code-err').classList.add('show');
-      setTimeout(() => this.renderResults(), 800);
-      return;
+
+      // Shake + red the code input
+      const inp = document.getElementById('demo-code');
+      inp.classList.add('code-input-invalid');
+      setTimeout(() => inp.classList.remove('code-input-invalid'), 400);
+
+      // Call out the skip button
+      const skipBtn = document.querySelector('.demo-skip');
+      if (skipBtn) {
+        skipBtn.classList.add('demo-skip-callout');
+        setTimeout(() => skipBtn.classList.remove('demo-skip-callout'), 5000);
+      }
+      return; // do not auto-navigate; let user decide
     }
     this.timestamps.demo = Date.now();
     const btn = document.getElementById('demo-submit-btn');
@@ -1805,8 +1872,9 @@ const Lab = {
       2: rel(this.timestamps.q2),
       3: rel(this.timestamps.q3),
       4: rel(this.timestamps.q4),
+      5: rel(this.timestamps.q5),
     };
-    const order = this.questionOrder || [1, 2, 3, 4];
+    const order = this.questionOrder || [1, 2, 3, 4, 5];
     const positionTimes = order.map((q, i) => {
       const cumulative = tsMap[q];
       if (cumulative === null) return null;
@@ -1834,14 +1902,18 @@ const Lab = {
         ts2: rel(this.timestamps.q2),
         ts3: rel(this.timestamps.q3),
         ts4: rel(this.timestamps.q4),
+        ts5: rel(this.timestamps.q5),
         tsd: rel(this.timestamps.demo),
         qord,
         tp1: positionTimes[0],
         tp2: positionTimes[1],
         tp3: positionTimes[2],
         tp4: positionTimes[3],
+        tp5: positionTimes[4],
         q2f: this.q2flip ? 1 : 0,
         q3f: this.q3flip ? 1 : 0,
+        q5f: this.q5flip ? 1 : 0,
+        tlm: this.timelineMin,
       })
     }).catch(() => {});
     localStorage.setItem(STORE_KEY, did);
@@ -1860,19 +1932,67 @@ const Lab = {
   },
 
   // ── Q1: Anchoring ────────────────────────────────────────
+  _runAnchorWheel(target, onDone) {
+    const display  = document.getElementById('anchor-ref-display');
+    const labelEl  = document.getElementById('anchor-display-label');
+    const sublabel = document.getElementById('anchor-sublabel');
+
+    // Build frame schedule: fast random numbers, then decelerate, then land.
+    const frames = [];
+    for (let i = 0; i < 22; i++) frames.push([55, Math.floor(Math.random() * 101)]);
+    [90, 120, 160, 210, 270, 340, 420, 510].forEach(d =>
+      frames.push([d, Math.floor(Math.random() * 101)]));
+    frames.push([600, target]); // final landing
+
+    let idx = 0;
+    const step = () => {
+      const [delay, val] = frames[idx++];
+      display.textContent = val + '%';
+      if (idx < frames.length) {
+        setTimeout(step, delay);
+      } else {
+        labelEl.textContent = 'Random number';
+        sublabel.style.opacity = '1';
+        onDone();
+      }
+    };
+    setTimeout(step, 80);
+  },
+
   initQ1() {
     const anchor = this.anchorCondition === 'high' ? 65 : 10;
     const slider = document.getElementById('anchor-slider');
-    slider.value = anchor;
-    document.getElementById('anchor-val').textContent = anchor + '%';
-    this.state.anchorEstimate = anchor;
+
+    // Reset display to spinning state
+    document.getElementById('anchor-display-label').textContent = 'Generating random number…';
+    document.getElementById('anchor-ref-display').textContent = '–';
+    document.getElementById('anchor-sublabel').style.opacity = '0';
+    document.getElementById('anchor-val').textContent = '–';
+    document.getElementById('anchor-diff').textContent = '–';
+
+    slider.value = 50;
+    slider.disabled = true;
+    this.state.anchorEstimate = null;
     this._anchorMoved = false;
     document.getElementById('q1-next-btn').disabled = true;
+
     this.show('screen-q1');
+
+    this._runAnchorWheel(anchor, () => {
+      // Wheel has landed — now activate the slider
+      slider.value = anchor;
+      slider.disabled = false;
+      document.getElementById('anchor-val').textContent = anchor + '%';
+      document.getElementById('anchor-diff').textContent = '0';
+      this.state.anchorEstimate = anchor;
+    });
   },
   onAnchorSlider(val) {
     this.state.anchorEstimate = parseInt(val);
     document.getElementById('anchor-val').textContent = val + '%';
+    const anchor = this.anchorCondition === 'high' ? 65 : 10;
+    const diff = parseInt(val) - anchor;
+    document.getElementById('anchor-diff').textContent = (diff > 0 ? '+' : '') + diff + ' pp';
     if (!this._anchorMoved) {
       this._anchorMoved = true;
       document.getElementById('q1-next-btn').disabled = false;
@@ -1883,7 +2003,7 @@ const Lab = {
     this._advanceStep();
   },
 
-  // ── Q2: Framing effect (with gamma calibration) ──────────
+  // ── Q2: Framing effect ───────────────────────────────────
   initQ2() {
     const gain = this.framingCondition === 'gain';
     document.getElementById('framing-scenario').textContent =
@@ -1895,12 +2015,9 @@ const Lab = {
       ? 'Program B: 1/3 chance all 600 are saved, 2/3 chance nobody is saved.'
       : 'Program B: 1/3 chance nobody dies, 2/3 chance all 600 die.';
 
-    // Randomize option order for Decision A (gamma) and Decision B (framing)
     if (this.q2flip) {
-      const gc = document.getElementById('gamma-choices');
-      gc.appendChild(gc.firstElementChild); // move 'certain' after 'risky'
       const q2c = document.getElementById('q2-choices');
-      q2c.appendChild(q2c.firstElementChild); // move 'certain' after 'risky'
+      q2c.appendChild(q2c.firstElementChild);
       document.querySelector('#q2-certain .choice-letter').textContent = 'B';
       document.querySelector('#q2-risky .choice-letter').textContent = 'A';
     }
@@ -1911,9 +2028,7 @@ const Lab = {
     this.state.gammaChoice = val;
     document.querySelectorAll('#gamma-choices .bias-choice').forEach(b => b.classList.remove('selected'));
     document.getElementById('gamma-' + val).classList.add('selected');
-    document.getElementById('q2-err').classList.remove('show');
-    // Reveal Decision B now that Decision A is answered (prevents frame contamination)
-    document.getElementById('framing-panel').classList.add('revealed');
+    document.getElementById('q5-err').classList.remove('show');
   },
   selectQ2(val) {
     this.state.framingChoice = val;
@@ -1922,11 +2037,28 @@ const Lab = {
     document.getElementById('q2-err').classList.remove('show');
   },
   nextQ2() {
-    if (!this.state.gammaChoice || !this.state.framingChoice) {
+    if (!this.state.framingChoice) {
       document.getElementById('q2-err').classList.add('show');
       return;
     }
     this.timestamps.q2 = Date.now();
+    this._advanceStep();
+  },
+
+  // ── Q5: Risk preference calibration (gamma) ──────────────
+  initQ5() {
+    if (this.q5flip) {
+      const gc = document.getElementById('gamma-choices');
+      gc.appendChild(gc.firstElementChild);
+    }
+    this.show('screen-q5');
+  },
+  nextQ5() {
+    if (!this.state.gammaChoice) {
+      document.getElementById('q5-err').classList.add('show');
+      return;
+    }
+    this.timestamps.q5 = Date.now();
     this._advanceStep();
   },
 
@@ -1967,6 +2099,9 @@ const Lab = {
     this.state.confLow  = null;
     this.state.confHigh = null;
     this._q4Phase = 'low'; // 'low' → 'high' → 'done'
+    document.getElementById('q4-label-min').textContent = this.timelineMin;
+    document.getElementById('q4-label-mid').textContent = Math.round((this.timelineMin + this.timelineMax) / 2);
+    document.getElementById('q4-label-max').textContent = this.timelineMax;
     this.show('screen-q4');
     requestAnimationFrame(() => this._initTimeline());
   },
@@ -1983,7 +2118,7 @@ const Lab = {
     const getYear = clientX => {
       const rect = canvas.getBoundingClientRect();
       const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      return Math.round(1900 + ratio * 120);
+      return Math.round(this.timelineMin + ratio * (this.timelineMax - this.timelineMin));
     };
 
     const updatePrompt = () => {
@@ -2077,7 +2212,7 @@ const Lab = {
     const ctx  = canvas.getContext('2d');
     const lo   = this.state.confLow;
     const hi   = this.state.confHigh;
-    const MIN  = 1900, MAX = 2020, RANGE = MAX - MIN;
+    const MIN  = this.timelineMin, MAX = this.timelineMax, RANGE = MAX - MIN;
 
     const xOf = yr => ((yr - MIN) / RANGE) * W;
 
@@ -2092,7 +2227,7 @@ const Lab = {
 
     // Decade ticks
     ctx.fillStyle = 'rgba(255,255,255,0.18)';
-    for (let yr = 1910; yr < 2020; yr += 10) {
+    for (let yr = Math.ceil(this.timelineMin / 10) * 10; yr < this.timelineMax; yr += 10) {
       const x = xOf(yr);
       ctx.fillRect(x - dpr * 0.5, trackY - 6 * dpr, dpr, 6 * dpr);
     }
@@ -2565,9 +2700,11 @@ const Lab = {
       ac:  this.anchorCondition,
       frc: this.framingCondition,
       thc: this.theatreCondition,
-      qo:  this.questionOrder || [1, 2, 3, 4],
+      qo:  this.questionOrder || [1, 2, 3, 4, 5],
       q2f: this.q2flip,
       q3f: this.q3flip,
+      q5f: this.q5flip,
+      tlm: this.timelineMin,
     };
     history.replaceState(null,'','#' + btoa(JSON.stringify(d)));
   },
@@ -2619,9 +2756,12 @@ const Lab = {
       this.anchorCondition        = d.ac;
       this.framingCondition       = d.frc;
       this.theatreCondition       = d.thc;
-      this.questionOrder          = d.qo || [1, 2, 3, 4];
+      this.questionOrder          = d.qo || [1, 2, 3, 4, 5];
       this.q2flip                 = d.q2f || false;
       this.q3flip                 = d.q3f || false;
+      this.q5flip                 = d.q5f || false;
+      this.timelineMin            = d.tlm || 1950;
+      this.timelineMax            = 2026;
       return true;
     } catch(e) { return false; }
   },
