@@ -465,6 +465,7 @@ h2.section-title {
 }
 .tag-speaker { background: #e8edf8; color: var(--blue); }
 .tag-meeting { background: #f0ede4; color: var(--gold); }
+.tag-brief  { background: #e8f0e8; color: #2d5c2d; }
 
 /* ---- Footer ---------------------------------------------- */
 footer {
