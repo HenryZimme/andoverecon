@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit to the Review · Andover Economics Society</title>
+  <meta name="description" content="Submit original economics research to the Andover Economics Review. Open to high school students at any school. Articles go through peer review before publication.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/aes-favicon.ico" sizes="any">
+  <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap">
+
+  <!-- ── SEO ──────────────────────────────────────────────── -->
+  <link rel="canonical" href="https://andoverecon.org/submit.html">
+  <meta property="og:site_name"   content="Andover Economics Society">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://andoverecon.org/submit.html">
+  <meta property="og:title"       content="Submit to the Andover Economics Review">
+  <meta property="og:description" content="Submit original economics research to the first high school economics journal written by and for high school students.">
+
+  <style>
+    /* ── Form elements ─────────────────────────────────────────
+       These styles extend style.css for this page only.
+       No form styles exist in the base stylesheet.
+    ──────────────────────────────────────────────────────────── */
+
+    .form-max { max-width: 680px; }
+
+    .form-section {
+      margin-top: 2.75rem;
+    }
+    .form-section-heading {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+      letter-spacing: 0.01em;
+    }
+    .form-label .req {
+      color: var(--blue);
+      margin-left: 0.1em;
+      font-weight: 700;
+    }
+
+    .form-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+      line-height: 1.5;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="url"],
+    select,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 0.6rem 0.85rem;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text);
+      background: #fff;
+      border: 1.5px solid #c8c4ba;
+      border-radius: 3px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="number"]:focus,
+    input[type="url"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0, 49, 167, 0.10);
+    }
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="number"]::placeholder,
+    input[type="url"]::placeholder,
+    textarea::placeholder {
+      color: #aaa;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5a5a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      padding-right: 2.25rem;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .form-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-check {
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .form-check:last-child { margin-bottom: 0; }
+    .form-check input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+      margin-top: 0.18rem;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+    .form-check label {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* Submit button state */
+    .btn-submit {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.8rem 2rem;
+      border-radius: 3px;
+      transition: background 0.15s, opacity 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-submit:hover:not(:disabled) { background: var(--blue-dark); }
+    .btn-submit:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* Form status messages */
+    .form-status {
+      display: none;
+      padding: 1rem 1.25rem;
+      border-radius: 3px;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      line-height: 1.5;
+    }
+    .form-status.success {
+      display: block;
+      background: #eef4ee;
+      border-left: 3px solid #2d5c2d;
+      color: #1e3e1e;
+    }
+    .form-status.error {
+      display: block;
+      background: #fdf0f0;
+      border-left: 3px solid #b03030;
+      color: #6b1e1e;
+    }
+
+    /* Spinner on submit */
+    .spinner {
+      display: none;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Sidebar guidelines card ─────────────────────────── */
+    .guidelines-card {
+      background: var(--cream);
+      border: 1px solid var(--rule);
+      border-top: 3px solid var(--gold);
+      border-radius: 2px;
+      padding: 1.6rem;
+      position: sticky;
+      top: calc(var(--nav-height) + 1.5rem);
+    }
+    .guidelines-card h3 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .guidelines-list {
+      list-style: none;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .guidelines-list li {
+      display: flex;
+      gap: 0.6rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--rule);
+      color: var(--muted);
+    }
+    .guidelines-list li:last-child { border-bottom: none; }
+    .guidelines-list .gl-label {
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      min-width: 70px;
+    }
+
+    @media (max-width: 680px) {
+      .form-cols { grid-template-columns: 1fr; }
+      .guidelines-card { position: static; margin-bottom: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="sub-hero">
+  <div class="sub-hero-inner">
+    <p class="eyebrow">Publication</p>
+    <h1>Submit to the Review</h1>
+    <p>The <em>Andover Economics Review</em> accepts original economics research from high school students at any school. Articles go through peer review before publication.</p>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <!-- ── Before you submit ────────────────────────────────── -->
+  <div style="max-width:680px;">
+    <p class="section-label">Before you submit</p>
+    <h2 class="section-title">What we're looking for</h2>
+    <div class="prose mt-3">
+      <p>The <em>Review</em> publishes original economics research: empirical analysis, theoretical argument, economic history, or policy evaluation. There is no restriction on topic, method, or school affiliation. The editorial standard is rigor and clarity. A paper does not need to be exhaustive to be publishable, but it must make a specific argument, support it with evidence or reasoning, and engage honestly with its limitations.</p>
+      <p>Papers most often fall short on one of three things: the research question is too broad to answer in the space, the evidence does not clearly support the conclusion, or the limitations go unaddressed. If you are unsure whether your paper is ready, read it against those criteria before submitting.</p>
+      <p>The editorial board will acknowledge receipt within five business days and provide a decision (accept, revise and resubmit, or decline) within six weeks of the submission deadline.</p>
+    </div>
+  </div>
+
+  <div class="highlight-bar mt-4" style="max-width:680px;">
+    <p>The <em>Review</em> does not publish book reports, opinion essays, or papers that summarize existing research without an original argument. If you are not sure whether your paper qualifies, email the board before submitting.</p>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ── Form + sidebar ───────────────────────────────────── -->
+  <div class="layout-sidebar">
+
+    <!-- Form column -->
+    <div>
+      <p class="section-label">Submissions</p>
+      <h2 class="section-title">Submission form</h2>
+      <p style="font-size:0.9rem; color:var(--muted); margin-top:0.5rem;">
+        Fields marked <strong style="color:var(--blue);">*</strong> are required.
+        If you have questions before submitting, <a href="leadership.html">contact the board</a>.
+      </p>
+
+      <!--
+        ═══════════════════════════════════════════════════════════
+        FORMSPREE SETUP — one-time, takes two minutes:
+        1. Create a free account at https://formspree.io
+        2. Create a new form in your Formspree dashboard
+        3. Replace YOUR_FORM_ID below with the ID Formspree gives you
+           (looks like: https://formspree.io/f/xrgjaknp)
+        Formspree free tier handles up to 50 submissions/month.
+        ═══════════════════════════════════════════════════════════
+      -->
+      <form
+        id="submission-form"
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST"
+        novalidate
+      >
+
+        <!-- Honeypot (spam prevention — Formspree reads this) -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <!-- Hidden subject line for inbox readability -->
+        <input type="hidden" name="_subject" id="email-subject" value="AER Submission">
+
+        <!-- ── 1. Author information ───────────────────── -->
+        <div class="form-section">
+          <h3 class="form-section-heading">1 — Author information</h3>
+
+          <div class="form-group">
+            <label class="form-label" for="author-name">
+              Corresponding author <span class="req">*</span>
+            </label>
+            <input type="text" id="author-name" name="author_name"
+              placeholder="Full name" required autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="co-authors">Co-authors</label>
+            <p class="form-hint">Leave blank if none. List full names separated by commas.</p>
+            <input type="text" id="co-authors" name="co_authors"
+              placeholder="e.g. Jane Smith, Kwame Osei">
+          </div>
+
+          <div class="form-cols">
+            <div class="form-group">
+              <label class="form-label" for="school">
+                School / institution <span class="req">*</span>
+              </label>
+              <input type="text" id="school" name="school"
+                placeholder="e.g. Phillips Academy" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="grad-year">Graduation year</label>
+              <input type="number" id="grad-year" name="graduation_year"
+                placeholder="e.g. 2026" min="2025" max="2030">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">
+              Email <span class="req">*</span>
+            </label>
+            <p class="form-hint">The editorial board will use this address for all correspondence.</p>
+            <input type="email" id="email" name="_replyto"
+              placeholder="your@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <!-- ── 2. Submission details ────────────────────── -->
+        <div class="form-section">
+          <h3 class="form-section-heading">2 — Submission details</h3>
+
+          <div class="form-group">
+            <label class="form-label" for="title">
+              Article title <span class="req">*</span>
+            </label>
+            <input type="text" id="title" name="article_title"
+              placeholder="Working titles are fine" required>
+          </div>
+
+          <div class="form-cols">
+            <div class="form-group">
+              <label class="form-label" for="field">
+                Field <span class="req">*</span>
+              </label>
+              <select id="field" name="field" required>
+                <option value="" disabled selected>Select a field</option>
+                <option>Labor &amp; Public Finance</option>
+                <option>Macroeconomics</option>
+                <option>Behavioral Economics</option>
+                <option>International Economics &amp; Trade</option>
+                <option>Economic History</option>
+                <option>Financial Economics</option>
+                <option>Industrial Organization</option>
+                <option>Development Economics</option>
+                <option>Environmental Economics</option>
+                <option>Health Economics</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="word-count">
+                Word count <span class="req">*</span>
+              </label>
+              <p class="form-hint">Excluding footnotes and references.</p>
+              <input type="number" id="word-count" name="word_count"
+                placeholder="e.g. 3500" min="500" max="20000" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="abstract">
+              Abstract <span class="req">*</span>
+            </label>
+            <p class="form-hint">150–250 words. State the research question, method, and main finding.</p>
+            <textarea id="abstract" name="abstract"
+              placeholder="Your abstract here…" required></textarea>
+          </div>
+        </div>
+
+        <!-- ── 3. Document ──────────────────────────────── -->
+        <div class="form-section">
+          <h3 class="form-section-heading">3 — Document</h3>
+
+          <div class="form-group">
+            <label class="form-label" for="doc-link">
+              Document link <span class="req">*</span>
+            </label>
+            <p class="form-hint">
+              Share a Google Drive, Dropbox, or OneDrive link set to "anyone with the link can view."
+              Submit as a PDF or Word document. Remove your name from the document itself — the
+              editorial board reviews submissions blind.
+            </p>
+            <input type="url" id="doc-link" name="document_link"
+              placeholder="https://drive.google.com/…" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="notes">Additional notes</label>
+            <p class="form-hint">Optional. Any context the board should know about the submission.</p>
+            <textarea id="notes" name="additional_notes"
+              placeholder="Optional…" style="min-height:80px;"></textarea>
+          </div>
+        </div>
+
+        <!-- ── 4. Declarations ──────────────────────────── -->
+        <div class="form-section">
+          <h3 class="form-section-heading">4 — Declarations</h3>
+
+          <div class="form-check">
+            <input type="checkbox" id="decl-original" name="declaration_original"
+              value="confirmed" required>
+            <label for="decl-original">
+              <strong>This paper is original work.</strong> It has not been published elsewhere and is not
+              currently under review at another journal or publication. <span class="req">*</span>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="decl-ai" name="declaration_ai"
+              value="confirmed" required>
+            <label for="decl-ai">
+              <strong>AI tools were not used to write or generate the analysis</strong> in this submission.
+              Spell check and grammar tools are acceptable; AI-generated text, arguments, or data analysis is not. <span class="req">*</span>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="decl-review" name="declaration_review"
+              value="confirmed">
+            <label for="decl-review">
+              I am willing to review other submissions if invited to do so by the editorial board.
+            </label>
+          </div>
+        </div>
+
+        <!-- ── Submit ───────────────────────────────────── -->
+        <div style="margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--rule);">
+          <button type="submit" class="btn-submit" id="submit-btn">
+            <span class="spinner" id="spinner"></span>
+            <span id="btn-text">Submit to the Review</span>
+          </button>
+          <p style="font-size:0.78rem; color:var(--muted); margin-top:1rem; line-height:1.5;">
+            By submitting you confirm that the information above is accurate and that you agree
+            to the declarations in section 4.
+          </p>
+        </div>
+
+        <!-- Status messages -->
+        <div class="form-status success" id="status-success">
+          <strong>Submission received.</strong> The editorial board will acknowledge receipt
+          within five business days and provide a decision within six weeks of the submission deadline.
+          Check your spam folder if you don't hear from us.
+        </div>
+        <div class="form-status error" id="status-error">
+          Something went wrong. Please try again, or email the board directly at
+          <a href="/cdn-cgi/l/email-protection#c4acbeada9a9a1b6a9a5aaf6f384a5aaa0abb2a1b6eaa1a0b1"><span class="__cf_email__" data-cfemail="afc7d5c6c2c2caddc2cec19d98efcec1cbc0d9cadd81cacbda">[email&#160;protected]</span></a>.
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Sidebar guidelines card -->
+    <div>
+      <div class="guidelines-card">
+        <p class="card-label">At a glance</p>
+        <h3>Submission guidelines</h3>
+        <ul class="guidelines-list">
+          <li>
+            <span class="gl-label">Eligible</span>
+            <span>High school students at any school, worldwide</span>
+          </li>
+          <li>
+            <span class="gl-label">Topics</span>
+            <span>Any area of economics: empirical, theoretical, or historical</span>
+          </li>
+          <li>
+            <span class="gl-label">Length</span>
+            <span>No strict limit; most published articles are 2,500–5,000 words</span>
+          </li>
+          <li>
+            <span class="gl-label">Format</span>
+            <span>PDF or Word document, author name removed (blind review)</span>
+          </li>
+          <li>
+            <span class="gl-label">Citations</span>
+            <span>Any consistent style (Chicago, APA, MLA)</span>
+          </li>
+          <li>
+            <span class="gl-label">Review</span>
+            <span>Peer-reviewed by AES editorial board; decision within six weeks</span>
+          </li>
+          <li>
+            <span class="gl-label">Open to</span>
+            <span>Co-authored papers; authors at any high school are eligible</span>
+          </li>
+        </ul>
+        <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--rule);">
+          <p style="font-size:0.8rem; color:var(--muted);">
+            Questions? Email the board before submitting.
+          </p>
+          <a href="leadership.html" class="card-link" style="font-size:0.78rem; padding-top:0.4rem; display:inline-block;">Contact the board →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- end layout-sidebar -->
+
+</div>
+<!-- end .page-content -->
+
+<div id="footer-placeholder"></div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="nav.js" defer></script>
+<script>
+  // ── Form submission handler ─────────────────────────────
+  // Uses Formspree's JSON endpoint for an inline success/error
+  // state rather than a page redirect.
+  (function () {
+    const form   = document.getElementById('submission-form');
+    const btn    = document.getElementById('submit-btn');
+    const btnTxt = document.getElementById('btn-text');
+    const spinner = document.getElementById('spinner');
+    const success = document.getElementById('status-success');
+    const error   = document.getElementById('status-error');
+
+    // Keep the hidden subject updated with the article title
+    const titleInput   = document.getElementById('title');
+    const subjectInput = document.getElementById('email-subject');
+    titleInput.addEventListener('input', function () {
+      subjectInput.value = this.value
+        ? 'AER Submission: ' + this.value
+        : 'AER Submission';
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      success.style.display = 'none';
+      error.style.display   = 'none';
+
+      // Basic client-side validation
+      const required = form.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(function (el) {
+        el.style.borderColor = '';
+        if (el.type === 'checkbox') {
+          if (!el.checked) {
+            el.closest('.form-check').style.outline = '2px solid #b03030';
+            valid = false;
+          } else {
+            el.closest('.form-check').style.outline = '';
+          }
+        } else if (!el.value.trim()) {
+          el.style.borderColor = '#b03030';
+          valid = false;
+        }
+      });
+      if (!valid) {
+        error.style.display = 'block';
+        error.textContent = 'Please fill in all required fields and check the required declarations before submitting.';
+        form.querySelector('[required]:not(:valid), [required][value=""]') &&
+          form.querySelector('[required]').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Submit state
+      btn.disabled = true;
+      spinner.style.display = 'block';
+      btnTxt.textContent = 'Submitting…';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          success.style.display = 'block';
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.error || 'Server error');
+        }
+      } catch (err) {
+        btn.disabled = false;
+        spinner.style.display = 'none';
+        btnTxt.textContent = 'Submit to the Review';
+        error.style.display = 'block';
+        error.innerHTML = 'Something went wrong (' + (err.message || 'unknown error') + '). '
