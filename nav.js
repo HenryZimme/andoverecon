@@ -9,6 +9,12 @@
     { href: 'resources.html',     label: 'Resources' },
     { href: 'leadership.html',    label: 'Leadership' },
   ];
+
+  // footerExtra: shown in footer only, not the main nav.
+  // Keeps the nav bar at 7 items while surfacing utility pages below.
+  const footerExtra = [
+    { href: 'submit.html', label: 'Submit' },
+  ];
   const current = (location.pathname.split('/').pop() || 'index.html');
 
   const linksHtml = pages.map(p =>
@@ -34,7 +40,7 @@
           <div class="footer-sub">Phillips Academy Andover &nbsp;·&nbsp; Founded 2004</div>
         </div>
         <nav class="footer-links">
-          ${pages.map(p => `<a href="${p.href}">${p.label}</a>`).join('')}
+          ${[...pages, ...footerExtra].map(p => `<a href="${p.href}">${p.label}</a>`).join('')}
         </nav>
       </div>
       <div class="footer-bottom">
