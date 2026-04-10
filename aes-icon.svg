@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <rect width="80" height="80" rx="6" fill="rgba(255,255,255,0.15)"/>
+  <text x="40" y="31" text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="21" font-weight="700" fill="#ffffff">A</text>
+  <text x="40" y="49" text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="21" font-weight="700" fill="#d4bc5a">E</text>
+  <text x="40" y="67" text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="21" font-weight="700" fill="#ffffff">S</text>
+</svg>
