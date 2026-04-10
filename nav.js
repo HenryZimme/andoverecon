@@ -24,7 +24,7 @@
   document.getElementById('nav-placeholder').innerHTML = `
     <nav id="site-nav">
       <div class="nav-inner">
-        <a href="index.html" class="nav-logo"><span class="logo-full">Andover <span class="logo-accent">Economics</span> Society</span><span class="logo-short">AES</span></a>
+        <a href="index.html" class="nav-logo"><img src="aes-icon.svg" class="logo-icon" alt="AES" width="36" height="36"><span class="logo-full">Andover <span class="logo-accent">Economics</span> Society</span></a>
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
