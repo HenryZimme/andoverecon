@@ -50,7 +50,7 @@
 
     body.results-mode { background: #fff; color: var(--text); }
 
-    /* ── Progress bar ─────────────────────────────────────── */
+    /* Progress bar */
     #progress-bar {
       position: fixed;
       top: 0; left: 0;
@@ -63,7 +63,7 @@
     }
     #progress-bar.visible { opacity: 1; }
 
-    /* ── Lab root ─────────────────────────────────────────── */
+    /* Lab root */
     #lab-root {
       min-height: 100vh;
       display: flex;
@@ -94,7 +94,7 @@
       padding-bottom: 5rem;
     }
 
-    /* ── Screens ──────────────────────────────────────────── */
+    /* Screens */
     .lab-screen {
       width: 100%;
       max-width: 560px;
@@ -111,7 +111,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── Task meta (step counter + dots) ─────────────────── */
+    /* Task meta (step counter + dots) */
     .task-meta {
       display: flex;
       align-items: center;
@@ -135,7 +135,7 @@
     .task-dot.done  { background: var(--lab-gold); }
     .task-dot.active { background: var(--lab-accent); transform: scale(1.35); }
 
-    /* ── Intro screen ─────────────────────────────────────── */
+    /* Intro screen */
     #screen-intro { text-align: center; max-width: 480px; }
 
     .intro-badge {
@@ -195,7 +195,7 @@
       margin-bottom: 2.75rem;
     }
 
-    /* ── Buttons ──────────────────────────────────────────── */
+    /* Buttons */
     .lab-btn {
       font-family: var(--sans);
       font-size: 0.8rem;
@@ -251,7 +251,7 @@
       gap: 0.75rem;
     }
 
-    /* ── Question screens ─────────────────────────────────── */
+    /* Question screens */
     .q-headline {
       font-family: var(--serif);
       font-size: clamp(1.65rem, 4vw, 2.2rem);
@@ -267,7 +267,7 @@
       margin-bottom: 2rem;
     }
 
-    /* ── Dossier (Q1) ─────────────────────────────────────── */
+    /* Dossier (Q1) */
     .dossier {
       background: var(--lab-surface);
       border: 1px solid var(--lab-border);
@@ -314,7 +314,7 @@
       margin-bottom: 0.9rem;
     }
 
-    /* ── Choice buttons ───────────────────────────────────── */
+    /* Choice buttons */
     .choice-stack { display: flex; flex-direction: column; gap: 0.7rem; }
 
     .choice-btn {
@@ -358,7 +358,7 @@
     }
     .choice-text { font-size: 0.93rem; line-height: 1.5; padding-top: 4px; }
 
-    /* ── Present bias panels (Q2) ─────────────────────────── */
+    /* Present bias panels (Q2) */
     .bias-panels { display: flex; flex-direction: column; gap: 1.25rem; }
 
     .bias-panel {
@@ -439,7 +439,7 @@
       letter-spacing: 0.04em;
     }
 
-    /* ── Scope screen (Q3) ────────────────────────────────── */
+    /* Scope screen (Q3) */
     .scope-hero { text-align: center; margin-bottom: 2rem; }
     .scope-number {
       font-family: var(--serif);
@@ -515,7 +515,7 @@
       80% { transform: translateX(3px); }
     }
 
-    /* ── Victim screen (Q4) ───────────────────────────────── */
+    /* Victim screen (Q4) */
     .victim-story {
       background: var(--lab-surface);
       border: 1px solid var(--lab-border);
@@ -612,7 +612,7 @@
       margin-top: 0.55rem;
     }
 
-    /* ── Anchor drum ──────────────────────────────────────── */
+    /* Anchor drum */
     .anchor-drum {
       background: var(--lab-surface);
       border: 1px solid var(--lab-border);
@@ -671,7 +671,7 @@
       touch-action: none;
     }
 
-    /* ── Dual-ended slider (Q4) ───────────────────────────── */
+    /* Dual-ended slider (Q4) */
     .ds-wrap {
       background: var(--lab-surface);
       border: 1px solid var(--lab-border);
@@ -747,11 +747,11 @@
       box-shadow: 0 0 12px rgba(68,184,243,0.55);
     }
 
-    /* ── Confidence interval (Q4) ─────────────────────────── */
+    /* Confidence interval (Q4) */
     .conf-range-wrap { display: flex; align-items: center; gap: 0.5rem; }
     .conf-sep { color: var(--lab-muted); font-size: 1rem; flex-shrink: 0; }
 
-    /* ── Validation ───────────────────────────────────────── */
+    /* Validation */
     .val-msg {
       font-size: 0.76rem;
       color: var(--lab-danger);
@@ -762,7 +762,7 @@
     }
     .val-msg.show { opacity: 1; }
 
-    /* ── Demo screen ──────────────────────────────────────── */
+    /* Demo screen */
     .demo-q { margin-bottom: 1.5rem; }
     .demo-label {
       font-family: var(--sans);
@@ -825,7 +825,7 @@
     }
     .demo-skip-callout::before { content: '↑ '; }
 
-    /* ── Analyzing screen ─────────────────────────────────── */
+    /* Analyzing screen */
     #screen-analyzing { text-align: center; padding: 3rem 2rem; max-width: 420px; }
 
     .analyzing-ring {
@@ -857,7 +857,7 @@
     }
     .a-msg.show { opacity: 1; transform: translateY(0); }
 
-    /* ── Results: nav ─────────────────────────────────────── */
+    /* Results: nav */
     #results-nav-el {
       position: sticky;
       top: 0;
@@ -906,7 +906,7 @@
     }
     .rn-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
-    /* ── Results: screen ──────────────────────────────────── */
+    /* Results: screen */
     #screen-results { max-width: 680px; }
 
     /* Profile card */
@@ -1174,7 +1174,7 @@
       margin-bottom: 1.5rem;
     }
 
-    /* ── Age slider (non-linear mapping, no visual distinction) ── */
+    /* Age slider (non-linear mapping, no visual distinction) */
     .age-slider-container { display: flex; flex-direction: column; gap: 0.9rem; width: 100%; }
     .age-display-row { display: flex; align-items: baseline; gap: 0.5rem; }
     .age-display-num {
@@ -1217,7 +1217,7 @@
       box-shadow: 0 0 12px rgba(68,184,243,0.55);
     }
 
-    /* ── Responsive ───────────────────────────────────────── */
+    /* Responsive */
     @media (max-width: 600px) {
       .bias-panel-choices { grid-template-columns: 1fr; }
       .profile-card { padding: 2rem 1.5rem; }
@@ -1236,7 +1236,7 @@
       .action-row { flex-direction: column; align-items: stretch; }
     }
 
-    /* ── Session Poster ───────────────────────────────────── */
+    /* Session Poster */
     #aes-poster {
       position: fixed;
       inset: 0;
@@ -1309,7 +1309,7 @@
     }
   </style>
 
-  <!-- ── SEO ──────────────────────────────────────────────── -->
+  <!--  SEO -->
   <link rel="canonical" href="https://andoverecon.org/lab.html">
 
   <!-- Open Graph -->
@@ -1344,7 +1344,7 @@
     }
 }
   </script>
-  <!-- ── /SEO ─────────────────────────────────────────────── -->
+  <!-- /SEO  -->
 </head>
 <body>
 
@@ -1813,7 +1813,7 @@ const Lab = {
     }
   },
 
-  // ── Navigation ──────────────────────────────────────────
+  //  Navigation 
   start() {
     this.questionOrder = this._shuffle([1, 2, 3, 4, 5]);
     this._qStep = 0;
@@ -1963,7 +1963,7 @@ const Lab = {
     bar.style.width = pct + '%';
   },
 
-  // ── Q1: Anchoring ────────────────────────────────────────
+  // Q1: Anchoring 
   _runAnchorWheel(target, onDone) {
     const display  = document.getElementById('anchor-ref-display');
     const labelEl  = document.getElementById('anchor-display-label');
@@ -2005,7 +2005,7 @@ const Lab = {
     this.show('screen-q1');
 
     this._runAnchorWheel(anchor, () => {
-      // Wheel has landed — now activate the slider
+      // Wheel has landed, now activate the slider
       slider.value = anchor;
       slider.disabled = false;
       document.getElementById('anchor-val').textContent = anchor + '%';
@@ -2029,7 +2029,7 @@ const Lab = {
     this._advanceStep();
   },
 
-  // ── Q2: Framing effect ───────────────────────────────────
+  // Q2: Framing effect
   initQ2() {
     const gain = this.framingCondition === 'gain';
     document.getElementById('framing-scenario').textContent =
@@ -2071,7 +2071,7 @@ const Lab = {
     this._advanceStep();
   },
 
-  // ── Q5: Risk preference calibration (gamma) ──────────────
+  // Q5: Risk preference calibration (gamma)
   initQ5() {
     if (this.q5flip) {
       const gc = document.getElementById('gamma-choices');
@@ -2088,7 +2088,7 @@ const Lab = {
     this._advanceStep();
   },
 
-  // ── Q3: Mental accounting ────────────────────────────────
+  // Q3: Mental accounting
   initQ3() {
     const cash = this.theatreCondition === 'cash';
     document.getElementById('theatre-scenario').innerHTML = cash
@@ -2120,7 +2120,7 @@ const Lab = {
     this._advanceStep();
   },
 
-  // ── Q4: Overprecision (click-to-place timeline) ──────────
+  // Q4: Overprecision (click-to-place timeline)
   initQ4() {
     this.state.confLow  = null;
     this.state.confHigh = null;
@@ -2176,7 +2176,7 @@ const Lab = {
       if (this._q4Phase === 'high') {
         const lo = this.state.confLow;
         if (year <= lo) {
-          // clicked left of low — reset low instead
+          // clicked left of low, reset low instead
           this.state.confLow = year;
           document.getElementById('q4-state-display').textContent = year + ' \u2013';
           this._drawTimeline();
@@ -2189,7 +2189,7 @@ const Lab = {
         return;
       }
 
-      // Phase: done — pick nearest handle to drag
+      // Phase: done, pick nearest handle to drag
       const lo = this.state.confLow, hi = this.state.confHigh;
       const dpr   = window.devicePixelRatio || 1;
       const W     = canvas.width;
@@ -2271,7 +2271,7 @@ const Lab = {
       ctx.roundRect(x0, trackY - trackH / 2, x1 - x0, trackH, 0);
       ctx.fill();
     } else if (lo !== null) {
-      // Just low bound set — draw a dot
+      // Just low bound set, draw a dot
       const x0 = xOf(lo);
       ctx.fillStyle = '#44B8F3';
       ctx.beginPath();
@@ -2319,7 +2319,7 @@ const Lab = {
     this._advanceStep();
   },
 
-  // ── Attention check ──────────────────────────────────────
+  // Attention check
   showAttn() {
     this._attnChoice = null;
     this.setProgress(100, false);
@@ -2344,7 +2344,7 @@ const Lab = {
     this.showAnalyzing();
   },
 
-  // ── Analyzing screen ─────────────────────────────────────
+  // Analyzing screen
   showAnalyzing() {
     this.show('screen-analyzing');
     const msgs = ['amsg-0','amsg-1','amsg-2','amsg-3'];
@@ -2361,7 +2361,7 @@ const Lab = {
     }, 720);
   },
 
-  // ── Demographics screen ──────────────────────────────────
+  // Demographics screen
   showDemo() {
     const questions = [
       { id: 'demo-gender', key: 'gender', opts: ['Male','Female','Non-binary','Prefer not to say'] },
@@ -2378,7 +2378,7 @@ const Lab = {
         wrap.appendChild(btn);
       });
     });
-    // Age slider — nonlinear mapping only, no visual indicators
+    // Age slider, nonlinear mapping only, no visual indicators
     const ageWrap = document.getElementById('demo-age');
     const initSlider = this._ageToSlider(17);
     ageWrap.innerHTML = `
@@ -2417,7 +2417,7 @@ const Lab = {
     [...wrap.querySelectorAll('.demo-chip')].find(b => b.textContent === val)?.classList.add('selected');
   },
 
-  // ── Profile computation ──────────────────────────────────
+  // Profile computation 
   computeProfile() {
     const anchor   = this.anchorCondition === 'high' ? 65 : 10;
     const estimate = this.state.anchorEstimate || 0;
@@ -2466,7 +2466,7 @@ const Lab = {
     return { key: String(score), score, anchorPulled, followedFraming, showedMentalAccounting, overprecise, ...map[score] };
   },
 
-  // ── Results rendering ────────────────────────────────────
+  // Results rendering
   renderResults() {
     document.body.classList.add('results-mode');
     document.getElementById('progress-bar').style.opacity = '0';
@@ -2552,7 +2552,7 @@ const Lab = {
 
     let html = '';
 
-    // ── Q1: Anchoring ──
+    // Q1: Anchoring 
     html += this.resultBlock({
       label: 'Task A · Anchoring', title: 'A quick estimate.',
       verdict: anchorPulled
@@ -2574,7 +2574,7 @@ const Lab = {
     const baselineConsistent =
       (riskAverse && choseCertain) || (!riskAverse && !choseCertain);
 
-    // ── Q2: Framing ──
+    // Q2: Framing
     let framingVerdict, framingVerdictText;
     if (followedFraming) {
       framingVerdict = 'verdict-bias'; framingVerdictText = 'Framing effect showed';
@@ -2611,7 +2611,7 @@ const Lab = {
         <p>It shows up as "90% fat-free" vs. "10% fat." Medical consent forms describe survival rates or mortality rates. Budget proposals are savings or cuts depending on who's writing them. The frame shapes the emotional response before any reasoning starts.</p>`
     });
 
-    // ── Q3: Mental accounting ──
+    // Q3: Mental accounting
     html += this.resultBlock({
       label: 'Task C · Sunk Cost & Mental Accounting', title: 'A theater decision.',
       verdict: showedMentalAccounting
@@ -2631,7 +2631,7 @@ const Lab = {
         <p>It shows up when people keep funding a failing project because of money already committed, or finish a meal they don't want because they paid for it. The lost money is gone either way. The account, though, doesn't close.</p>`
     });
 
-    // ── Q4: Overprecision ──
+    // Q4: Overprecision
     html += this.resultBlock({
       label: 'Task D · Overprecision', title: 'A knowledge question.',
       verdict: overprecise
@@ -2714,7 +2714,7 @@ const Lab = {
       </nav>`;
   },
 
-  // ── Share via URL hash ───────────────────────────────────
+  // Share via URL hash
   writeHash(profileKey) {
     const d = {
       p:   profileKey,
@@ -2769,7 +2769,7 @@ const Lab = {
     location.reload();
   },
 
-  // ── Handle shared URL on load ────────────────────────────
+  // Handle shared URL on load
   initFromHash() {
     if (!location.hash) return false;
     try {
@@ -2795,7 +2795,7 @@ const Lab = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ── Session poster ───────────────────────────────────────
+  // Session poster
   (function() {
     const params = new URLSearchParams(window.location.search);
     const session = (params.get('session') || '').toLowerCase();
