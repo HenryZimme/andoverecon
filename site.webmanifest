@@ -1,0 +1,29 @@
+{
+  "name": "Andover Economics Society",
+  "short_name": "AES",
+  "description": "Research, publications, and policy engagement at Phillips Academy Andover since 2004.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#001f6b",
+  "theme_color": "#001f6b",
+  "icons": [
+    {
+      "src": "/aes-favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/aes-favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/aes-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
