@@ -43,6 +43,16 @@
 </head>
 <body>
 
+<!-- event banner: comment this block entirely when there's no upcoming event to announce -->
+<div class="event-banner" id="event-banner">
+  <div class="event-banner-inner">
+    <span class="event-banner-label">Upcoming</span>
+    <span class="event-banner-text">Senator Barry Finegold | Policy brief presentations &nbsp;·&nbsp; <strong>Apr 30</strong></span>
+    <a href="colloquium.html" class="event-banner-link">Details →</a>
+    <button class="event-banner-dismiss" id="event-banner-dismiss" aria-label="Dismiss announcement">&#x2715;</button>
+  </div>
+</div>
+
 <div id="nav-placeholder"></div>
 
 <!-- Hero -->
@@ -154,6 +164,8 @@
         <p>If you want to write for the journal, join the Fed Challenge team, or present at the spring colloquium, reach out to the board or show up to any Thursday meeting.</p>
       </div>
       <a href="leadership.html" class="btn btn-ghost mt-4">Contact the board</a>
+      <!-- REPLACE # with the actual Google Form URL when I finish it -->
+      <a href="#" class="btn btn-blue mt-4">Sign up to join</a>
     </div>
 
   </div>
@@ -162,5 +174,20 @@
 
 <div id="footer-placeholder"></div>
 <script src="nav.js" defer></script>
+<script>
+  // banner dismiss — persists for the browser session
+  (function () {
+    var banner = document.getElementById('event-banner');
+    if (!banner) return;
+    if (sessionStorage.getItem('aes-banner-dismissed') === 'true') {
+      banner.hidden = true;
+      return;
+    }
+    document.getElementById('event-banner-dismiss').addEventListener('click', function () {
+      banner.hidden = true;
+      sessionStorage.setItem('aes-banner-dismissed', 'true');
+    });
+  })();
+</script>
 </body>
 </html>
