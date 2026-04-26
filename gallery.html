@@ -48,7 +48,7 @@
   <button class="lightbox-prev" id="lb-prev" aria-label="Previous photo">&#x2039;</button>
   <button class="lightbox-next" id="lb-next" aria-label="Next photo">&#x203a;</button>
   <div class="lightbox-content" id="lb-content">
-    <img id="lb-img" src="" alt="">
+    <img id="lb-img" src="" alt="" decoding="async">
     <div class="lightbox-caption">
       <div class="lightbox-caption-row">
         <span class="lightbox-caption-title" id="lb-title"></span>
@@ -103,7 +103,7 @@
     const safe_title = html_escape(event.title);
 
     const cover_inner = event.cover
-      ? `<img src="${event.cover}" alt="${safe_title}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=&quot;gallery-cover-placeholder&quot;>AES</div>'">`
+      ? `<img src="${event.thumb || event.cover}" alt="${safe_title}" loading="lazy" decoding="async" width="400" onerror="this.parentNode.innerHTML='<div class=&quot;gallery-cover-placeholder&quot;>AES</div>'">`
       : `<div class="gallery-cover-placeholder">AES</div>`;
 
     return `
