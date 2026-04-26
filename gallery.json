@@ -15,12 +15,12 @@
       ]
     },
     {
-      "id": "2026-pioneer-apr",
-      "title": "Policy brief presentations — Pioneer Institute",
+      "id": "2026-mikula-apr",
+      "title": "Policy brief presentations | Andrew Mikula",
       "date": "2026-04-26",
       "category": "colloquium",
-      "description": "AES members traveled to the Pioneer Institute in Boston to present their spring policy briefs to Andrew Mikula.",
-      "cover": "photos/events/2026-pioneer-apr/cover.webp",
+      "description": "AES members traveled to Boston to present their spring policy briefs to Pioneer Institute Senior Housing Fellow Andrew Mikula.",
+      "cover": "photos/events/2026-mikula-apr/cover.webp",
       "photos": []
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "id": "2025-mikula-oct",
-      "title": "Andrew Mikula | Pioneer Institute",
+      "title": "Policy brief intro | Andrew Mikula",
       "date": "2025-10-18",
       "category": "colloquium",
       "description": "Mikula discussed housing economics and zoning policy in Greater Boston, and walked students through policy brief writing. Session held virtually.",
@@ -54,12 +54,12 @@
       "photos": []
     },
     {
-      "id": "2025-fed-challenge",
-      "title": "Fed Challenge 2025",
-      "date": "2025-11-01",
+      "id": "2026-fed-challenge",
+      "title": "Fed Challenge 2025=6",
+      "date": "2026-3-01",
       "category": "fed-challenge",
-      "description": "AES competed in the Federal Reserve Bank of New York High School Fed Challenge, presenting a monetary policy recommendation.",
-      "cover": "photos/events/2025-fed-challenge/cover.webp",
+      "description": "AES participated in the Federal Reserve Bank of New York High School Fed Challenge for the first time, submitting a podcast script titled "The Price of the Pit" to the year's music-themed competition.",
+      "cover": "photos/events/2025-fed-challenge/fed-challenge-26-team.webp",
       "photos": []
     }
   ]
