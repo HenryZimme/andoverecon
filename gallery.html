@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery | Andover Economics Society</title>
+  <meta name="description" content="Photos from AES events — colloquium sessions with guest economists, Fed Challenge competitions, and more.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/aes-favicon.ico" sizes="any">
+  <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#001f6b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap">
+  <link rel="canonical" href="https://andoverecon.org/gallery.html">
+  <meta property="og:site_name"   content="Andover Economics Society">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://andoverecon.org/gallery.html">
+  <meta property="og:title"       content="Photo Gallery | Andover Economics Society">
+  <meta property="og:description" content="Photos from AES events — colloquium sessions, Fed Challenge competitions, and more.">
+  <meta property="og:image"       content="https://andoverecon.org/og-default.jpg">
+  <meta property="og:locale"      content="en_US">
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="sub-hero">
+  <div class="sub-hero-inner">
+    <p class="eyebrow">AES events</p>
+    <h1>Photo gallery</h1>
+    <p>Colloquium sessions, Fed Challenge competition, and events from across AES history. Filter by category or browse everything below.</p>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div id="gallery-filters" class="gallery-filters" role="group" aria-label="Filter events by category"></div>
+  <div id="gallery-grid" class="gallery-grid" aria-live="polite"></div>
+
+</div>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
+  <button class="lightbox-close" id="lb-close" aria-label="Close photo viewer">&#x2715;</button>
+  <button class="lightbox-prev" id="lb-prev" aria-label="Previous photo">&#x2039;</button>
+  <button class="lightbox-next" id="lb-next" aria-label="Next photo">&#x203a;</button>
+  <div class="lightbox-content" id="lb-content">
+    <img id="lb-img" src="" alt="">
+    <div class="lightbox-caption">
+      <div class="lightbox-caption-row">
+        <span class="lightbox-caption-title" id="lb-title"></span>
+        <span class="lightbox-counter" id="lb-counter"></span>
+      </div>
+      <span class="lightbox-credit" id="lb-credit"></span>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="nav.js" defer></script>
+<script>
+(function () {
+  // category display labels
+  const category_labels = {
+    'colloquium':   'Colloquium',
+    'fed-challenge': 'Fed Challenge',
+    'general':      'General',
+  };
+
+  // escape special html chars for use in attributes and text nodes
+  function html_escape(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // format ISO date as "Oct 18, 2025"
+  function format_date(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // category tag html (reuses .event-tag classes from style.css)
+  function tag_html(category) {
+    const class_map = {
+      'colloquium':   'tag-speaker',
+      'fed-challenge': 'tag-brief',
+      'general':      '',
+    };
+    const extra = class_map[category] || '';
+    return `<span class="event-tag ${extra}">${category_labels[category] || category}</span>`;
+  }
+
+  // render a single card
+  function render_card(event) {
+    const photo_count = event.photos ? event.photos.length : 0;
+    const count_text = photo_count === 1 ? '1 photo' : `${photo_count} photos`;
+    const safe_title = html_escape(event.title);
+
+    const cover_inner = event.cover
+      ? `<img src="${event.cover}" alt="${safe_title}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=&quot;gallery-cover-placeholder&quot;>AES</div>'">`
+      : `<div class="gallery-cover-placeholder">AES</div>`;
+
+    return `
+      <article class="gallery-card" data-id="${event.id}" data-category="${event.category}" role="button" tabindex="0" aria-label="View photos: ${safe_title}">
+        <div class="gallery-card-cover">${cover_inner}</div>
+        <div class="gallery-card-body">
+          ${tag_html(event.category)}
+          <div class="gallery-card-title">${safe_title}</div>
+          <div class="gallery-card-meta">
+            <span class="gallery-card-date">${format_date(event.date)}</span>
+            <span class="gallery-photo-count">${count_text}</span>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  // lightbox state
+  let lb_photos = [];
+  let lb_index  = 0;
+  let lb_event_credit = null;
+
+  function open_lightbox(event_data) {
+    // use photos array; fall back to [cover] if empty
+    const photos = (event_data.photos && event_data.photos.length > 0)
+      ? event_data.photos
+      : event_data.cover ? [{ src: event_data.cover, alt: event_data.title }] : [];
+
+    if (photos.length === 0) return;
+
+    lb_photos = photos;
+    lb_index  = 0;
+    lb_event_credit = event_data.credit || null;
+    show_lb_photo();
+
+    const lb = document.getElementById('lightbox');
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lb-close').focus();
+  }
+
+  function close_lightbox() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lb_photos = [];
+  }
+
+  function show_lb_photo() {
+    const p = lb_photos[lb_index];
+    document.getElementById('lb-img').src = p.src;
+    document.getElementById('lb-img').alt = p.alt || '';
+    document.getElementById('lb-title').textContent = p.alt || '';
+    document.getElementById('lb-counter').textContent = lb_photos.length > 1
+      ? `${lb_index + 1} / ${lb_photos.length}`
+      : '';
+    // photo-level credit takes priority; fall back to event-level
+    const credit = p.credit || lb_event_credit || null;
+    const credit_el = document.getElementById('lb-credit');
+    credit_el.textContent = credit ? `Photo: ${credit}` : '';
+    credit_el.hidden = !credit;
+    // hide arrows if only one photo
+    const single = lb_photos.length <= 1;
+    document.getElementById('lb-prev').hidden = single;
+    document.getElementById('lb-next').hidden = single;
+  }
+
+  function lb_prev() {
+    lb_index = (lb_index - 1 + lb_photos.length) % lb_photos.length;
+    show_lb_photo();
+  }
+
+  function lb_next() {
+    lb_index = (lb_index + 1) % lb_photos.length;
+    show_lb_photo();
+  }
+
+  // wire up lightbox controls
+  document.getElementById('lb-close').addEventListener('click', close_lightbox);
+  document.getElementById('lb-prev').addEventListener('click', lb_prev);
+  document.getElementById('lb-next').addEventListener('click', lb_next);
+
+  // close on overlay click (not on image/caption)
+  document.getElementById('lightbox').addEventListener('click', function (e) {
+    if (e.target === this) close_lightbox();
+  });
+
+  // keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape')      close_lightbox();
+    if (e.key === 'ArrowLeft')   lb_prev();
+    if (e.key === 'ArrowRight')  lb_next();
+  });
+
+  // load gallery.json and render
+  fetch('gallery.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      const events = data.events || [];
+
+      // build unique category list in the order they appear
+      const seen = new Set();
+      const categories = [];
+      events.forEach(function (e) {
+        if (!seen.has(e.category)) {
+          seen.add(e.category);
+          categories.push(e.category);
+        }
+      });
+
+      // render filter buttons
+      const filter_el = document.getElementById('gallery-filters');
+      const all_btn = document.createElement('button');
+      all_btn.className = 'gallery-filter-btn active';
+      all_btn.textContent = 'All';
+      all_btn.dataset.filter = 'all';
+      filter_el.appendChild(all_btn);
+
+      categories.forEach(function (cat) {
+        const btn = document.createElement('button');
+        btn.className = 'gallery-filter-btn';
+        btn.textContent = category_labels[cat] || cat;
+        btn.dataset.filter = cat;
+        filter_el.appendChild(btn);
+      });
+
+      // render cards
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = events.map(render_card).join('');
+
+      // filter logic
+      filter_el.addEventListener('click', function (e) {
+        const btn = e.target.closest('.gallery-filter-btn');
+        if (!btn) return;
+
+        filter_el.querySelectorAll('.gallery-filter-btn').forEach(function (b) {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+
+        const selected = btn.dataset.filter;
+        const cards = grid.querySelectorAll('.gallery-card');
+        let visible = 0;
+
+        cards.forEach(function (card) {
+          const match = selected === 'all' || card.dataset.category === selected;
+          card.hidden = !match;
+          if (match) visible++;
+        });
+
+        // empty state
+        const existing_empty = grid.querySelector('.gallery-empty');
+        if (existing_empty) existing_empty.remove();
+        if (visible === 0) {
+          const empty = document.createElement('p');
+          empty.className = 'gallery-empty';
+          empty.textContent = 'No events in this category yet.';
+          grid.appendChild(empty);
+        }
+      });
+
+      // open lightbox on card click or Enter/Space
+      grid.addEventListener('click', function (e) {
+        const card = e.target.closest('.gallery-card');
+        if (!card) return;
+        const id = card.dataset.id;
+        const event_data = events.find(function (ev) { return ev.id === id; });
+        if (event_data) open_lightbox(event_data);
+      });
+
+      grid.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.gallery-card');
+        if (!card) return;
+        e.preventDefault();
+        const id = card.dataset.id;
+        const event_data = events.find(function (ev) { return ev.id === id; });
+        if (event_data) open_lightbox(event_data);
+      });
+    })
+    .catch(function () {
+      document.getElementById('gallery-grid').innerHTML =
+        '<p class="gallery-empty">Gallery data could not be loaded.</p>';
+    });
+})();
+</script>
+</body>
+</html>
