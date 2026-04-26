@@ -31,7 +31,7 @@
       "description": "Students presented their fall-term policy briefs to Mikula. The strongest work was flagged for possible publication.",
       "cover": "photos/events/2025-mikula-dec/cover.webp",
       "photos": [
-        */{ "src": "photos/events/2025-mikula-dec/01.webp", "alt": "Student presenting policy brief" },
+        { "src": "photos/events/2025-mikula-dec/01.webp", "alt": "Student presenting policy brief" },
         { "src": "photos/events/2025-mikula-dec/02.webp", "alt": "Andrew Mikula giving feedback" }
       ]
     },
