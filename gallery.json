@@ -1,0 +1,66 @@
+{
+  "events": [
+    {
+      "id": "2026-thurlow-apr",
+      "title": "Julieann Thurlow & Jose Cruz | Reading Cooperative Bank",
+      "date": "2026-04-23",
+      "category": "colloquium",
+      "description": "Thurlow (President and CEO) and Cruz (SVP, Commercial) discussed community banking, housing finance, and MBTA Communities zoning in person. Students discussed their policy briefs, and Thurlow & Cruz provided thoughtful feedback.",
+      "credit": "Kelvin Ma",
+      "cover": "photos/events/2026-thurlow-apr/cover.webp",
+      "photos": [
+        { "src": "photos/events/2026-thurlow-apr/01.webp", "alt": "Julieann Thurlow speaking to AES members" },
+        { "src": "photos/events/2026-thurlow-apr/02.webp", "alt": "Jose Cruz discussing community lending" },
+        { "src": "photos/events/2026-thurlow-apr/03.webp", "alt": "Discussion with AES members" }
+      ]
+    },
+    {
+      "id": "2026-pioneer-apr",
+      "title": "Policy brief presentations — Pioneer Institute",
+      "date": "2026-04-26",
+      "category": "colloquium",
+      "description": "AES members traveled to the Pioneer Institute in Boston to present their spring policy briefs to Andrew Mikula.",
+      "cover": "photos/events/2026-pioneer-apr/cover.webp",
+      "photos": []
+    },
+    {
+      "id": "2025-mikula-dec",
+      "title": "Policy brief feedback session | Andrew Mikula",
+      "date": "2025-12-04",
+      "category": "colloquium",
+      "description": "Students presented their fall-term policy briefs to Mikula. The strongest work was flagged for possible publication.",
+      "cover": "photos/events/2025-mikula-dec/cover.webp",
+      "photos": [
+        */{ "src": "photos/events/2025-mikula-dec/01.webp", "alt": "Student presenting policy brief" },
+        { "src": "photos/events/2025-mikula-dec/02.webp", "alt": "Andrew Mikula giving feedback" }
+      ]
+    },
+    {
+      "id": "2025-farrington-oct",
+      "title": "Grant Farrington | Boston Municipal Research Bureau",
+      "date": "2025-10-29",
+      "category": "colloquium",
+      "description": "Farrington presented on fiscal policy and the Boston municipal budget. Students workshopped early policy brief topics during Q&A.",
+      "cover": "photos/events/2025-farrington-oct/cover.webp",
+      "photos": []
+    },
+    {
+      "id": "2025-mikula-oct",
+      "title": "Andrew Mikula | Pioneer Institute",
+      "date": "2025-10-18",
+      "category": "colloquium",
+      "description": "Mikula discussed housing economics and zoning policy in Greater Boston, and walked students through policy brief writing. Session held virtually.",
+      "cover": "photos/events/2025-mikula-oct/cover.webp",
+      "photos": []
+    },
+    {
+      "id": "2025-fed-challenge",
+      "title": "Fed Challenge 2025",
+      "date": "2025-11-01",
+      "category": "fed-challenge",
+      "description": "AES competed in the Federal Reserve Bank of New York High School Fed Challenge, presenting a monetary policy recommendation.",
+      "cover": "photos/events/2025-fed-challenge/cover.webp",
+      "photos": []
+    }
+  ]
+}
