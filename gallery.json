@@ -1,0 +1,36 @@
+{
+  "events": [
+    {
+      "id": "2026-thurlow-apr",
+      "title": "Julieann Thurlow & Jose Cruz | Reading Cooperative Bank",
+      "date": "2026-04-23",
+      "category": "colloquium",
+      "description": "Thurlow (President and CEO) and Cruz (SVP, Commercial) discussed community banking, housing finance, and MBTA Communities zoning in person. Students discussed their policy briefs, and Thurlow & Cruz provided thoughtful feedback.",
+      "credit": "Kelvin Ma",
+      "cover": "photos/events/2026-thurlow-apr/cover.webp",
+      "photos": [
+        { "src": "photos/events/2026-thurlow-apr/01.webp", "alt": "Julieann Thurlow speaking to AES members" },
+        { "src": "photos/events/2026-thurlow-apr/02.webp", "alt": "Jose Cruz discussing community lending" },
+        { "src": "photos/events/2026-thurlow-apr/03.webp", "alt": "Discussion with AES members" }
+      ]
+    },
+    {
+      "id": "2026-mikula-apr",
+      "title": "Policy brief presentations | Andrew Mikula",
+      "date": "2026-04-26",
+      "category": "colloquium",
+      "description": "AES members traveled to Boston to present their spring policy briefs to Pioneer Institute Senior Housing Fellow Andrew Mikula.",
+      "cover": "photos/events/2026-mikula-apr/cover.webp",
+      "photos": []
+    },
+    {
+      "id": "2026-fed-challenge",
+      "title": "Fed Challenge 2026",
+      "date": "2026-3-01",
+      "category": "fed-challenge",
+      "description": "AES participated in the Federal Reserve Bank of New York High School Fed Challenge for the first time, submitting a podcast script titled \"The Price of the Pit\" to the year's music-themed competition.",
+      "cover": "photos/events/2026-fed-challenge/fed-challenge-26-team.webp",
+      "photos": []
+    }
+  ]
+}
