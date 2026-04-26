@@ -1,0 +1,71 @@
+{
+  "events": [
+    {
+      "id": "2026-thurlow-apr",
+      "title": "Julieann Thurlow & Jose Cruz | Reading Cooperative Bank",
+      "date": "2026-04-23",
+      "category": "colloquium",
+      "description": "Thurlow (President and CEO) and Cruz (SVP, Commercial) discussed community banking, housing finance, and MBTA Communities zoning in person. Students discussed their policy briefs, and Thurlow & Cruz provided thoughtful feedback.",
+      "credit": "Kelvin Ma",
+      "cover": "photos/events/2026-thurlow-apr/AES_with_reading.webp",
+      "photos": [
+        { "src": "photos/events/2026-thurlow-apr/AES_with_reading.webp", "alt": "AES members with Julieann Thurlow and Jose Cruz after the discussion" },
+        { "src": "photos/events/2026-thurlow-apr/thurlow_speaking.webp", "alt": "Julieann Thurlow speaking to AES members" },
+        { "src": "photos/events/2026-thurlow-apr/thurlow_point.webp", "alt": "Julieann Thurlow making a point" },
+        { "src": "photos/events/2026-thurlow-apr/thurlow_point2.webp", "alt": "Julieann Thurlow making a point" },
+        { "src": "photos/events/2026-thurlow-apr/thurlow_point3.webp", "alt": "Julieann Thurlow addressing AES members" },
+        { "src": "photos/events/2026-thurlow-apr/thurlow_point4_back.webp", "alt": "Julieann Thurlow speaking, view from behind" },
+        { "src": "photos/events/2026-thurlow-apr/thurlow_point_5.webp", "alt": "Julieann Thurlow in discussion" },
+        { "src": "photos/events/2026-thurlow-apr/cruz_point.webp", "alt": "Jose Cruz discussing community lending" },
+        { "src": "photos/events/2026-thurlow-apr/cruz_point2.webp", "alt": "Jose Cruz making a point" },
+        { "src": "photos/events/2026-thurlow-apr/thurlow_cruz_exchange.webp", "alt": "Julieann Thurlow and Jose Cruz in conversation" },
+        { "src": "photos/events/2026-thurlow-apr/candid_back_reading.webp", "alt": "Candid view of the discussion circle" },
+        { "src": "photos/events/2026-thurlow-apr/the_teams_reading.webp", "alt": "AES members listening during the colloquium" },
+        { "src": "photos/events/2026-thurlow-apr/reading_other_side.webp", "alt": "AES members on the other side of the circle" },
+        { "src": "photos/events/2026-thurlow-apr/kaitlyns_group_reading.webp", "alt": "AES members engaged in discussion" },
+        { "src": "photos/events/2026-thurlow-apr/kaitlyns_point.webp", "alt": "AES member presenting a point" }
+      ]
+    },
+    {
+      "id": "2026-mikula-apr",
+      "title": "Policy brief presentations | Andrew Mikula",
+      "date": "2026-04-26",
+      "category": "colloquium",
+      "description": "AES members traveled to Boston to present their spring policy briefs to Pioneer Institute Senior Housing Fellow Andrew Mikula.",
+      "cover": "photos/events/2026-mikula-apr/aa97681b.webp",
+      "photos": [
+        { "src": "photos/events/2026-mikula-apr/aa97681b.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/a72bfd7c.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/fa90f595.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/a961c475.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/10bb15c1.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/dfb76651.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/1431ee8a.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/d777b661.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/70e03c1a.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/d6886d3f.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/b802441c.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/7ad44d4c.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/628afbfb.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/3235c6c7.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/408229d7.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/7d5fed02.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/ad34dc05.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/b3eb0e11.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/7296ac33.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" },
+        { "src": "photos/events/2026-mikula-apr/15677d4e.webp", "alt": "AES members presenting policy briefs to Andrew Mikula" }
+      ]
+    },
+    {
+      "id": "2026-fed-challenge",
+      "title": "Fed Challenge 2026",
+      "date": "2026-3-01",
+      "category": "fed-challenge",
+      "description": "AES participated in the Federal Reserve Bank of New York High School Fed Challenge for the first time, submitting a podcast script titled \"The Price of the Pit\" to the year's music-themed competition.",
+      "cover": "photos/events/2026-fed-challenge/fed-challenge-26-team.webp",
+      "photos": [
+        { "src": "photos/events/2026-fed-challenge/fed-challenge-26-team.webp", "alt": "Our first Fed Challenge team, after our final in-person meeting." }
+      ]
+    }
+  ]
+}
