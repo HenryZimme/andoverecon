@@ -31,8 +31,9 @@
       "category": "fed-challenge",
       "description": "AES participated in the Federal Reserve Bank of New York High School Fed Challenge for the first time, submitting a podcast script titled \"The Price of the Pit\" to the year's music-themed competition.",
       "cover": "photos/events/2026-fed-challenge/fed-challenge-26-team.webp",
-      "photos": []
-      { "src": "photos/events/2026-fed-challenge/fed-challenge-26-team.webp", "alt": "Our first Fed Challenge team, after our final in-person meeting."}
+      "photos": [
+        { "src": "photos/events/2026-fed-challenge/fed-challenge-26-team.webp", "alt": "Our first Fed Challenge team, after our final in-person meeting." }
+      ]
     }
   ]
 }
