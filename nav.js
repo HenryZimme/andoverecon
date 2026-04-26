@@ -7,6 +7,7 @@
     { href: 'journal.html',       label: 'Journal' },
     { href: 'lab.html',           label: 'Lab' },
     { href: 'resources.html',     label: 'Resources' },
+    { href: 'gallery.html',       label: 'Gallery' },
     { href: 'leadership.html',    label: 'Leadership' },
   ];
 
