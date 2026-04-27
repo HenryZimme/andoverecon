@@ -65,11 +65,12 @@ To make any change: edit the relevant `.html` file, commit, and push to GitHub. 
 2. Find the appropriate section and copy a `<div class="card">` block.
 3. Update the title, description, and `href` in the link.
 
-### Add a neew event with existing photos
+### Add a new event with existing photos
 
 1. Open `gallery.json`.
 2. Find the appropriate section and copy an event block.
-3. Update the title, description, date, photo filepaths, 
+3. Update the title, description, date, photo filepaths, photo creditsand everything else needed
+
 ---
 
 ## Using Artificial Intelligence to make updates
