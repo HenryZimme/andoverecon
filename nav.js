@@ -1,20 +1,73 @@
 /* nav.js — injects shared nav and footer, marks active page */
 (function () {
+  // ── date-awareness utilities ────────────────────────────────────────────
+  // auto-hide any element with data-expires="YYYY-MM-DD" once that date passes.
+  function applyExpiryDates() {
+    document.querySelectorAll('[data-expires]').forEach(function (el) {
+      var expires = new Date(el.getAttribute('data-expires'));
+      expires.setHours(23, 59, 59, 999); // hide end-of-expiry-day
+      if (new Date() > expires) {
+        el.hidden = true;
+      }
+    });
+  }
+
+  // compute years active from a founding year and fill [data-years-since].
+  function applyYearsSince() {
+    document.querySelectorAll('[data-years-since]').forEach(function (el) {
+      var founded = parseInt(el.getAttribute('data-years-since'), 10);
+      if (!isNaN(founded)) {
+        el.textContent = new Date().getFullYear() - founded;
+      }
+    });
+  }
+
+  // ── accessibility: skip link ────────────────────────────────────────────
+  // injects "Skip to main content" before the nav on every page.
+  // targets the first .hero, .page-content, or #lab-root and assigns
+  // id="main-content" if the element doesn't already have one.
+  function injectSkipLink() {
+    var style = document.createElement('style');
+    style.textContent =
+      '.skip-link{position:absolute;top:-999px;left:-999px;padding:0.5rem 1.1rem;' +
+      'background:var(--blue,#001f6b);color:#fff;font-size:0.875rem;font-family:inherit;' +
+      'font-weight:600;z-index:10000;text-decoration:none;border-radius:0 0 4px 4px;}' +
+      '.skip-link:focus{top:0;left:0;}';
+    document.head.appendChild(style);
+
+    var a = document.createElement('a');
+    a.href = '#main-content';
+    a.className = 'skip-link';
+    a.textContent = 'Skip to main content';
+    document.body.insertBefore(a, document.body.firstChild);
+
+    var target = document.querySelector('.hero, .page-content, #lab-root');
+    if (target) {
+      if (!target.id) {
+        target.id = 'main-content';
+      } else {
+        a.href = '#' + target.id;
+      }
+    }
+  }
+
+
+  // main nav: 5 items. logo covers "Home".
   const pages = [
-    { href: 'index.html',         label: 'Home' },
     { href: 'fed_challenge.html', label: 'Fed Challenge' },
     { href: 'colloquium.html',    label: 'Colloquium' },
     { href: 'journal.html',       label: 'Journal' },
     { href: 'lab.html',           label: 'Lab' },
-    { href: 'resources.html',     label: 'Resources' },
-    { href: 'gallery.html',       label: 'Gallery' },
     { href: 'leadership.html',    label: 'Leadership' },
   ];
 
-  // footerExtra: shown in footer only, not the main nav.
-  // Keeps the nav bar at 7 items while surfacing utility pages below.
+  // footer-only: utility and supplementary pages.
   const footerExtra = [
-    { href: 'submit.html', label: 'Submit' },
+    { href: 'index.html',                         label: 'Home' },
+    { href: 'resources.html',                     label: 'Resources' },
+    { href: 'gallery.html',                       label: 'Gallery' },
+    { href: 'submit.html',                        label: 'Submit' },
+    { href: 'https://forms.gle/xZ2WGrkWvnxQBahz5', label: 'Join AES' },
   ];
   const current = (location.pathname.split('/').pop() || 'index.html');
 
@@ -91,4 +144,9 @@
   window.addEventListener('scroll', function () {
     siteNav.classList.toggle('scrolled', window.scrollY > 10);
   }, { passive: true });
+
+  // date-aware utilities (run after DOM is ready)
+  applyExpiryDates();
+  applyYearsSince();
+  injectSkipLink();
 })();
