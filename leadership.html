@@ -123,8 +123,18 @@
 <script src="nav.js" defer></script>
 
 <script>
-  function getInitial(name) {
-    return name.trim().charAt(0).toUpperCase();
+  function getInitials(name) {
+    if (typeof name !== 'string') return "";
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 0 || parts[0] === "") return "";
+    const getFirstChar = (str) => Array.from(str)[0] || "";
+
+    const firstInitial = getFirstChar(parts[0]).toUpperCase();
+    const lastInitial = parts.length > 1
+      ? get FirstChar(parts[parts.length - 1]).toUpperCase()
+      : "";
+    return firstInitial + Last Initial;
+    
   }
 
   function renderMemberCard(member, showYear) {
