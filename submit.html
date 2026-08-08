@@ -600,6 +600,7 @@
         });
 
         if (response.ok) {
+          try { localStorage.removeItem(DRAFT_KEY); } catch (e) { /* ignore */ }
           form.style.display = 'none';
           success.style.display = 'block';
           success.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -612,4 +613,45 @@
         spinner.style.display = 'none';
         btnTxt.textContent = 'Submit to the Review';
         error.style.display = 'block';
-        error.innerHTML = 'Something went wrong (' + (err.message || 'unknown error') + '). '
+        error.innerHTML = 'Something went wrong (' + (err.message || 'unknown error') + '). ' +
+          'Please try again, or <a href="leadership.html">contact the board directly</a>.';
+        error.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    // ── Draft auto-save ──────────────────────────────────────
+    // saves field values to localStorage as the user types, so a refresh
+    // or closed tab doesn't lose a half-finished submission
+    // restored on load; cleared on confirmed success (see the response.ok branch above)
+    // decs are never autorestored, each visit re-checks
+    const DRAFT_KEY = 'aer-submit-draft';
+    let saveTimer;
+
+    (function restoreDraft() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+        if (!saved) return;
+        Object.keys(saved).forEach(function (name) {
+          const field = form.elements[name];
+          if (field && field.type !== 'checkbox') field.value = saved[name];
+        });
+        titleInput.dispatchEvent(new Event('input')); // resync hidden subject line
+      } catch (e) { /* storage unavailable: private browsing, sandboxed preview, etc. */ }
+    })();
+
+    form.addEventListener('input', function () {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(function () {
+        try {
+          const data = {};
+          new FormData(form).forEach(function (value, name) {
+            if (name !== '_gotcha' && name !== '_subject') data[name] = value;
+          });
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+        } catch (e) { /* ignore */ }
+      }, 400);
+    });
+  })();
+</script>
+</body>
+</html>
