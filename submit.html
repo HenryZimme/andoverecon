@@ -414,8 +414,7 @@
             </label>
             <p class="form-hint">
               Share a Google Drive, Dropbox, or OneDrive link set to "anyone with the link can view."
-              Submit as a PDF or Word document. Remove your name from the document itself — the
-              editorial board reviews submissions blind.
+              Submit as a PDF or Word document.
             </p>
             <input type="url" id="doc-link" name="document_link"
               placeholder="https://drive.google.com/…" required>
@@ -438,7 +437,7 @@
               value="confirmed" required>
             <label for="decl-original">
               <strong>This paper is original work.</strong> It has not been published elsewhere and is not
-              currently under review at another journal or publication. <span class="req">*</span>
+              currently under review at another journal or publication. Papers that are already on preprint servers are permitted.<span class="req">*</span>
             </label>
           </div>
 
@@ -505,7 +504,7 @@
           </li>
           <li>
             <span class="gl-label">Format</span>
-            <span>PDF or Word document, author name removed (blind review)</span>
+            <span>PDF or Word document, with "anyone with the link can view" permissions</span>
           </li>
           <li>
             <span class="gl-label">Citations</span>
@@ -513,7 +512,7 @@
           </li>
           <li>
             <span class="gl-label">Review</span>
-            <span>Peer-reviewed by AES editorial board; decision within six weeks</span>
+            <span>Peer-reviewed by AER editorial board; decision within six weeks</span>
           </li>
           <li>
             <span class="gl-label">Open to</span>
@@ -539,7 +538,7 @@
 <script src="nav.js" defer></script>
 <script>
   // ── Form submission handler ─────────────────────────────
-  // Uses Formspree's JSON endpoint for an inline success/error
+  // using Formspree's JSON endpoint for an inline success/error
   // state rather than a page redirect.
   (function () {
     const form   = document.getElementById('submission-form');
