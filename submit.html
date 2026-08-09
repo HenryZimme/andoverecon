@@ -472,17 +472,22 @@
           </p>
         </div>
 
-        <!-- Status messages -->
-        <div class="form-status success" id="status-success" style="display:none;">
-          <strong>Submission received.</strong> The editorial board will acknowledge receipt
-          within five business days and provide a decision within eight weeks of the submission deadline.
-          Check your spam folder if you don't hear from us.
-        </div>
-        <div class="form-status error" id="status-error" style="display:none;">
-          Something went wrong. Please try again, or <a href="leadership.html">contact the board directly</a>.
-        </div>
-
       </form>
+
+      <!-- Status messages — deliberately outside the form: form.style.display='none'
+           on submit would otherwise hide these too, since display:none on a parent
+           hides descendants no matter what their own display is set to. -->
+      <div class="form-status success" id="status-success" style="display:none;">
+        <strong>Submission received.</strong> Your paper enters the queue for peer review by the
+        editorial board and by another submitting author, per the declaration. Expect
+        acknowledgment within five business days and a decision to accept, revise and resubmit, or
+        decline within eight weeks. You may be invited to a short conversation about the paper
+        before a final decision.
+        Check your spam folder if you don't hear from us, or <a href="leadership.html">contact the board</a> with questions.
+      </div>
+      <div class="form-status error" id="status-error" style="display:none;">
+        Something went wrong. Please try again, or <a href="leadership.html">contact the board directly</a>.
+      </div>
     </div>
 
     <!-- Sidebar guidelines card -->
