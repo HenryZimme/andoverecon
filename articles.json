@@ -1,0 +1,290 @@
+{
+  "issues": [
+    {
+      "id": "winter-2025",
+      "season": "Winter",
+      "year": 2025,
+      "date": "2025-01-15",
+      "pdf": "/pdfs/aer-winter-2025.pdf",
+      "doi": null,
+      "cover_image": "/photos/aer-logo-2.webp",
+      "editorial_note": "Inaugural issue of the Andover Economic Review.",
+      "stats": {
+        "submissions_received": null,
+        "articles_accepted": 5,
+        "acceptance_rate": null
+      }
+    },
+    {
+      "id": "fall-2026",
+      "season": "Fall",
+      "year": 2026,
+      "date": null,
+      "pdf": null,
+      "doi": null,
+      "cover_image": "/photos/aer-logo-2.webp",
+      "editorial_note": "Under editorial review. 25+ submissions received from authors in 10+ countries.",
+      "status": "in_review",
+      "stats": {
+        "submissions_received": "25+",
+        "articles_accepted": null,
+        "acceptance_rate": null
+      }
+    }
+  ],
+  "articles": [
+    {
+      "slug": "liu-income-redistribution-2025",
+      "title": "Income Redistribution: Problems of Politics and Migration",
+      "authors": [
+        {
+          "name": "Andrew Liu",
+          "affiliation": "Phillips Academy Andover",
+          "country": "US",
+          "year": "2027"
+        }
+      ],
+      "issue_id": "winter-2025",
+      "abstract": "Why does sub-national political polarization in the United States produce redistributive inefficiency, and how can migratory externalities compound those inefficiencies? This paper uses public choice theory to argue that political reform is inseparable from redistributive solutions.",
+      "keywords": [
+        "income redistribution",
+        "public choice theory",
+        "fiscal federalism",
+        "migration",
+        "polarization"
+      ],
+      "pdf_page_start": 5,
+      "pdf_page_end": 9,
+      "doi": null,
+      "zenodo_id": null,
+      "word_count": null,
+      "references": [
+        "Ares, Macarena, Reto Bürgisser, and Silja Häusermann. \"Attitudinal Polarization towards the Redistributive Role of the State in the Wake of the Covid-19 Crisis.\" Taylor and Francis Online. Last modified 2021. Accessed 2023. https://www.tandfonline.com/doi/full/10.1080/17457289.2021.1924736.",
+        "Chen, Zhiwei, Zhaoyuan Li, and Sibo Liu. \"The price of political polarization: Evidence from municipal issuers during the coronavirus pandemic.\" NCBI. Last modified 2022. Accessed 2023. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8898782/.",
+        "Chetty, Raj. \"Is the Taxable Income Elasticity Sufficient to Calculate Deadweight Loss? The Implications of Evasion and Avoidance.\" American Economic Journal: Economic Policy, 2009, 31-52. Accessed 2023. https://www.jstor.org/stable/25760039?seq=2.",
+        "Congleton, Roger. Intellectual Foundations of Public Choice, the Forest from the Trees. Public Choice, 2018. Accessed 2023. https://doi.org/10.1007/s11127-018-0545-1.",
+        "Feldstein, Martin, and Marian Wrobel. \"Can State Taxes Redistribute Income?\" ScienceDirect. Last modified 1998. https://www.sciencedirect.com/science/article/abs/pii/S0047272798000152.",
+        "Gale, William, and Aaron Krupkin. \"How Big is the Problem of Tax Evasion?\" Brookings. Last modified 2019. Accessed 2023. https://www.brookings.edu/articles/how-big-is-the-problem-of-tax-evasion/.",
+        "Giertz, Seth, and Mehmet Tosum. \"MIGRATION ELASTICITIES, FISCAL FEDERALISM, AND THE ABILITY OF STATES TO REDISTRIBUTE INCOME.\" Digital Commons @ University of Nebraska. Last modified 2012. Accessed 2023. https://digitalcommons.unl.edu/econfacpub/81/.",
+        "Gordon, Roger, and Julie Cullen. \"Income redistribution in a Federal system of governments.\" Journal of Public Economics, 2012, 1100-09. https://doi.org/10.1016/j.jpubeco.2011.07.001.",
+        "Huber, John, and Michael Ting. \"REDISTRIBUTION, PORK AND ELECTIONS.\" Polisci.columbia.edu. Accessed 2023. https://polisci.columbia.edu/sites/default/files/content/pdfs/Publications/Huber/huber%20ting.pdf.",
+        "Johnson, William R. \"Income Redistribution in a Federal System.\" JSTOR. Last modified 1988. Accessed 2023. https://www.jstor.org/stable/1809154?seq=4.",
+        "Lee, Kangoh. \"Does Mobility Undermine Income Redistribution? A Political-Support Approach to Redistribution in a Federation.\" JSTOR. Last modified 2007. Accessed 2023. https://www.jstor.org/stable/40913146.",
+        "Mayo, Marco Pastor. \"Activating Self-Interest: The Role of Party Polarization in Preferences for Redistribution.\" SAGE Journals Online. Last modified 2023. https://journals.sagepub.com/doi/full/10.1177/13540688231161772.",
+        "Musgrave, Richard. \"Economics of Fiscal Federalism.\" Nebraska Journal of Economics and Business, 1971, 3-13. Digital file.",
+        "Nivola, Pietro S. \"The New Pork Barrel: What's Wrong with Regulation Today and what reformers need to do to get it right.\" Brookings. Last modified 1998. Accessed 2023. https://www.brookings.edu/articles/the-new-pork-barrel-whats-wrong-with-regulation-today-and-what-reformers-need-to-do-to-get-it-right/.",
+        "Oates, Wallace. Fiscal Federalism. Harcourt Brace Jovanovich, 1972. Digital file.",
+        "Qureshi, Zia. \"Rising Inequality: A Major Issue of Our Time.\" Brookings. Last modified 2023. Accessed 2023. https://www.brookings.edu/articles/rising-inequality-a-major-issue-of-our-time/.",
+        "Razin, Assaf, and Efraim Sadka. \"Migration and redistribution: Why the federal governance of an economic union does matter.\" ScienceDirect. Last modified 2021. https://www.sciencedirect.com/science/article/pii/S266731932100001X.",
+        "Rios de Rodriguez, Carroll. \"Public Choice Theory and the Interest Group Capture.\" Cambridge University Press. Last modified 2021. Accessed 2023. https://www.cambridge.org/core/books/abs/christianity-and-market-regulation/public-choice-theory-and-interest-group-capture/2096CEAAA08ADC41C812A205556CC4B2.",
+        "Scott, Carole E. \"Does the Federal Government Equitably Redistribute Income between the States?\" Westga.edu. Last modified 1999. Accessed 2023. https://www.westga.edu/~bquest/1999/regional.html.",
+        "Stone, Lyman. \"Which States Have the Most Progressive Income Taxes?\" Tax Foundation. Last modified 2014. Accessed 2023. https://taxfoundation.org/blog/which-states-have-most-progressive-income-taxes-0/.",
+        "Tresch, Richard W. Public Finance. N.p.: Academic Press, 2015. https://doi.org/10.1016/B978-0-12-415834-4.00001-7.",
+        "Tullock, Gordon. The Costs of Rent Seeking: A Metaphysical Problem. Public Choice, 1988. Accessed 2023. https://doi.org/10.1007/BF00052256.",
+        "Urban Institute. \"State and Local Backgrounders.\" Urban Institute. Last modified 2021. Accessed 2021. https://www.urban.org/policy-centers/cross-center-initiatives/state-and-local-finance-initiative/state-and-local-backgrounders/public-welfare-expenditures.",
+        "Van, Germinal. \"A Mathematical Theory of Economic Growth: The Public Choice Growth Model.\" Munich Personal RePEc Archive. Last modified 2020. Accessed 2023. https://mpra.ub.uni-muenchen.de/99940/.",
+        "Vermeer, Timothy. \"State Individual Income Tax Rates and Brackets for 2023.\" Tax Foundation. Last modified 2023. Accessed 2023. https://taxfoundation.org/data/all/state/state-income-tax-rates-2023/.",
+        "Wildasin, David E. \"Income Redistribution and Migration.\" The Canadian Journal of Economics, 1994, 637-56. Accessed 1994. https://doi.org/10.2307/135788."
+      ],
+      "published_date": "2025-01-15",
+      "page_path": "/articles/liu-income-redistribution-2025.html"
+    },
+    {
+      "slug": "zimmerman-japan-labor-2025",
+      "title": "Changes in Japan's Labor and Immigration Policy Address Depopulation Concerns",
+      "authors": [
+        {
+          "name": "Henry Zimmerman",
+          "affiliation": "Phillips Academy Andover",
+          "country": "US",
+          "year": "2027"
+        }
+      ],
+      "issue_id": "winter-2025",
+      "abstract": "This paper analyzes Japan's June 2024 expansion of its foreign worker visa program against the backdrop of decades of demographic decline, declining birth rates, and a shrinking labor supply. It surveys the policy responses considered over that period (\"Womenomics,\" productivity reforms, the new visa legislation) and asks whether any combination of them can address a problem this ingrained in Japan's economy.",
+      "keywords": [
+        "Japan",
+        "labor policy",
+        "immigration",
+        "depopulation",
+        "demographics",
+        "Womenomics"
+      ],
+      "pdf_page_start": 10,
+      "pdf_page_end": 12,
+      "doi": null,
+      "zenodo_id": null,
+      "word_count": null,
+      "references": [
+        "Burkhard, J., Calafà, M., Shen, C., & Deschwanden, L. (n.d.). Ecole Polytechnique Fédérale de Lausanne Japanese Work Culture in the last 30 years HUM-445: Contemporary Japan II. https://matteocalafa.com/documents/Japanese-Work-Culture-in-the-last-30-years.pdf",
+        "Dilley, L. (2017). ejcjs - Revitalising the Rural in Japan: Working through the Power of Place. Japanesestudies.org.uk. http://www.japanesestudies.org.uk/ejcjs/vol17/iss3/dilley.html",
+        "Dooley, B., & Ueno, H. (2023, January 3). Japan's Business Owners Can't Find Successors. This Man Is Giving His Away. The New York Times. https://www.nytimes.com/2023/01/03/business/japan-businesses-succession.html",
+        "ET Online. (2024, March 30). Japan expands its foreign worker visa programme for the first time since inception. The Economic Times. https://economictimes.indiatimes.com/nri/work/japan-expands-its-foreign-worker-visa-programme-for-the-first-time-since-inception/articleshow/108888745.cms",
+        "Future Predictions 2040 in Japan: The Dawn of the Limited-Labor Supply Society - Inside Out | Recruit Holdings. (2017). Recruit Holdings. https://recruit-holdings.com/en/blog/post_20230926_0001/",
+        "Groysberg, B., Yamazaki, M., Sato, N., & Lane, D. (2017). Womenomics in Japan - Case - Faculty & Research - Harvard Business School. Hbs.edu. https://www.hbs.edu/faculty/Pages/item.aspx?num=52270",
+        "Hirose, Y. (2024, April 6). Japan's official statistics miss the depth of the labor shortage. Nikkei Asia. https://asia.nikkei.com/Spotlight/Datawatch/Japan-s-official-statistics-miss-the-depth-of-the-labor-shortage",
+        "Inoue, Y. (2024, May 6). Japan's labor crunch persists despite slight improvement. The Japan Times. https://www.japantimes.co.jp/business/2024/05/06/economy/labor-crunch-continues-in-japan/",
+        "Japan Adopts Work-Style Labor Reforms. (2019). Mercer.com. https://www.mercer.com/insights/law-and-policy/japan-adopts-work-style-labor-reforms/",
+        "Japan Birth Rate 1950-2024. (2024). Macrotrends.net. https://www.macrotrends.net/global-metrics/countries/JPN/japan/birth-rate",
+        "Japan enacts laws for new foreign worker scheme amid labor crisis. (2024, June 14). Kyodo News+. https://english.kyodonews.net/news/2024/06/5e8e7231c30d-japan-enacts-laws-for-new-foreign-worker-scheme-amid-labor-crisis.html",
+        "Japan Population 1950-2024. (2024). Macrotrends.net. https://www.macrotrends.net/global-metrics/countries/JPN/japan/population",
+        "Japan, in. (2022). Japan Dev. https://japan-dev.com/blog/overtime-in-japan#is-working-overtime-in-japan-common",
+        "Japan's economic comeback as labour shortages nudge productivity up | East Asia Forum. (2024, July 7). East Asia Forum. https://eastasiaforum.org/2024/07/08/japans-economic-comeback-as-labour-shortages-nudge-productivity-up/",
+        "Japanese Work Hours Statistics: Market Data Report 2024. (2024). Worldmetrics.org. https://worldmetrics.org/japanese-work-hours-statistics/",
+        "Kanaoka, H. (2024, April 6). Japan is running out of people on sidelines of job market. Nikkei Asia. https://asia.nikkei.com/Spotlight/Work/Japan-is-running-out-of-people-on-sidelines-of-job-market",
+        "Kuboda, K. (2024). Cabinet approves replacement plan for foreign intern trainee program. The Asahi Shimbun. https://www.asahi.com/ajw/articles/15199599",
+        "Labor force participation rate, female (% of female population ages 15+) (modeled ILO estimate) - Japan. (n.d.). World Bank Open Data. https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=JP",
+        "Lang, E. (2024, July 3). Japan headed for shortage of 970,000 foreign workers in 2040. Nikkei Asia. https://asia.nikkei.com/Spotlight/Japan-immigration/Japan-headed-for-shortage-of-970-000-foreign-workers-in-2040",
+        "Masai, Y., Latz, G., & Hijino, S. (2024, January 24). Economy of Japan. Britannica. https://www.britannica.com/money/economy-of-Japan",
+        "Migrant labor law revised to allow longer, flexible stays. (2024). The Asahi Shimbun. https://www.asahi.com/ajw/articles/15305864",
+        "Milly, D. J. (2020, February 20). Japan's Labor Migration Reforms: Breaking with the Past? Migrationpolicy.org. https://www.migrationpolicy.org/article/japan-labor-migration-reforms-breaking-past",
+        "Mitsuru, Y., & Shinichi, O. (2024). Changes in Industrial Structure and Work Styles in Japan. Japan Labor Issues, 8(47). https://www.jil.go.jp/english/jli/documents/2024/047-01.pdf",
+        "Odagiri, T. (n.d.). Rural Regeneration in Japan. https://www.ncl.ac.uk/media/wwwnclacuk/centreforruraleconomy/files/regeneration-japan.pdf",
+        "Oi, M. (2024, April 19). Can AI help solve Japan's labour shortages? BBC News. https://www.bbc.com/news/business-68225115",
+        "Okutsu, A., & Muto, T. (2024, July 15). Japan's new enemy in fight to lure immigrant workers: The tumbling yen. Nikkei Asia. https://asia.nikkei.com/Spotlight/Asia-Insight/Japan-s-new-enemy-in-fight-to-lure-immigrant-workers-The-tumbling-yen",
+        "Reevaluating Japan's landmark foreign worker reforms. (2024, May 14). East Asia Forum. https://eastasiaforum.org/2024/05/14/reevaluating-japans-landmark-foreign-worker-reforms/",
+        "Reidy, G. (2024, June 12). Tokyo government's \"Tinder\" is actually a good idea. The Japan Times. https://www.japantimes.co.jp/commentary/2024/06/11/japan/tokyo-government-tinder/",
+        "Rich, M., & Notoya, K. (2024). Japan Needs Foreign Workers. It's Just Not Sure It Wants Them to Stay. The New York Times. https://www.nytimes.com/2024/08/05/world/asia/japan-foreign-workers.html",
+        "Ryall, J. (2024, February 7). Japan bets on tech, immigration as labor crisis worsens. Deutsche Welle. https://www.dw.com/en/japan-bets-on-tech-immigration-as-labor-crisis-worsens/a-68194372",
+        "Takedo, H. (2004). Beginning of High Growth No. 22. https://ocw.u-tokyo.ac.jp/lecture_files/eco_05/9/notes/en/CEHJ-22.pdf",
+        "The CEO Magazine. (2019, May). These are the surprising countries working the most overtime. The CEO Magazine. https://www.theceomagazine.com/business/health-wellbeing/countries-working-most-overtime/",
+        "The Japan Times. (2024, March 31). New work-style reform measures kick off in Japan. The Japan Times. https://www.japantimes.co.jp/news/2024/03/31/japan/japan-april-1-changes/",
+        "Trostel-Shaw, C., Facer, G., & Moehling, C. (2021). Immigrants and Foreigners in Japan: Their Role in Society and How They are Perceived. Uoregon.edu. https://scholarsbank.uoregon.edu/xmlui/handle/1794/26478",
+        "Two in Three Still Working Past Retirement Age of 60 in Japan. (2023, April 24). Nippon.com. https://www.nippon.com/en/japan-data/h01646/",
+        "Urasaki, Y., & Munakata, A. (2024, May 18). Japan's small regional companies vie to raise pay amid labor shortage. Nikkei Asia. https://asia.nikkei.com/Spotlight/Datawatch/Japan-s-small-regional-companies-vie-to-raise-pay-amid-labor-shortage",
+        "Yuasa, T. (2024, March 27). Japan to loosen residency rules for foreign entrepreneurs. Nikkei Asia. https://asia.nikkei.com/Spotlight/Japan-immigration/Japan-to-loosen-residency-rules-for-foreign-entrepreneurs"
+      ],
+      "published_date": "2025-01-15",
+      "page_path": "/articles/zimmerman-japan-labor-2025.html"
+    },
+    {
+      "slug": "kuelps-financial-crises-2025",
+      "title": "A Recipe for Disaster: How Change, Money and Behavior Create Financial Crises",
+      "authors": [
+        {
+          "name": "Jakob Kuelps",
+          "affiliation": "Phillips Academy Andover",
+          "country": "US",
+          "year": "2025"
+        }
+      ],
+      "issue_id": "winter-2025",
+      "abstract": "Financial crises from the South Sea Bubble to the Crash of 1929 have a common set of prerequisites, namely: novel change, easy money, and irrational human behavior. This paper argues that all three must be present to produce a sustained market panic; no single factor is sufficient to cause collapse on its own.",
+      "keywords": [
+        "financial crises",
+        "South Sea Bubble",
+        "Mississippi Bubble",
+        "Crash of 1929",
+        "behavioral economics",
+        "monetary policy"
+      ],
+      "pdf_page_start": 13,
+      "pdf_page_end": 16,
+      "doi": null,
+      "zenodo_id": null,
+      "word_count": null,
+      "references": [
+        "Bruner, Robert F., and Scott C. Miller. The Panic of 1861 and the Advent of Greenbacks and National Banking. Charlottesville, VA: Darden Business Publishing, 2018.",
+        "Bruner, Robert F., and Scott C. Miller. The Panic of 1791: Hamilton's Reports and the Rise of Faction (A). Charlottesville, VA: Darden Business Publishing, 2017.",
+        "Bruner, Robert F., and Scott C. Miller. The Panic of 1791: Hamilton's Reports and the Rise of Faction (B). Charlottesville, VA: Darden Business Publishing, 2017.",
+        "Bruner, Robert F., and Scott C. Miller. The \"Roaring '20s\" and the Crash of 1929. Charlottesville, VA: Darden Business Publishing, 2019.",
+        "Bruner, Robert F., and Scott C. Miller. 1720: John Law and the Mississippi Bubble. Charlottesville, VA: Darden Business Publishing, 2018.",
+        "Bruner, Robert F., and Scott C. Miller. The South Sea Bubble and the Rise of the Bank of England. Charlottesville, VA: Darden Business Publishing, 2018.",
+        "Quinn, William, and John D. Turner. Boom and Bust: a Global History of Financial Bubbles. Cambridge, United Kingdom: Cambridge University Press, 2020."
+      ],
+      "published_date": "2025-01-15",
+      "page_path": "/articles/kuelps-financial-crises-2025.html"
+    },
+    {
+      "slug": "deboer-china-green-transition-2025",
+      "title": "Will the Green Transition Save China's Economic Growth?",
+      "authors": [
+        {
+          "name": "Lisa de Boer",
+          "affiliation": "Phillips Academy Andover",
+          "country": "US",
+          "year": "2026"
+        }
+      ],
+      "issue_id": "winter-2025",
+      "abstract": "Examines whether China's green energy sector can replace the infrastructure investment, real estate development, and credit expansion that drove GDP growth for decades. In 2023, renewable energy accounted for an estimated 40% of overall GDP growth, bringing up the question of whether this trajectory is sustainable as traditional drivers stagnate.",
+      "keywords": [
+        "China",
+        "green energy",
+        "economic growth",
+        "real estate",
+        "renewable energy",
+        "GDP"
+      ],
+      "pdf_page_start": 17,
+      "pdf_page_end": 19,
+      "doi": null,
+      "zenodo_id": null,
+      "word_count": null,
+      "references": [
+        "Our World in Data. \"Annual GDP Growth.\" https://ourworldindata.org/grapher/annual-gdp-growth?tab=chart&country=CHN~IND~PHL~VNM~IDN",
+        "World Bank. \"China Overview.\" https://www.worldbank.org/en/country/china/overview",
+        "ScienceDirect. \"Land revenue and fiscal sustainability in China.\" https://www.sciencedirect.com/science/article/pii/S0304387822000748",
+        "ScienceDirect. \"China's economic growth and structural change.\" https://www.sciencedirect.com/science/article/pii/S002219962300020X",
+        "GIHUB. \"China Country Profile.\" https://www.gihub.org/countries/china/",
+        "The Diplomat. \"China's Property Market: Explaining the Boom and Bust.\" https://thediplomat.com/2024/09/chinas-property-market-explaining-the-boom-and-bust/",
+        "IMF. \"China's Real Estate Sector: Managing the Medium-Term.\" https://www.imf.org/en/News/Articles/2024/02/02/cf-chinas-real-estate-sector-managing-the-medium-term",
+        "The Global Treasurer. \"Understanding China's Real Estate Crisis.\" https://www.theglobaltreasurer.com/2024/04/29/understanding-chinas-real-estate-crisis/",
+        "The Economist. \"China's Slowing Economy Seen from Ground Level.\" https://www.economist.com/china/2023/08/17/chinas-slowing-economy-seen-from-ground-level",
+        "S&P Global. \"China Property Watch: Charting a Path to Stability.\" https://www.spglobal.com/ratings/en/research/articles/241018-china-property-watch-charting-a-path-to-st",
+        "CEIC Data. \"China GDP: Real Estate.\" https://www.ceicdata.com/en/china/gross-domestic-product-quarterly/gdp-ti-real-estate",
+        "Trading Economics. \"China Government Budget.\" https://tradingeconomics.com/china/government-budget",
+        "Trading Economics. \"China Government Spending.\" https://tradingeconomics.com/china/government-spending",
+        "Trading Economics. \"China Government Revenues.\" https://tradingeconomics.com/china/government-revenues",
+        "PIIE. \"Chinese Local Governments' Reliance on Land Revenue Drops as Property Downturn Deepens.\" https://www.piie.com/research/piie-charts/2024/chinese-local-governments-reliance-land-revenue-drops-property-donturn",
+        "Carbon Brief. \"China Added More Solar Panels in 2023 Than US Did in Its Entire History.\" https://www.carbonbrief.org/daily-brief/china-added-more-solar-panels-in-2023-than-us-did-in-its-entire-history/",
+        "Yale E360. \"China's Renewable Energy.\" https://e360.yale.edu/features/china-renewable-energy",
+        "CNBC. \"More Than Half of New Cars Sold in China Are Now Electric or Hybrid.\" https://www.cnbc.com/2024/08/09/more-than-half-of-new-cars-sold-in-china-are-now-electric-or-hybrid.html",
+        "World Economic Forum. \"Major Economies Are Taking Aim at China's EV Industry.\" https://www.weforum.org/stories/2024/09/major-economies-are-taking-aim-at-china-s-ev-industry-here-s-what-to-know/",
+        "ScienceDirect. \"China's Green Finance Policy.\" https://www.sciencedirect.com/science/article/abs/pii/S1043951X20301796",
+        "Climate Bonds Initiative. \"China Sustainable Debt State of the Market Report 2023.\" https://www.climatebonds.net/files/reports/china_sustainable_debt_state_of_the_market_report_2023.pdf",
+        "World Economic Forum. \"China Green Financing Energy Transition.\" https://www.weforum.org/stories/2024/08/china-green-financing-energy-transition/",
+        "Carbon Brief. \"The Carbon Brief Profile: China.\" https://interactive.carbonbrief.org/the-carbon-brief-profile-china/index.html",
+        "China Briefing. \"China's New Renewable Energy Plan: Key Insights for Businesses.\" https://www.china-briefing.com/news/chinas-new-renewable-energy-plan-key-insights-for-businesses/"
+      ],
+      "published_date": "2025-01-15",
+      "page_path": "/articles/deboer-china-green-transition-2025.html"
+    },
+    {
+      "slug": "dehoog-balanced-power-2025",
+      "title": "L'état, C'est Quoi?: Balanced Power versus Absolute Rule in the Rupture of Financial Bubbles",
+      "authors": [
+        {
+          "name": "Grant DeHoog",
+          "affiliation": "Phillips Academy Andover",
+          "country": "US",
+          "year": "2025"
+        }
+      ],
+      "issue_id": "winter-2025",
+      "abstract": "In response to the  South Sea and Mississippi Bubbles of the early 18th century, Britain's constitutional framework, with the Bank of England as lender of last resort, enabled recovery, while France's unchecked absolutist monarchy amplified the disaster and delayed financial development for generations. This article closes by considering the implications for checks on monetary authority today.",
+      "keywords": [
+        "South Sea Bubble",
+        "Mississippi Bubble",
+        "financial regulation",
+        "monetary authority",
+        "institutional economics",
+        "Bank of England"
+      ],
+      "pdf_page_start": 20,
+      "pdf_page_end": 23,
+      "doi": null,
+      "zenodo_id": null,
+      "word_count": null,
+      "references": [
+        "Bruner, Robert, and Scott Miller. 1720: John Law and the Mississippi Bubble case # UVA-F-1812. The University of Virginia Darden School Foundation, 2018.",
+        "———. The South Sea Bubble and the Rise of the Bank of England case # UVA-F-1820. The University of Virginia Darden School Foundation, 2018.",
+        "Smialek, Jeanna. \"What Trump Has Said about Rates, and Why It Matters.\" The New York Times, September 18, 2024. Accessed September 25, 2024. https://www.nytimes.com/2024/09/18/business/economy/trump-interest-rates.html.",
+        "Winfree, Paul. \"Federal Reserve.\" In Mandate for Leadership: The Conservative Promise 2025, by Paul Dans, Steven Groves, and Kevin D. Roberts. Washington, DC: Heritage Foundation, 2023. https://static.project2025.org/2025_MandateForLeadership_FULL.pdf."
+      ],
+      "published_date": "2025-01-15",
+      "page_path": "/articles/dehoog-balanced-power-2025.html"
+    }
+  ],
+  "issn": null
+}
