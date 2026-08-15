@@ -49,10 +49,13 @@
     root.innerHTML = issues.map(function (issue) {
       var articles = (data.articles || []).filter(function (a) { return a.issue_id === issue.id; });
 
+      var editorialNote = issue.editorial_note
+        ? '<p class="prose mt-2" style="color:var(--muted);">' + escapeHtml(issue.editorial_note) + '</p>'
+        : '';
+
       var body;
       if (!articles.length) {
-        body = '<p class="prose" style="color:var(--muted); font-size:0.9rem;">' +
-          escapeHtml(issue.editorial_note || 'No articles published yet for this issue.') + '</p>';
+        body = '';
       } else {
         body = '<ul class="event-list mt-4">' + articles.map(renderArticleItem).join('') + '</ul>';
       }
@@ -61,12 +64,18 @@
         ? ' · <a href="https://doi.org/' + escapeHtml(issue.doi) + '" class="doi-badge">DOI</a>'
         : '';
 
+      var pdfLink = issue.pdf
+        ? '<p class="mt-2"><a href="' + escapeHtml(issue.pdf) + '" class="btn btn-ghost" target="_blank">Read the issue (PDF) ↗</a></p>'
+        : '';
+
       return (
         '<section class="mt-6">' +
         '<p class="section-label">' + escapeHtml(issue.season + ' ' + issue.year) +
         (articles.length ? '' : ' · in review') + issueDoi + '</p>' +
         '<h2 class="section-title">' + escapeHtml(issue.season + ' ' + issue.year) + ' Issue</h2>' +
+        editorialNote +
         renderStats(issue) +
+        pdfLink +
         body +
         '</section>'
       );

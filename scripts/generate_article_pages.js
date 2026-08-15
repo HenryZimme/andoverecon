@@ -55,6 +55,18 @@ function buildArticlePage(article, issue, journalIssn) {
   const authorNames = article.authors.map((a) => a.name).join(', ');
   const issueLabel = `${issue.season} ${issue.year}`;
 
+  // Render affiliation: one shared line if every author has the same
+  // affiliation (the common case today), otherwise per-author in parens.
+  const affiliations = [...new Set(article.authors.map((a) => a.affiliation).filter(Boolean))];
+  let byline = authorNames;
+  if (affiliations.length === 1) {
+    byline = `${authorNames} · ${affiliations[0]}`;
+  } else if (affiliations.length > 1) {
+    byline = article.authors
+      .map((a) => (a.affiliation ? `${a.name} (${a.affiliation})` : a.name))
+      .join(', ');
+  }
+
   // COinS (OpenURL ContextObject in Span) — this is what Zotero/EndNote's
   // browser-extension citation managers scan the page body for directly,
   // independent of the <head> meta tags. Empty content, title attribute only.
@@ -178,7 +190,7 @@ ${article.authors.map((a) => `  <meta name="DC.creator" content="${esc(a.name)}"
 
 <div class="sub-hero">
   <div class="sub-hero-inner">
-    <p class="eyebrow">${esc(authorNames)} · ${esc(issueLabel)}</p>
+    <p class="eyebrow">${esc(byline)} · ${esc(issueLabel)}</p>
     <h1>${esc(article.title)}</h1>
   </div>
 </div>
@@ -203,6 +215,10 @@ ${article.authors.map((a) => `  <meta name="DC.creator" content="${esc(a.name)}"
     ${pdfHref ? `<a href="${esc(pdfHref)}" class="btn btn-ghost" target="_blank">Download PDF ↗</a>` : ''}
     <a href="/journal.html" class="btn btn-ghost">← Back to the Review</a>
   </div>
+
+  <p class="prose" style="color: var(--muted); font-size: 0.8rem; max-width: 720px; margin-top: 2rem;">
+    © ${article.published_date ? article.published_date.slice(0, 4) : ''} ${esc(authorNames)}. Published by the Andover Economic Review. The repository's MIT license covers site code only, not article content; article text is the author's own work, published here with permission.
+  </p>
 </main>
 
 <div id="footer-placeholder"></div>

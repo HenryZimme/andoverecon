@@ -295,6 +295,10 @@ nav {
   transition: all 0.15s;
   text-decoration: none;
 }
+button.btn {
+  background: transparent;
+  cursor: pointer;
+}
 .btn-white { background: #fff; color: var(--blue); }
 .btn-white:hover { background: var(--cream); text-decoration: none; }
 .btn-outline-white { border: 2px solid rgba(255,255,255,0.6); color: #fff; }
