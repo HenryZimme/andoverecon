@@ -4,8 +4,7 @@
   // auto-hide any element with data-expires="YYYY-MM-DD" once that date passes.
   function applyExpiryDates() {
     document.querySelectorAll('[data-expires]').forEach(function (el) {
-      var expires = new Date(el.getAttribute('data-expires'));
-      expires.setHours(23, 59, 59, 999); // hide end-of-expiry-day
+      var expires = new Date(el.getAttribute('data-expires') + 'T23:59:59Z'); // FIX: force UTC parse
       if (new Date() > expires) {
         el.hidden = true;
       }
@@ -54,31 +53,33 @@
 
   // main nav: 5 items. logo covers "Home".
   const pages = [
-    { href: 'fed_challenge.html', label: 'Fed Challenge' },
-    { href: 'colloquium.html',    label: 'Colloquium' },
-    { href: 'journal.html',       label: 'Journal' },
-    { href: 'lab.html',           label: 'Lab' },
-    { href: 'leadership.html',    label: 'Leadership' },
+    { href: '/journal.html',       label: 'Journal' },
+    { href: '/colloquium.html',    label: 'Colloquium' },
+    { href: '/fed_challenge.html', label: 'Fed Challenge' },
+    { href: '/lab.html',           label: 'Lab' },
+    { href: '/leadership.html',    label: 'Leadership' },
   ];
 
   // footer-only: utility and supplementary pages.
   const footerExtra = [
-    { href: 'index.html',                         label: 'Home' },
-    { href: 'resources.html',                     label: 'Resources' },
-    { href: 'gallery.html',                       label: 'Gallery' },
-    { href: 'submit.html',                        label: 'Submit' },
+    { href: '/index.html',                        label: 'Home' },
+    { href: '/resources.html',                    label: 'Resources' },
+    { href: '/gallery.html',                       label: 'Gallery' },
+    { href: '/submit.html',                        label: 'Submit' },
     { href: 'https://forms.gle/xZ2WGrkWvnxQBahz5', label: 'Join AES' },
   ];
-  const current = (location.pathname.split('/').pop() || 'index.html');
+  // pages under /articles/ are part of the journal section for nav purposes
+  const inArticles = location.pathname.indexOf('/articles/') !== -1;
+  const current = inArticles ? 'journal.html' : (location.pathname.split('/').pop() || 'index.html');
 
   const linksHtml = pages.map(p =>
-    `<li><a href="${p.href}" class="${current === p.href ? 'active' : ''}">${p.label}</a></li>`
+    `<li><a href="${p.href}" class="${current === p.href.replace(/^\//, '') ? 'active' : ''}">${p.label}</a></li>`
   ).join('');
 
   document.getElementById('nav-placeholder').innerHTML = `
     <nav id="site-nav">
       <div class="nav-inner">
-        <a href="index.html" class="nav-logo"><img src="aes-icon.svg" class="logo-icon" alt="AES" width="36" height="36"><span class="logo-full">Andover <span class="logo-accent">Economics</span> Society</span></a>
+        <a href="/index.html" class="nav-logo"><img src="/aes-icon.svg" class="logo-icon" alt="AES" width="36" height="36"><span class="logo-full">Andover <span class="logo-accent">Economics</span> Society</span></a>
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>

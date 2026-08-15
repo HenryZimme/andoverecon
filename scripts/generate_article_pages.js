@@ -15,6 +15,18 @@ function esc(s) {
   ));
 }
 
+// Truncate on raw text (before escaping — escaping first risks cutting an
+// entity like "&amp;" mid-string) at the last word boundary before maxLen,
+// so meta descriptions don't end mid-word with no indication they're cut.
+function truncate(text, maxLen) {
+  const clean = String(text || '').trim();
+  if (clean.length <= maxLen) return clean;
+  let cut = clean.slice(0, maxLen);
+  const lastSpace = cut.lastIndexOf(' ');
+  if (lastSpace > maxLen * 0.6) cut = cut.slice(0, lastSpace);
+  return cut.trim() + '…';
+}
+
 // References are plain citation strings that may contain a bare URL.
 // Find it, strip any trailing sentence punctuation from the URL itself
 // (citations often end "...url.txt." — the last period is punctuation,
@@ -105,7 +117,7 @@ ${article.references.map((r) => `      <li>${linkifyReference(r)}</li>`).join('\
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${esc(article.title)} | Andover Economic Review</title>
-  <meta name="description" content="${esc(article.abstract).slice(0, 155)}">
+  <meta name="description" content="${esc(truncate(article.abstract, 155))}">
   <link rel="stylesheet" href="/style.css">
   <link rel="icon" href="/aes-favicon.ico" sizes="any">
   <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
@@ -122,13 +134,13 @@ ${article.references.map((r) => `      <li>${linkifyReference(r)}</li>`).join('\
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://andoverecon.org${article.page_path}">
   <meta property="og:title" content="${esc(article.title)}">
-  <meta property="og:description" content="${esc(article.abstract).slice(0, 155)}">
+  <meta property="og:description" content="${esc(truncate(article.abstract, 155))}">
   <meta property="og:image" content="https://andoverecon.org/og-default.jpg">
   <meta property="og:locale" content="en_US">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(article.title)}">
-  <meta name="twitter:description" content="${esc(article.abstract).slice(0, 155)}">
+  <meta name="twitter:description" content="${esc(truncate(article.abstract, 155))}">
   <meta name="twitter:image" content="https://andoverecon.org/og-default.jpg">
 
   <script type="application/ld+json">
@@ -155,7 +167,7 @@ ${article.authors.map((a) => `  <meta name="DC.creator" content="${esc(a.name)}"
   <meta name="DC.type" content="Text">
   <meta name="DC.format" content="text/html">
   <meta name="DC.language" content="en">
-  <meta name="DC.description" content="${esc(article.abstract).slice(0, 300)}">
+  <meta name="DC.description" content="${esc(truncate(article.abstract, 300))}">
   <meta name="DC.identifier" content="${article.doi ? 'https://doi.org/' + esc(article.doi) : 'https://andoverecon.org' + article.page_path}">
   <meta name="DC.publisher" content="Andover Economic Review">
   ${article.keywords && article.keywords.length ? `<meta name="DC.subject" content="${esc(article.keywords.join('; '))}">` : ''}

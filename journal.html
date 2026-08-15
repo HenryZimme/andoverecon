@@ -74,6 +74,7 @@
       <h2 class="section-title">What the Review is</h2>
       <div class="prose mt-3">
         <p>The Andover Economic Review is a student-edited academic journal. Authors are high school students; the editorial board is drawn from AES members. The journal was created to give high school students worldwide a place to do real economics research and see it through to publication.</p>
+        <p>The current iteration of the Review was founded in 2025 with the support of a grant from the Abbott Academy Fund. An earlier publication under the same name published issues in 2015 with a wider focus on business, investing, and politics. Today, the Review is solely dedicated to publishing work in applications of economic policy and theory. We welcome submissions on a rolling-basis, and look forward to reviewing your submissions.</p>
         <p>The journal covers economics broadly, including labor markets, public finance, behavioral economics, and economic history. Articles go through peer review before publication. The print edition is funded by the Abbot Academy Fund and distributed to students, faculty, and alumni.</p>
         <p>Submissions are accepted on a rolling basis. Issues are published periodically, with a maximum of six articles per issue to ensure thorough review of each piece. There is no restriction on topic, method, or school affiliation for authors. The editorial standard is rigor and clarity. The editorial board reserves discretion over the number of articles accepted per issue and the timing of publication. Not all submissions will be published.</p>
       </div>
@@ -99,7 +100,7 @@
 
     <div class="card">
       <p class="card-label">Winter 2025</p>
-      <h3>Andover Economic Review, Vol. 1</h3>
+      <h3>Andover Economic Review</h3>
       <div class="prose mt-2">
         <p>The inaugural issue covers topics including income redistribution and migration, Japan's labor policy response to depopulation, the anatomy of historical financial crises, China's green energy transition, and the political economy of financial regulation in early 18th-century Europe.</p>
         <p>The issue has five articles written by AES members.</p>
@@ -107,66 +108,28 @@
       <a href="/pdfs/aer-winter-2025.pdf" class="btn btn-ghost mt-4" target="_blank">Read the issue (PDF) ↗</a>
     </div>
 
-    <div class="card" style="border-top-color: var(--rule); background: #fafaf8;">
-      <p class="card-label">Spring 2026</p>
-      <h3>Research Colloquium</h3>
-      <div class="prose mt-2">
-        <p>AES is hosting its inaugural student research colloquium this spring. Members will present original economic research to a panel that includes outside guests.</p>
-      </div>
-      <a href="colloquium.html" class="btn btn-ghost mt-4">About the colloquium →</a>
-    </div>
-
   </div>
 
   <hr class="rule">
 
-  <!-- Winter 2025 article list -->
-  <p class="section-label">Winter 2025</p>
-  <h2 class="section-title">Articles in this issue</h2>
+  <!-- Article registry: data-driven, sourced from articles.json -->
+  <p class="section-label">Issues &amp; Articles</p>
+  <h2 class="section-title">Published research</h2>
 
-  <ul class="event-list mt-4">
+  <div id="articles-root" class="mt-4">
+    <p class="prose" style="color:var(--muted);">Loading articles…</p>
+  </div>
 
-    <li class="event-item">
-      <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color: var(--muted);">Andrew Liu</div>
-      <div class="event-body">
-        <h3><a href="/pdfs/aer-winter-2025.pdf#page=5" target="_blank">Income Redistribution: Problems of Politics and Migration</a></h3>
-        <p>Examines why sub-national political polarization in the United States produces redistributive inefficiency, and how migratory externalities compound those inefficiencies. Uses public choice theory to argue that political reform is inseparable from redistributive solutions.</p>
-      </div>
-    </li>
-
-    <li class="event-item">
-      <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color: var(--muted);">Henry Zimmerman</div>
-      <div class="event-body">
-        <h3><a href="/pdfs/aer-winter-2025.pdf#page=10" target="_blank">Changes in Japan's Labor and Immigration Policy Address Depopulation Concerns</a></h3>
-        <p>Analyzes Japan's June 2024 expansion of its foreign worker visa program against the backdrop of decades of demographic decline, declining birth rates, and a shrinking labor supply. Surveys the policy responses considered over that period ("Womenomics," productivity reforms, the new visa legislation) and asks whether any combination of them can address a problem this structural.</p>
-      </div>
-    </li>
-
-    <li class="event-item">
-      <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color: var(--muted);">Jakob Kuelps</div>
-      <div class="event-body">
-        <h3><a href="/pdfs/aer-winter-2025.pdf#page=13" target="_blank">A Recipe for Disaster: How Change, Money and Behavior Create Financial Crises</a></h3>
-        <p>Traces a common structure across financial crises from the South Sea Bubble to the Crash of 1929: novel change, easy money, and irrational human behavior. Argues that all three must be present to produce a sustained market panic; no single factor is sufficient on its own.</p>
-      </div>
-    </li>
-
-    <li class="event-item">
-      <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color: var(--muted);">Lisa de Boer</div>
-      <div class="event-body">
-        <h3><a href="/pdfs/aer-winter-2025.pdf#page=17" target="_blank">Will the Green Transition Save China's Economic Growth?</a></h3>
-        <p>Examines whether China's green energy sector can replace the infrastructure investment, real estate development, and credit expansion that drove GDP growth for decades. In 2023, renewable energy accounted for an estimated 40% of overall GDP growth; the article asks whether this trajectory is sustainable as traditional drivers stall.</p>
-      </div>
-    </li>
-
-    <li class="event-item">
-      <div class="event-date" style="font-size:0.8rem; padding-top:0.3rem; color: var(--muted);">Grant DeHoog</div>
-      <div class="event-body">
-        <h3><a href="/pdfs/aer-winter-2025.pdf#page=20" target="_blank">L'état, C'est Quoi?: Balanced Power versus Absolute Rule in the Rupture of Financial Bubbles</a></h3>
-        <p>Compares the British and French responses to the South Sea and Mississippi Bubbles of the early 18th century. Britain's constitutional framework, with the Bank of England as lender of last resort, enabled recovery; France's unchecked absolutist monarchy amplified the disaster and delayed financial development for generations. The article closes by asking what these cases imply about checks on monetary authority today.</p>
-      </div>
-    </li>
-
-  </ul>
+  <script src="articles.js" defer></script>
+  <script>
+    fetch('articles.json')
+      .then(r => r.json())
+      .then(data => window.AERArticles.renderArticleList(data, 'articles-root'))
+      .catch(() => {
+        document.getElementById('articles-root').innerHTML =
+          '<p>Unable to load articles.</p>';
+      });
+  </script>
 
 </div>
 

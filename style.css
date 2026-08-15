@@ -1170,3 +1170,179 @@ footer {
     gap: 1.2rem 2rem;
   }
 }
+
+/* === Article body headings inside .prose (fixes inherited browser-default serif) === */
+.prose h2 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+  color: var(--text);
+}
+.prose h2:first-child { margin-top: 0; }
+
+.keyword-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.keyword-tag {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+/* === Breadcrumb / back link === */
+.breadcrumb {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+.breadcrumb a { color: var(--blue); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+
+/* === Focus Styles (WCAG 2.1 Level A) === */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.nav-links a:focus-visible {
+  outline-offset: -2px;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--blue-light);
+  outline-offset: 2px;
+}
+
+/* === Citation Widget === */
+.cite-widget {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--cream);
+}
+
+.cite-widget h3 {
+  margin-top: 0;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cite-format {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.cite-label {
+  font-weight: 600;
+  min-width: 4.5rem;
+}
+
+.cite-text {
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  word-break: break-word;
+}
+
+.cite-copy {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+/* === Article page: constrained reading column === */
+#article-body,
+.cite-widget,
+.article-actions,
+.doi-integration-note {
+  max-width: 720px;
+}
+
+/* === Article page: DOI badge + acceptance stats === */
+.article-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.doi-badge img {
+  display: block;
+  height: 20px;
+}
+.doi-badge {
+  font-weight: 700;
+  color: var(--gold);
+  text-decoration: none;
+}
+.doi-badge:hover { text-decoration: underline; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.stat-box {
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.stat-box .stat-value {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  color: var(--blue);
+}
+
+.stat-box .stat-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* === Print === */
+@media print {
+  #site-nav, footer, .event-banner,
+  .cite-copy, .btn, .doi-badge img {
+    display: none;
+  }
+  body {
+    font-family: var(--serif);
+    color: #000;
+    background: #fff;
+  }
+  .page-content {
+    max-width: 100%;
+  }
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75rem;
+  }
+}

@@ -12,7 +12,7 @@ The site is plain HTML and CSS: no framework, no build step, no npm. All pages s
 index.html          — homepage
 fed_challenge.html  — Fed Challenge page
 colloquium.html     — research Colloquium / speaker archive
-journal.html        — journal archive
+journal.html        — journal archive (data-driven, renders from articles.json)
 resources.html      — links and reading list
 leadership.html     — board bios (renders from board.json)
 gallery.html        — event photo gallery (renders from gallery.json)
@@ -20,6 +20,11 @@ submit.html         — submission form for the Andover Economics Review
 lab.html            — AES Decision Lab (behavioral economics experiment)
 board.json          — board data source (incoming, current, past arrays)
 gallery.json        — gallery data source (event list with photos)
+articles.json       — journal data source (issues + articles; drives journal.html and article pages)
+articles.js         — renders articles.json into journal.html
+cite.js             — citation widget (APA/Chicago/BibTeX) on article pages
+articles/           — generated per-article pages (do not hand-edit; regenerate from articles.json)
+scripts/generate_article_pages.js — regenerates articles/*.html from articles.json
 style.css           — all visual styles; edit this for design changes
 nav.js              — injects the nav bar, footer, skip link, and date logic on every page
 pdfs/               — journal PDFs and other documents
@@ -34,11 +39,38 @@ To make any change: edit the relevant file, commit, and push to GitHub. GitHub P
 
 ### Add a new journal issue
 
-1. Put the PDF in `pdfs/` (e.g., `aer-spring-2027.pdf`).
-2. Open `journal.html`.
-3. Find the archive section (look for the comment `<!-- Issue archive -->`).
-4. Copy one of the existing `<div class="card">` blocks and update the text.
-5. Change the PDF link in the button: `href="pdfs/aer-spring-2027.pdf"`.
+The journal is data-driven: everything renders from `articles.json`. You
+never hand-edit `journal.html` or the files in `articles/` directly.
+
+1. Put the issue PDF in `pdfs/` (e.g., `aer-spring-2027.pdf`).
+2. Open `articles.json`. Add a new object to the `issues` array:
+   `id` (a short slug like `"spring-2027"`), `season`, `year`, `date`
+   (publication date, `YYYY-MM-DD`), `pdf` (path to the PDF you just
+   added), `doi` (`null` until you mint one — see below), `cover_image`,
+   `editorial_note`, and `stats`.
+3. For each accepted article, add an object to the `articles` array:
+   `slug` (author-lastname + short-title, no year — the year is added
+   automatically), `title`, `authors`, `issue_id` (must match the issue
+   `id` you just created), `abstract`, `keywords`, `pdf_page_start` /
+   `pdf_page_end` (the article's page range within the issue PDF),
+   `doi` / `zenodo_id` (`null` for now), `references`, `published_date`,
+   and `page_path` — set this to
+   `/articles/{slug}-{year}.html` (e.g. an article with slug
+   `smith-tariffs` published in 2027 gets
+   `page_path: "/articles/smith-tariffs-2027.html"`).
+4. Run `node scripts/generate_article_pages.js` from the repo root. This
+   builds the actual HTML page for every article in `articles.json` and
+   prints `<url>` blocks for any new pages — paste those into
+   `sitemap.xml` before `</urlset>`.
+5. Commit `articles.json`, the new files under `articles/`, and the
+   updated `sitemap.xml` together.
+
+**Activating a DOI once one is minted (e.g. via Zenodo):** set the
+`doi` field on the article (and/or the issue, for an issue-level DOI),
+then re-run `node scripts/generate_article_pages.js`. Every place a DOI
+appears — the DOI badge, the citation formats, the `citation_doi` and
+`DC.identifier` meta tags, the COinS record Zotero reads — is already
+wired to that field. No other file needs to change.
 
 ### Add a colloquium speaker
 
@@ -91,7 +123,7 @@ To make any change: edit the relevant file, commit, and push to GitHub. GitHub P
 
 `nav.js` is loaded on every page and does five things:
 
-**1. Injects the nav and footer.** The navigation has five items: Fed Challenge, Colloquium, Journal, Lab, Leadership. The AES logo links home. Home, Resources, Gallery, and Submit appear in the footer only.
+**1. Injects the nav and footer.** The navigation has five items: Journal, Colloquium, Fed Challenge, Lab, Leadership. The AES logo links home. Home, Resources, Gallery, and Submit appear in the footer only.
 
 **2. Marks the active page.** The current page's nav link gets an `active` class automatically.
 
@@ -170,7 +202,7 @@ To revert a broken change, use GitHub's file history.
 - [ ] Update `board.json`: move the current board to `past`, populate `current` with the new board, clear `incoming`
 - [ ] Collect bios and photos from all new board members before the transition
 - [ ] Archive the current Fed Challenge entry on `fed_challenge.html` (after submission in March)
-- [ ] Add any new journal issue to `journal.html` and `pdfs/`
+- [ ] Add any new journal issue and its articles to `articles.json`, then run `node scripts/generate_article_pages.js` and paste the printed `<url>` blocks into `sitemap.xml`
 - [ ] Update `colloquium.html` with all speakers from the current year
 - [ ] Merge `gallery_future.json` events into `gallery.json` once photos are available; delete `gallery_future.json` when done
 - [ ] Upload photos for events that happened but aren't yet in `photos/events/`
