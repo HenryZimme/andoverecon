@@ -101,15 +101,6 @@
   </div>
 
   <script src="articles.js" defer></script>
-  <script>
-    fetch('articles.json')
-      .then(r => r.json())
-      .then(data => window.AERArticles.renderArticleList(data, 'articles-root'))
-      .catch(() => {
-        document.getElementById('articles-root').innerHTML =
-          '<p>Unable to load articles.</p>';
-      });
-  </script>
 
 </div>
 

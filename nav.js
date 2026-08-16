@@ -66,6 +66,7 @@
     { href: '/resources.html',                    label: 'Resources' },
     { href: '/gallery.html',                       label: 'Gallery' },
     { href: '/submit.html',                        label: 'Submit' },
+    { href: '/copyright.html',                     label: 'Copyright' },
     { href: 'https://forms.gle/xZ2WGrkWvnxQBahz5', label: 'Join AES' },
   ];
   // pages under /articles/ are part of the journal section for nav purposes

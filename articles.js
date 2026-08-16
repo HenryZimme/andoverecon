@@ -83,4 +83,20 @@
   }
 
   global.AERArticles = { renderArticleList: renderArticleList, escapeHtml: escapeHtml };
+
+  // Auto-load and render into #articles-root if present on the page.
+  // Runs on DOMContentLoaded, which is guaranteed to fire after this
+  // deferred script has already executed — so there is no race between
+  // this fetch and this file's own definitions, regardless of network
+  // timing on a cold cache.
+  document.addEventListener('DOMContentLoaded', function () {
+    var root = document.getElementById('articles-root');
+    if (!root) return;
+    fetch('articles.json')
+      .then(function (r) { return r.json(); })
+      .then(function (data) { renderArticleList(data, 'articles-root'); })
+      .catch(function () {
+        root.innerHTML = '<p>Unable to load articles.</p>';
+      });
+  });
 })(window);

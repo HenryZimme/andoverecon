@@ -217,7 +217,7 @@ ${article.authors.map((a) => `  <meta name="DC.creator" content="${esc(a.name)}"
   </div>
 
   <p class="prose" style="color: var(--muted); font-size: 0.8rem; max-width: 720px; margin-top: 2rem;">
-    © ${article.published_date ? article.published_date.slice(0, 4) : ''} ${esc(authorNames)}. Published by the Andover Economic Review. The repository's MIT license covers site code only, not article content; article text is the author's own work, published here with permission.
+    © ${article.published_date ? article.published_date.slice(0, 4) : ''} ${esc(authorNames)}. Published by the Andover Economic Review under a <a href="/copyright.html">non-exclusive publication license</a>; the author retains copyright. The repository's MIT license covers site code only, not article content.
   </p>
 </main>
 

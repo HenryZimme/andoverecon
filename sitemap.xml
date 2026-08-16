@@ -46,6 +46,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://andoverecon.org/copyright.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://andoverecon.org/articles/liu-income-redistribution-2025.html</loc>
     <lastmod>2025-01-15</lastmod>
     <changefreq>yearly</changefreq>
