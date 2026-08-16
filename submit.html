@@ -700,6 +700,8 @@
               <option>Friend or classmate</option>
               <option>Other</option>
             </select>
+            <input type="text" id="referral-other" name="referral_other"
+              placeholder="Please specify" style="display:none; margin-top:0.6rem;">
           </div>
         </div>
 
@@ -734,6 +736,8 @@
                 <option>Health Economics</option>
                 <option>Other</option>
               </select>
+              <input type="text" id="field-other" name="field_other"
+                placeholder="Please specify the field" style="display:none; margin-top:0.6rem;">
             </div>
             <div class="form-group">
               <label class="form-label" for="word-count">
@@ -920,6 +924,25 @@
         : 'AER Submission';
     });
 
+    // Show a free-text field when "Other" is selected for Field
+    const fieldSelect = document.getElementById('field');
+    const fieldOther  = document.getElementById('field-other');
+    fieldSelect.addEventListener('change', function () {
+      const isOther = this.value === 'Other';
+      fieldOther.style.display = isOther ? 'block' : 'none';
+      fieldOther.required = isOther;
+      if (!isOther) fieldOther.value = '';
+    });
+
+    // Show a free-text field when "Other" is selected for referral source
+    const referralSelect = document.getElementById('referral');
+    const referralOther  = document.getElementById('referral-other');
+    referralSelect.addEventListener('change', function () {
+      const isOther = this.value === 'Other';
+      referralOther.style.display = isOther ? 'block' : 'none';
+      if (!isOther) referralOther.value = '';
+    });
+
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       success.style.display = 'none';
@@ -1025,6 +1048,8 @@
           if (field && field.type !== 'checkbox') field.value = saved[name];
         });
         titleInput.dispatchEvent(new Event('input')); // resync hidden subject line
+        fieldSelect.dispatchEvent(new Event('change')); // resync "Other" field visibility
+        referralSelect.dispatchEvent(new Event('change')); // resync referral "Other" visibility
       } catch (e) { /* storage unavailable: private browsing, sandboxed preview, etc. */ }
     })();
 
