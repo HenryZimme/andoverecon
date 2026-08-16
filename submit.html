@@ -254,6 +254,47 @@
       min-width: 70px;
     }
 
+    /* ── Collapsible reference sections ─────────────────── */
+    .disclosure {
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      margin-bottom: 0.6rem;
+    }
+    .disclosure summary {
+      cursor: pointer;
+      padding: 0.85rem 1.1rem;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .disclosure summary::-webkit-details-marker { display: none; }
+    .disclosure summary::after {
+      content: '+';
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .disclosure[open] summary::after { content: '\2212'; }
+    .disclosure[open] summary {
+      border-bottom: 1px solid var(--rule);
+    }
+    .disclosure summary:hover { background: var(--cream); }
+    .disclosure summary:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: -2px;
+    }
+    .disclosure-body {
+      padding: 0.9rem 1.1rem 1.1rem;
+    }
+    .disclosure-body p { margin: 0; }
+
     @media (max-width: 680px) {
       .form-cols { grid-template-columns: 1fr; }
       .guidelines-card { position: static; margin-bottom: 2rem; }
@@ -279,15 +320,42 @@
     <p class="section-label">Before you submit</p>
     <h2 class="section-title">What we're looking for</h2>
     <div class="prose mt-3">
-      <p>The <em>Review</em> publishes original economics research: empirical analysis, theoretical argument, economic history, or policy evaluation. There is no restriction on topic, method, or school affiliation. The editorial standard is rigor and clarity. A paper does not need to be exhaustive to be publishable, but it must make a specific argument, support it with evidence or reasoning, and engage honestly with its limitations.</p>
-      <p>Papers most often fall short on one of three things: the research question is too broad to answer in the space, the evidence does not clearly support the conclusion, or the limitations go unaddressed. If you are unsure whether your paper is ready, read it against those criteria before submitting.</p>
-      <p>The <em>Review</em> accepts submissions on a rolling basis; there is no deadline. The editorial board will acknowledge receipt within five business days and provide a decision (accept, revise and resubmit, or decline) within eight weeks. As a condition of submission, authors agree to serve as a peer reviewer for at least one other submission during the review cycle, using a rubric provided by the editorial board.</p>
-      <p>Authors may be invited to a brief conversation with the editorial board before a final decision is made. This is not an oral exam, as authors can have their paper open and take notes. The purpose is to verify that the author understands their own work, including the motivation, the methodology in full, key results, and any other aspect of the paper that requires economic judgement. Papers will not be published if the author cannot explain core arguments, methods, or limitations of their work. During this conversation, we evaluate intellectual ownership, not process.</p>
+      <p>The <em>Review</em> publishes original economics research, including empirical analysis, theoretical argument, economic history, and policy evaluation. There is no restriction on topic, method, or school affiliation. A paper need not be exhaustive to be publishable, but it must advance a specific argument, support that argument with evidence, and state clearly where the evidence is limited.</p>
+    </div>
+
+    <div class="mt-4">
+      <details class="disclosure">
+        <summary>Common reasons papers get rejected</summary>
+        <div class="disclosure-body prose">
+          <p>Most rejected papers share one of the same problems. The research question is too broad for the available space, the evidence does not clearly support the stated conclusion, or the paper does not acknowledge what it cannot show. Authors should evaluate their own paper against these criteria before submitting.</p>
+        </div>
+      </details>
+
+      <details class="disclosure">
+        <summary>Timeline &amp; peer review</summary>
+        <div class="disclosure-body prose">
+          <p>The <em>Review</em> accepts submissions on a rolling basis; there is no deadline. The editorial board will acknowledge receipt within five business days and provide a decision (accept, revise and resubmit, or decline) within eight weeks. As a condition of submission, authors agree to serve as a peer reviewer for at least one other submission during the review cycle, using a rubric provided by the editorial board.</p>
+        </div>
+      </details>
+
+      <details class="disclosure">
+        <summary>The oral review conversation</summary>
+        <div class="disclosure-body prose">
+          <p>Authors may be invited to a brief conversation with the editorial board before a final decision is made. This is not an oral exam. Authors may have their paper open and may take notes during the conversation. The purpose of the conversation is to confirm that the author understands the work, including its motivation, its methodology, its key results, and any other aspect that requires economic judgment. An author who cannot explain the argument or defend the paper's numeric results will not have the paper published. The conversation evaluates intellectual ownership of the work, not adherence to a review process.</p>
+        </div>
+      </details>
+
+      <details class="disclosure">
+        <summary>Quantitative work: code &amp; data</summary>
+        <div class="disclosure-body prose">
+          <p>Papers that include quantitative analysis should link the underlying code and data within the paper itself. Any numeric result that is not directly cited to an existing source should be reproducible from the materials provided. A reader should be able to derive the reported numbers from the data and the method described, rather than rely on the author's assertion alone. A short Code Availability section is the preferred location for these links; authors whose papers already include an acknowledgements section may place the links there instead.</p>
+        </div>
+      </details>
     </div>
   </div>
 
   <div class="highlight-bar mt-4" style="max-width:680px;">
-    <p>The <em>Review</em> does not publish book reports, opinion essays, or papers that summarize existing research without an original argument. If you are not sure whether your paper qualifies, email the board before submitting.</p>
+    <p>The <em>Review</em> does not publish book reports, opinion essays, or papers that summarize existing research without an original argument. Authors uncertain whether a paper qualifies should email the board before submitting.</p>
   </div>
 
   <hr class="rule">
@@ -358,6 +426,20 @@
             <p class="form-hint">The editorial board will use this address for all correspondence.</p>
             <input type="email" id="email" name="_replyto"
               placeholder="your@email.com" required autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="referral">How did you hear about us?</label>
+            <select id="referral" name="referral_source">
+              <option value="" disabled selected>Select an option</option>
+              <option>AES member or event</option>
+              <option>Teacher or school referral</option>
+              <option>A previous issue of the Review</option>
+              <option>Search engine</option>
+              <option>Social media</option>
+              <option>Friend or classmate</option>
+              <option>Other</option>
+            </select>
           </div>
         </div>
 
@@ -506,7 +588,7 @@
         <ul class="guidelines-list">
           <li>
             <span class="gl-label">Eligible</span>
-            <span>High school students at any school, worldwide</span>
+            <span>High school students at any school, worldwide; co-authored papers welcome</span>
           </li>
           <li>
             <span class="gl-label">Topics</span>
@@ -523,14 +605,6 @@
           <li>
             <span class="gl-label">Citations</span>
             <span>Any consistent style (Chicago, APA, MLA)</span>
-          </li>
-          <li>
-            <span class="gl-label">Review</span>
-            <span>Review: Peer-reviewed by the AER editorial board and submitting authors; decision within eight weeks. Authors agree to review at least one submission upon submitting their own.</span>
-          </li>
-          <li>
-            <span class="gl-label">Open to</span>
-            <span>Co-authored papers; authors at any high school are eligible</span>
           </li>
         </ul>
         <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--rule);">
