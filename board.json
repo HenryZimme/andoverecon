@@ -26,9 +26,17 @@
       "bio": "Andrew founded and led the publication of the Andover Economics Review. He also founded the AES Policy Think Tank collaboration between students and Boston policy makers, and helps lead the direction of the club's research colloquium. Outside of economics, Andrew loves philosophy and applied ethics, and is a rower on the crew team!"
     },
     {
+      "name": "Anna Lu",
+      "year": "27",
+      "role": "Editor in Chief, AER",
+      "photo": "",
+      "bio": "",
+      "url": "https://www.linkedin.com/in/annajlu"
+    },
+    {
       "name": "David Burt",
       "year": "28",
-      "role": "Board",
+      "role": "Web Dev",
       "photo": "",
       "bio": " ",
       "url": "https://www.linkedin.com/in/david-burt-ab66a1382/"
@@ -36,7 +44,7 @@
     {
       "name": "Crispin Black",
       "year": "28",
-      "role": "Board",
+      "role": "Editorial Board",
       "photo": "",
       "bio": "Hi I'm Crispin, a 2 year lower from NYC, at Andover I coordinate a community engagement program and am on the board for AES and 2 CAMD clubs. My hobbies are building legos and exploring new places.",
       "url": "mailto:cblack28@andover.edu"
@@ -52,7 +60,7 @@
     {
       "name": "Bella Huang",
       "year": "28",
-      "role": "Board",
+      "role": "Editorial Board",
       "photo": "",
       "bio": "Bella is interested in how economic behaviors shape markets, business, and everyday decision making. She has mentored a team in the Economics Research Colloquium, been part of the Fed Challenge, and worked on outreach to policymakers and economists. Outside of AES, Bella does social media and marketing for several local businesses in downtown Andover and enjoys editing for literary magazines.",
       "url": "mailto:bhuang28@andover.edu"
@@ -60,7 +68,7 @@
     {
       "name": "Pia Chhabra",
       "year": "28",
-      "role": "Board",
+      "role": "Editorial Board",
       "photo": "/photos/pchhabra_pfp.webp",
       "bio": "Pia Chhabra is a lower at Phillips Academy Andover, and a second-year member of the Andover Economics Society board. She is interested in the intersection between economics and law and has participated in the Fed Challenge and mentored a team in our Economics Research Colloquium.",
       "url": "https://www.linkedin.com/in/pia-chhabra-242592326"
@@ -68,19 +76,11 @@
     {
       "name": "Cooper Simon",
       "year": "28",
-      "role": "Board",
+      "role": "Editorial Board, Web Dev",
       "photo": "/photos/csimon_pfp.webp",
       "bio": "Cooper is a lower at Phillips Academy interested in environmental economics and local policy. During the AES research colloquium, he collaborated on a policy brief relating to the MBTA Communities Act. Apart from AES, Cooper is a classroom aide at Bancroft Elementary school, part of the Cross Country and Swim teams, a day student mentor, and involved with the Phillips Academy Sustainability Coalition.",
       "url": "mailto:csimon28@andover.edu"
     },
-    {
-      "name": "Anna Lu",
-      "year": "27",
-      "role": "Board",
-      "photo": "",
-      "bio": "",
-      "url": "https://www.linkedin.com/in/annajlu"
-    }
   ],
   "past": [
     {
