@@ -700,6 +700,7 @@
               <option>Friend or classmate</option>
               <option>Other</option>
             </select>
+            <label class="form-label" for="referral-other" id="referral-other-label" style="display:none;">Please specify</label>
             <input type="text" id="referral-other" name="referral_other"
               placeholder="Please specify" style="display:none; margin-top:0.6rem;">
           </div>
@@ -736,6 +737,7 @@
                 <option>Health Economics</option>
                 <option>Other</option>
               </select>
+              <label class="form-label" for="field-other" id="field-other-label" style="display:none;">Please specify</label>
               <input type="text" id="field-other" name="field_other"
                 placeholder="Please specify the field" style="display:none; margin-top:0.6rem;">
             </div>
@@ -846,7 +848,7 @@
       <!-- Status messages — deliberately outside the form: form.style.display='none'
            on submit would otherwise hide these too, since display:none on a parent
            hides descendants no matter what their own display is set to. -->
-      <div class="form-status success" id="status-success" style="display:none;">
+      <div class="form-status success" id="status-success" role="status" aria-live="polite" style="display:none;">
         <strong>Submission received.</strong> Your paper enters the queue for peer review by the
         editorial board and by another submitting author, per the declaration. Expect
         acknowledgment within five business days and a decision to accept, revise and resubmit, or
@@ -854,7 +856,7 @@
         before a final decision.
         Check your spam folder if you don't hear from us, or <a href="leadership.html">contact the board</a> with questions.
       </div>
-      <div class="form-status error" id="status-error" style="display:none;">
+      <div class="form-status error" id="status-error" role="alert" aria-live="assertive" style="display:none;">
         Something went wrong. Please try again, or <a href="leadership.html">contact the board directly</a>.
       </div>
     </div>
@@ -930,6 +932,7 @@
     fieldSelect.addEventListener('change', function () {
       const isOther = this.value === 'Other';
       fieldOther.style.display = isOther ? 'block' : 'none';
+      document.getElementById('field-other-label').style.display = isOther ? 'block' : 'none';
       fieldOther.required = isOther;
       if (!isOther) fieldOther.value = '';
     });
@@ -940,6 +943,7 @@
     referralSelect.addEventListener('change', function () {
       const isOther = this.value === 'Other';
       referralOther.style.display = isOther ? 'block' : 'none';
+      document.getElementById('referral-other-label').style.display = isOther ? 'block' : 'none';
       if (!isOther) referralOther.value = '';
     });
 

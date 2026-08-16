@@ -38,7 +38,7 @@
   --blue-dark:  #001f6b;
   --blue-light: #44B8F3;
   --gold:       #6C5E21;
-  --gold-light: #b8a94a;
+  --gold-light: #8c7d2f;
   --cream:      #f7f5f0;
   --rule:       #d4cfc5;
   --text:       #1a1a1a;
@@ -512,7 +512,7 @@ footer {
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255,255,255,0.12);
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.6);
 }
 
 /* ---- Utilities ------------------------------------------- */
@@ -838,7 +838,7 @@ footer {
 .lightbox-counter {
   font-family: var(--sans);
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
   letter-spacing: 0.08em;
   white-space: nowrap;
   margin-left: 1rem;
@@ -847,7 +847,7 @@ footer {
 .lightbox-credit {
   font-family: var(--sans);
   font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.55);
   text-align: right;
   letter-spacing: 0.04em;
 }

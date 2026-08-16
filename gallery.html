@@ -133,7 +133,7 @@
         <div class="gallery-card-cover">${cover_inner}</div>
         <div class="gallery-card-body">
           ${tag_html(event.category)}
-          <div class="gallery-card-title">${safe_title}</div>
+          <h3 class="gallery-card-title">${safe_title}</h3>
           <div class="gallery-card-meta">
             <span class="gallery-card-date">${format_date(event.date)}</span>
             <span class="gallery-photo-count">${count_text}</span>
@@ -265,8 +265,10 @@
 
         filter_el.querySelectorAll('.gallery-filter-btn').forEach(function (b) {
           b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
 
         const selected = btn.dataset.filter;
         const cards = grid.querySelectorAll('.gallery-card');
