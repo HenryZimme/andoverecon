@@ -102,6 +102,7 @@
       <div class="footer-bottom">
         © ${new Date().getFullYear()} Andover Economics Society. All rights reserved.
       </div>
+      <div class="footer-credit">Designed by <a href="https://henryzimmerman.net" target="_blank" rel="noopener noreferrer">Henry Zimmerman</a></div>
     </footer>`;
 
   // hamburger toggle
