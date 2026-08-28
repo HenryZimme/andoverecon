@@ -491,7 +491,7 @@ footer {
   max-width: var(--max-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(240px, 1fr) auto;
   gap: 2rem;
   align-items: start;
 }
