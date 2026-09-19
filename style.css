@@ -1340,6 +1340,78 @@ footer {
   letter-spacing: 0.06em;
 }
 
+/* === Submission deadline banner === */
+.deadline-banner {
+  background: var(--blue-dark);
+  color: #fff;
+  border-top: 4px solid var(--gold-light);
+  border-bottom: 4px solid var(--gold-light);
+}
+.deadline-banner-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.6rem 2rem 1.75rem;
+}
+.deadline-banner .deadline-label {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f0d97a;
+  margin: 0 0 0.5rem;
+}
+.deadline-banner .deadline-headline {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  line-height: 1.35;
+  font-weight: 700;
+  margin: 0 0 0.45rem;
+  color: #fff;
+}
+.deadline-banner .deadline-headline .deadline-date {
+  white-space: nowrap;
+  border-bottom: 2px solid var(--gold-light);
+}
+.deadline-banner .deadline-note {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.85);
+  margin: 0;
+  max-width: 62ch;
+}
+.deadline-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.1rem;
+}
+.deadline-countdown {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f0d97a;
+}
+.deadline-closed .deadline-banner-actions .btn { display: none; }
+@media (max-width: 700px) {
+  .deadline-banner-inner { padding: 1.3rem 1.25rem 1.5rem; }
+  .deadline-banner .deadline-headline { font-size: 1.2rem; }
+}
+
+/* Inline deadline callout for cards and sidebars */
+.deadline-inline {
+  border-left: 3px solid var(--gold-light);
+  background: var(--cream);
+  padding: 0.7rem 0.85rem;
+  margin: 1rem 0 0;
+}
+.deadline-inline strong { display: block; font-size: 0.82rem; color: var(--blue-dark); }
+.deadline-inline span { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
+
 /* === Print === */
 @media print {
   #site-nav, footer, .event-banner,
