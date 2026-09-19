@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submit to the Review | Andover Economics Society</title>
-  <meta name="description" content="Submit original economics research to the Andover Economic Review. Open to high school students at any school. Articles go through peer review before publication.">
+  <meta name="description" content="Submit original economics research to the Andover Economic Review. All final submissions close September 25, 2026 at 11:59 PM EST. Open to high school students at any school.">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/aes-favicon.ico" sizes="any">
   <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
@@ -21,14 +21,14 @@
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://andoverecon.org/submit.html">
   <meta property="og:title"       content="Submit to the Andover Economic Review">
-  <meta property="og:description" content="Submit original economics research to the first high school economics journal written by and for high school students.">
+  <meta property="og:description" content="Submit original economics research to the first high school economics journal written by and for high school students. All final submissions close September 25, 2026 at 11:59 PM EST.">
   <meta property="og:image"        content="https://andoverecon.org/og-default.jpg">
   <meta property="og:locale"       content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary">
   <meta name="twitter:title"       content="Submit to the Andover Economic Review">
-  <meta name="twitter:description" content="Submit original economics research to the first high school economics journal written by and for high school students.">
+  <meta name="twitter:description" content="Submit original economics research to the first high school economics journal written by and for high school students. All final submissions close September 25, 2026 at 11:59 PM EST.">
   <meta name="twitter:image"       content="https://andoverecon.org/og-default.jpg">
 
   <style>
@@ -313,6 +313,19 @@
   </div>
 </div>
 
+<!-- Submission deadline -->
+<div class="deadline-banner" role="region" aria-label="Submission deadline">
+  <div class="deadline-banner-inner">
+    <p class="deadline-label">Important — Final call for submissions</p>
+    <p class="deadline-headline">ALL final submissions close <span class="deadline-date" data-deadline>September 25, 2026 at 11:59 PM EST</span>.</p>
+    <p class="deadline-note">This is a hard deadline. The submission form below closes at that time, and papers received afterward will not be reviewed or considered for publication in this cycle.</p>
+    <div class="deadline-banner-actions">
+      <a href="#submission-form" class="btn btn-white">Go to the submission form →</a>
+      <span class="deadline-countdown" id="deadline-countdown" aria-live="polite"></span>
+    </div>
+  </div>
+</div>
+
 <div class="page-content">
 
   <!-- ── Before you submit ────────────────────────────────── -->
@@ -334,7 +347,7 @@
       <details class="disclosure">
         <summary>Timeline &amp; peer review</summary>
         <div class="disclosure-body prose">
-          <p>The <em>Review</em> accepts submissions on a rolling basis; there is no deadline. The editorial board will acknowledge receipt within five business days and provide a decision (accept, revise and resubmit, or decline) within eight weeks. As a condition of submission, authors agree to serve as a peer reviewer for at least one other submission during the review cycle, using a rubric provided by the editorial board.</p>
+          <p>All final submissions for this cycle must be received by <strong data-deadline>September 25, 2026 at 11:59 PM EST</strong>. This deadline is firm: papers received after it will not be reviewed. The editorial board will acknowledge receipt within five business days and provide a decision (accept, revise and resubmit, or decline) within eight weeks. As a condition of submission, authors agree to serve as a peer reviewer for at least one other submission during the review cycle, using a rubric provided by the editorial board.</p>
         </div>
       </details>
 
@@ -868,6 +881,10 @@
         <h3>Submission guidelines</h3>
         <ul class="guidelines-list">
           <li>
+            <span class="gl-label">Deadline</span>
+            <span><strong data-deadline>September 25, 2026 at 11:59 PM EST</strong> — all final submissions close; late papers are not reviewed</span>
+          </li>
+          <li>
             <span class="gl-label">Eligible</span>
             <span>High school students at any school, worldwide; co-authored papers welcome</span>
           </li>
@@ -1071,5 +1088,6 @@
     });
   })();
 </script>
+<script src="deadline.js" defer></script>
 </body>
 </html>
