@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Board | Andover Economics Society</title>
-  <meta name="description" content="Meet the 2025–2026 AES board. Co-presidents Henry Zimmerman, Kachi Ikekpeazu, and Andrew Liu lead a ten-member team that plans curriculum, organizes the speaker series, edits the journal, and recruits new members each fall.">
+  <meta name="description" content="Meet the 2026–2027 AES board: senior leadership, the editorial board of the Andover Economic Review, and the web development team.">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/aes-favicon.ico" sizes="any">
   <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
@@ -22,15 +22,15 @@
   <meta property="og:site_name"    content="Andover Economics Society">
   <meta property="og:type"         content="website">
   <meta property="og:url"          content="https://andoverecon.org/leadership.html">
-  <meta property="og:title"        content="AES Board 2025–2026 | Andover Economics Society">
-  <meta property="og:description"  content="The ten-member student leadership team running the Andover Economics Society for the 2025–2026 academic year.">
+  <meta property="og:title"        content="AES Board 2026–2027 | Andover Economics Society">
+  <meta property="og:description"  content="The ten-member student leadership team running the Andover Economics Society for the 2026–2027 academic year.">
   <meta property="og:image"        content="https://andoverecon.org/og-default.jpg">
   <meta property="og:locale"       content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary">
-  <meta name="twitter:title"       content="AES Board 2025–2026 | Andover Economics Society">
-  <meta name="twitter:description" content="The ten-member student leadership team running the Andover Economics Society for the 2025–2026 academic year.">
+  <meta name="twitter:title"       content="AES Board 2026–2027 | Andover Economics Society">
+  <meta name="twitter:description" content="The ten-member student leadership team running the Andover Economics Society for the 2026–2027 academic year.">
   <meta name="twitter:image"       content="https://andoverecon.org/og-default.jpg">
 
   <!-- Structured data -->
@@ -38,8 +38,8 @@
 {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    "name": "AES Board of Directors 2025–2026",
-    "description": "Student leadership of the Andover Economics Society for the 2025–2026 academic year at Phillips Academy Andover.",
+    "name": "AES Board of Directors 2026–2027",
+    "description": "Student leadership of the Andover Economics Society for the 2026–2027 academic year at Phillips Academy Andover.",
     "url": "https://andoverecon.org/leadership.html",
     "about": {
         "@type": "Organization",
@@ -196,13 +196,40 @@
         `;
       }
 
-      // ── Current board ───────────────────────────────────────────
-      const currentCards = data.current.map(m => renderMemberCard(m, true)).join('');
-      const currentHTML = `
-        <p class="section-label">2025–2026</p>
-        <h2 class="section-title">Board members</h2>
-        <div class="board-grid mt-4">${currentCards}</div>
-      `;
+      // ── Current board, split by group ───────────────────────────
+      // Each member in board.json carries a "group" key: senior, editorial,
+      // or web. Anything unrecognized falls into the editorial board.
+      const YEAR = '2026–2027';
+      const GROUPS = [
+        {
+          key: 'senior',
+          title: 'Senior Leadership',
+          note: 'The co-presidents and the editor in chief, who set the direction of the club and oversee its programs.'
+        },
+        {
+          key: 'editorial',
+          title: 'Editorial Board',
+          note: 'Members who review, edit, and select the research published in the <em>Andover Economic Review</em>.'
+        },
+        {
+          key: 'web',
+          title: 'Web Development Team',
+          note: 'Members who build and maintain andoverecon.org.'
+        }
+      ];
+
+      const currentHTML = GROUPS.map((group, i) => {
+        const members = data.current.filter(m => (m.group || 'editorial') === group.key);
+        if (members.length === 0) return '';
+        const cards = members.map(m => renderMemberCard(m, true)).join('');
+        return `
+          ${i > 0 ? '<hr class="rule">' : ''}
+          <p class="section-label">${YEAR}</p>
+          <h2 class="section-title">${group.title}</h2>
+          <p style="max-width:560px; color:var(--muted); font-size:0.92rem; margin-top:0.75rem;">${group.note}</p>
+          <div class="board-grid mt-4">${cards}</div>
+        `;
+      }).join('');
 
       document.getElementById('board-root').innerHTML = incomingHTML + currentHTML;
 
