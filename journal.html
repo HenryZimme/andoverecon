@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Andover Economic Review | Andover Economics Society</title>
-  <meta name="description" content="The Andover Economic Review is the first high school economics journal written by and for high school students. Funded by the Abbot Academy Fund; open to authors at any high school.">
+  <meta name="description" content="The Andover Economic Review is the first high school economics journal written by and for high school students. All final submissions close September 25, 2026 at 11:59 PM EST. Funded by the Abbot Academy Fund; open to authors at any high school.">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/aes-favicon.ico" sizes="any">
   <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
@@ -23,14 +23,14 @@
   <meta property="og:type"         content="website">
   <meta property="og:url"          content="https://andoverecon.org/journal.html">
   <meta property="og:title"        content="Andover Economic Review">
-  <meta property="og:description"  content="The first high school economics journal written by and for high school students. Authors from any high school are eligible to submit.">
+  <meta property="og:description"  content="The first high school economics journal written by and for high school students. All final submissions close September 25, 2026 at 11:59 PM EST.">
   <meta property="og:image"        content="https://andoverecon.org/og-default.jpg">
   <meta property="og:locale"       content="en_US">
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="Andover Economic Review">
-  <meta name="twitter:description" content="The first high school economics journal written by and for high school students. Authors from any high school are eligible to submit.">
+  <meta name="twitter:description" content="The first high school economics journal written by and for high school students. All final submissions close September 25, 2026 at 11:59 PM EST.">
   <meta name="twitter:image"       content="https://andoverecon.org/og-default.jpg">
 
   <!-- Structured data -->
@@ -66,6 +66,19 @@
   </div>
 </div>
 
+<!-- Submission deadline -->
+<div class="deadline-banner" role="region" aria-label="Submission deadline">
+  <div class="deadline-banner-inner">
+    <p class="deadline-label">Important — Final call for submissions</p>
+    <p class="deadline-headline">ALL final submissions close <span class="deadline-date" data-deadline>September 25, 2026 at 11:59 PM EST</span>.</p>
+    <p class="deadline-note">This is a hard deadline. Papers received after this time will not be reviewed or considered for publication in this cycle, regardless of when the work was begun.</p>
+    <div class="deadline-banner-actions">
+      <a href="submit.html" class="btn btn-white">Submit before the deadline →</a>
+      <span class="deadline-countdown" id="deadline-countdown" aria-live="polite"></span>
+    </div>
+  </div>
+</div>
+
 <div class="page-content">
 
   <div class="layout-sidebar">
@@ -74,9 +87,9 @@
       <h2 class="section-title">What the Review is</h2>
       <div class="prose mt-3">
         <p>The Andover Economic Review is a student-edited academic journal. Authors are high school students; the editorial board is drawn from AES members. The journal was created to give high school students worldwide a place to do real economics research and see it through to publication.</p>
-        <p>The current iteration of the Review was founded in 2025 with the support of a grant from the Abbott Academy Fund. An earlier publication under the same name published issues in 2015 with a wider focus on business, investing, and politics. Today, the Review is solely dedicated to publishing work in applications of economic policy and theory. We welcome submissions on a rolling-basis, and look forward to reviewing your submissions.</p>
+        <p>The current iteration of the Review was founded in 2025 with the support of a grant from the Abbott Academy Fund. An earlier publication under the same name published issues in 2015 with a wider focus on business, investing, and politics. Today, the Review is solely dedicated to publishing work in applications of economic policy and theory. We are currently accepting submissions, and all final submissions close on <strong data-deadline>September 25, 2026 at 11:59 PM EST</strong>. We look forward to reading your work.</p>
         <p>The journal covers economics broadly, including labor markets, public finance, behavioral economics, and economic history. Articles go through peer review before publication. The print edition is funded by the Abbot Academy Fund and distributed to students, faculty, and alumni.</p>
-        <p>Submissions are accepted on a rolling basis. Issues are published periodically, with a maximum of six articles per issue to ensure thorough review of each piece. There is no restriction on topic, method, or school affiliation for authors. The editorial standard is rigor and clarity. The editorial board reserves discretion over the number of articles accepted per issue and the timing of publication. Not all submissions will be published.</p>
+        <p>Submissions for the current cycle must be received in final form by <strong data-deadline>September 25, 2026 at 11:59 PM EST</strong>; nothing submitted after that time will be reviewed. Issues are published periodically, with a maximum of six articles per issue to ensure thorough review of each piece. There is no restriction on topic, method, or school affiliation for authors. The editorial standard is rigor and clarity. The editorial board reserves discretion over the number of articles accepted per issue and the timing of publication. Not all submissions will be published.</p>
       </div>
     </div>
     <div>
@@ -84,6 +97,10 @@
         <p class="card-label">Submissions</p>
         <h3>Submit your research</h3>
         <p>The <em>Review</em> accepts original economics research from high school students at any school. Articles go through peer review before publication.</p>
+        <div class="deadline-inline">
+          <strong>All final submissions close</strong>
+          <span data-deadline>September 25, 2026 at 11:59 PM EST</span>
+        </div>
         <a href="submit.html" class="btn btn-ghost mt-3" style="font-size:0.8rem;">Submit to the Review →</a>
         <p style="margin-top:1rem; font-size:0.8rem; color:var(--muted);">Questions first? <a href="leadership.html">Contact the board</a>.</p>
       </div>
@@ -101,6 +118,7 @@
   </div>
 
   <script src="articles.js" defer></script>
+  <script src="deadline.js" defer></script>
 
 </div>
 
