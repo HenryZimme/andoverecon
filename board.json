@@ -5,7 +5,7 @@
       "name": "Henry Zimmerman",
       "year": "27",
       "role": "Co-President",
-      "photo": "/photos/hzimmerman_pfp.webp",
+      "photo": "/photos/pfp/hzimmerman_pfp.webp",
       "url": "https://www.henryzimmerman.net",
       "bio": "Henry founded AES’s first Fed Challenge team, which entered the Federal Reserve Bank of New York’s national research competition on the economics of music. He designed the fall curriculum and helped launch the research colloquium, where students present policy briefs to Boston policymakers. Outside AES, he does astrophysics research, captains the cross country team, and tutors at the Writing Center.",
       "group": "senior"
@@ -14,7 +14,7 @@
       "name": "Kachi Ikekpeazu",
       "year": "27",
       "role": "Co-President",
-      "photo": "/photos/oikekpeazu_pfp.webp",
+      "photo": "/photos/pfp/oikekpeazu_pfp.webp",
       "url": "https://www.linkedin.com/in/kachi-ikekpeazu-971417344/",
       "bio": "Kachi supports student groups in presenting research for the Economics Research Colloquium and leads the overall direction of the program, engaging with policy ideas and communicating them to broader audiences. Outside of economics, Kachi is actively involved in campus leadership as President of Aflatam and Flagstaff Cluster Co-President. He is also a dedicated problem-solver who enjoys tackling Rubik's cubes, and a creative writer who performs slam poetry.",
       "group": "senior"
@@ -23,7 +23,7 @@
       "name": "Andrew Liu",
       "year": "27",
       "role": "Co-President",
-      "photo": "/photos/aliu_pfp.webp",
+      "photo": "/photos/pfp/aliu_pfp.webp",
       "url": "https://www.linkedin.com/in/andrew-liu-910870318/",
       "bio": "Andrew founded and led the publication of the Andover Economics Review. He also founded the AES Policy Think Tank collaboration between students and Boston policy makers, and helps lead the direction of the club's research colloquium. Outside of economics, Andrew loves philosophy and applied ethics, and is a rower on the crew team!",
       "group": "senior"
@@ -32,25 +32,16 @@
       "name": "Anna Lu",
       "year": "27",
       "role": "Editor in Chief, AER",
-      "photo": "photos/ALu_Pfp.webp",
+      "photo": "photos/pfp/alu_pfp.webp",
       "bio": "Anna leads the Andover Economics Review and guides the Editorial Board through the selection, editing, and publication of the peer-reviewed student-led research journal. During the Economics Research Colloquium, she mentored research teams through their research and helped them synthesize ideas into policy briefs that were presented to policymakers. Outside of AES, she is actively involved in economics policy and agricultural development research, music, and is a Program Coordinator at Youth Development Organization (YDO).",
       "url": "https://www.linkedin.com/in/annajlu",
       "group": "senior"
     },
     {
-      "name": "Crispin Black",
-      "year": "28",
-      "role": "Editorial Board",
-      "photo": "",
-      "bio": "Hi I'm Crispin, a 2 year lower from NYC, at Andover I coordinate a community engagement program and am on the board for AES and 2 CAMD clubs. My hobbies are building legos and exploring new places.",
-      "url": "mailto:cblack28@andover.edu",
-      "group": "editorial"
-    },
-    {
       "name": "Konnor Fortini",
       "year": "28",
       "role": "Editorial Board",
-      "photo": "/photos/kfortini_pfp.webp",
+      "photo": "/photos/pfp/kfortini_pfp.webp",
       "bio": "Konnor brings a sharp interest in economics and policy to AES, with experience spanning Fed Challenge and direct outreach to economists and policymakers including State Senator Finegold. He self-studies economics with a particular passion for understanding the systems that shape public life and drive real-world outcomes. Outside of economics, Konnor is a journalist at The Phillipian and The Revere, an athlete in football, wrestling, and javelin, and a thinker fascinated by the power of writing to make economic ideas resonate.​​​​​​​​​​​​​​​​",
       "url": "https://www.linkedin.com/in/konnorfortini",
       "group": "editorial"
@@ -68,16 +59,25 @@
       "name": "Pia Chhabra",
       "year": "28",
       "role": "Editorial Board",
-      "photo": "/photos/pchhabra_pfp.webp",
+      "photo": "/photos/pfp/pchhabra_pfp.webp",
       "bio": "Pia Chhabra is a lower at Phillips Academy Andover, and a second-year member of the Andover Economics Society board. She is interested in the intersection between economics and law and has participated in the Fed Challenge and mentored a team in our Economics Research Colloquium.",
       "url": "https://www.linkedin.com/in/pia-chhabra-242592326",
+      "group": "editorial"
+    },
+    {
+      "name": "Crispin Black",
+      "year": "28",
+      "role": "Editorial Board",
+      "photo": "/photos/pfp/cblack_pfp.webp",
+      "bio": "Hi I'm Crispin, a 2 year lower from NYC, at Andover I coordinate a community engagement program and am on the board for AES and 2 CAMD clubs. My hobbies are building legos and exploring new places.",
+      "url": "mailto:cblack28@andover.edu",
       "group": "editorial"
     },
     {
       "name": "David Burt",
       "year": "28",
       "role": "Web Dev",
-      "photo": "/photos/dburt_pfp.webp",
+      "photo": "/photos/pfp/dburt_pfp.webp",
       "bio": "David is a lower at Phillips Academy interested in urban economics. During the AES research colloquium, he authored and presented a policy brief examining what Andover should do beyond minimum compliance with the MBTA Communities Act. Apart from AES, David plays varsity soccer, serves on the board of BSU and the Men's Mental Health Club. ",
       "url": "https://www.linkedin.com/in/david-burt-ab66a1382/",
       "group": "web"
@@ -86,7 +86,7 @@
       "name": "Cooper Simon",
       "year": "28",
       "role": "Web Dev",
-      "photo": "/photos/csimon_pfp.webp",
+      "photo": "/photos/pfp/csimon_pfp.webp",
       "bio": "Cooper is a lower at Phillips Academy interested in environmental economics and local policy. During the AES research colloquium, he collaborated on a policy brief relating to the MBTA Communities Act. Apart from AES, Cooper is a classroom aide at Bancroft Elementary school, part of the Cross Country and Swim teams, a day student mentor, and involved with the Phillips Academy Sustainability Coalition.",
       "url": "mailto:csimon28@andover.edu",
       "group": "web"
