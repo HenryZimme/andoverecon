@@ -507,8 +507,12 @@ footer {
 .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
 .footer-links a:hover { color: #fff; text-decoration: none; }
 .footer-credit {
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
+  /* match .footer-bottom so the credit aligns with the copyright line
+     instead of sitting full-bleed against the footer padding */
+  max-width: var(--max-width);
+  margin: 0.75rem auto 0;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.6);
 }
 
 .footer-credit a {
@@ -529,6 +533,10 @@ footer {
 }
 
 /* ---- Utilities ------------------------------------------- */
+/* hard guarantee that the hidden attribute always wins — nav.js and the
+   index banner scripts rely on el.hidden = true to dismiss banners */
+[hidden] { display: none !important; }
+
 .text-center { text-align: center; }
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
@@ -1412,9 +1420,54 @@ footer {
 .deadline-inline strong { display: block; font-size: 0.82rem; color: var(--blue-dark); }
 .deadline-inline span { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
 
+/* === Collapsible sections (<details class="disclosure">) ===
+   Shared by submit.html and copyright.html. Previously defined only
+   in submit.html's inline <style>, which left copyright.html — the page
+   every article links to for licensing — with unstyled browser defaults. */
+.disclosure {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  margin-bottom: 0.6rem;
+  background: #fff;
+}
+.disclosure summary {
+  cursor: pointer;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.disclosure summary::-webkit-details-marker { display: none; }
+.disclosure summary::after {
+  content: '+';
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.disclosure[open] summary::after { content: '\2212'; }
+.disclosure[open] summary {
+  border-bottom: 1px solid var(--rule);
+}
+.disclosure summary:hover { background: var(--cream); }
+.disclosure summary:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
+}
+.disclosure-body {
+  padding: 0.9rem 1.1rem 1.1rem;
+}
+.disclosure-body p { margin: 0; }
+
 /* === Print === */
 @media print {
-  #site-nav, footer, .event-banner,
+  #site-nav, footer, .event-banner, .deadline-banner, .deadline-inline,
   .cite-copy, .btn, .doi-badge img {
     display: none;
   }

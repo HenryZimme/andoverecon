@@ -89,6 +89,29 @@ wired to that field. No other file needs to change.
 6. To add a photo, place a square-cropped headshot (at least 200×200 px, saved as `.webp`) in `photos/`. Compress it to under 50 KB before committing. Set `"photo": "/photos/firstinitiallastname_pfp.webp"` in the board entry.
 7. All rendering happens automatically — do not edit `leadership.html` directly to add or remove members.
 
+### Change the journal submission deadline
+
+The deadline is displayed in many places, but it has one source of truth:
+
+1. Open `deadline.js`. Edit `DEADLINE_ISO` (the machine-readable date, with
+   the correct UTC offset: use `-04:00` for dates between March and November
+   when Eastern time is EDT, and `-05:00` for winter dates when it is EST)
+   and `DEADLINE_DISPLAY` (the text readers see — use the matching EDT/EST
+   abbreviation).
+2. Run `grep -rn "11:59 PM" *.html` and update the handful of hardcoded
+   fallbacks it finds: the `<meta name="description">` / og / twitter tags on
+   index, journal, and submit, the fallback text inside every
+   `data-deadline` element, and the "Deadline" row in submit.html's sidebar.
+   The fallback text only shows before deadline.js loads, but it should
+   never contradict the real deadline.
+3. Nothing else needs to change. While the deadline is in the future, every
+   page with the banner shows a live countdown; after it passes, deadline.js
+   automatically rewrites the banner to "Final submissions closed on …",
+   swaps the inline callouts on index and journal to a closed state, and
+   hides the submit buttons.
+4. When the next cycle opens, restore the banner copy and remove the
+   "closed" state by simply setting the next deadline.
+
 ### Announce an upcoming event (homepage banner)
 
 1. Open `index.html`.
@@ -131,7 +154,7 @@ wired to that field. No other file needs to change.
 
 **4. Computes years active.** Any element with `data-years-since="YYYY"` is filled with the number of years since that founding year. The homepage stat updates automatically each January.
 
-**5. Injects a skip link.** A "Skip to main content" link is added before the nav on every page for keyboard and screen reader users. It targets the first `.hero`, `.page-content`, or `#lab-root` element on the page.
+**5. Injects a skip link.** A "Skip to main content" link is added before the nav on every page for keyboard and screen reader users. It targets the first `.hero`, `.hero-split`, `.sub-hero`, `.page-content`, or `#lab-root` element on the page.
 
 ---
 
@@ -192,6 +215,8 @@ With a custom domain via Cloudflare:
 ## Testing
 
 Open any `.html` file directly in a browser to preview it locally. For features that depend on `nav.js` (nav bar, footer, skip link, date logic), serve the files over a local server — run `python3 -m http.server` in the repo folder and open `http://localhost:8000`.
+
+When testing, remember that `404.html` is served by GitHub Pages at **every** unmatched URL (e.g. `localhost:8000/articles/nope.html`), so check the 404 page at a nested path, not just at the root — its assets and links must all be root-relative (`/style.css`, `/journal.html`) or they will break exactly when someone needs the page most.
 
 To revert a broken change, use GitHub's file history.
 

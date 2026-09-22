@@ -192,6 +192,10 @@
     }
     sup.fn:hover { color: #7dd4f8; }
     sup.fn.active-fn { color: #7dd4f8; background: rgba(68,184,243,0.12); }
+    sup.fn:focus-visible {
+      outline: 2px solid #7dd4f8;
+      outline-offset: 2px;
+    }
 
     /* ── citation bar at bottom of reader ───────────────── */
     .fn-bar {
@@ -459,9 +463,9 @@
 <!-- Submission deadline -->
 <div class="deadline-banner" role="region" aria-label="Submission deadline">
   <div class="deadline-banner-inner">
-    <p class="deadline-label">Important — The submission deadline is nearing</p>
-    <p class="deadline-headline">ALL final submissions to the <em>Andover Economic Review</em> close <span class="deadline-date" data-deadline>September 25, 2026 at 11:59 PM EST</span>.</p>
-    <p class="deadline-note">If you are working on a paper, send it in as soon as you can. This is a hard deadline — papers received after it will not be reviewed or considered for publication in this cycle.</p>
+    <p class="deadline-label">Important — Final call for submissions</p>
+    <p class="deadline-headline">All final submissions to the <em>Andover Economic Review</em> close <span class="deadline-date" data-deadline>September 25, 2026 at 11:59 PM EDT</span>.</p>
+    <p class="deadline-note">This is a hard deadline — papers received after it will not be reviewed or considered for publication in this cycle, regardless of when the work was begun.</p>
     <div class="deadline-banner-actions">
       <a href="submit.html" class="btn btn-white">Submit to the Review →</a>
       <span class="deadline-countdown" id="deadline-countdown" aria-live="polite"></span>
@@ -548,7 +552,7 @@
 
       <div class="fn-bar">
         <span class="fn-bar-num" id="fn-num"></span>
-        <span class="fn-bar-text" id="fn-text">Hover a footnote number to see the citation.</span>
+        <span class="fn-bar-text" id="fn-text">Hover or tap a footnote number to see the citation.</span>
       </div>
     </div>
 
@@ -740,8 +744,28 @@ const SCRIPT = [
 // convert [N] markers to footnote superscripts
 function markup(text) {
   return text.replace(/\[(\d+)\]/g, (_, n) =>
-    `<sup class="fn" data-fn="${n}">${n}</sup>`
+    `<sup class="fn" data-fn="${n}" tabindex="0" role="button" aria-label="Footnote ${n}: ${FN[n] ? FN[n].replace(/"/g, '&quot;') : ''}">${n}</sup>`
   );
+}
+
+// show footnote N in the citation bar (shared by hover, tap, and keyboard)
+function showFootnote(el) {
+  const n = el.dataset.fn;
+  document.getElementById('fn-num').textContent = n;
+  document.getElementById('fn-num').classList.add('visible');
+  const bar = document.getElementById('fn-text');
+  bar.textContent = FN[n] || '';
+  bar.classList.add('active');
+  document.querySelectorAll('sup.fn.active-fn').forEach(x => x.classList.remove('active-fn'));
+  el.classList.add('active-fn');
+}
+
+function clearFootnote() {
+  document.getElementById('fn-num').classList.remove('visible');
+  const bar = document.getElementById('fn-text');
+  bar.textContent = 'Hover or tap a footnote number to see the citation.';
+  bar.classList.remove('active');
+  document.querySelectorAll('sup.fn.active-fn').forEach(x => x.classList.remove('active-fn'));
 }
 
 // render all exchanges into the script body
@@ -760,26 +784,26 @@ function renderScript() {
 
   body.innerHTML = items + '<div class="script-end-marker">End of script / 2,492 words</div>';
 
-  // footnote hover handlers
+  // footnote handlers: hover for mouse, click/tap for touch, and
+  // focus + Enter/Space for keyboard users (sup.fn has tabindex + role)
   body.querySelectorAll('sup.fn').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      const n = el.dataset.fn;
-      document.getElementById('fn-num').textContent = n;
-      document.getElementById('fn-num').classList.add('visible');
-      const bar = document.getElementById('fn-text');
-      bar.textContent = FN[n] || '';
-      bar.classList.add('active');
-      // mark active
-      body.querySelectorAll('sup.fn.active-fn').forEach(x => x.classList.remove('active-fn'));
-      el.classList.add('active-fn');
+    el.addEventListener('mouseenter', () => showFootnote(el));
+    el.addEventListener('mouseleave', clearFootnote);
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      el.classList.contains('active-fn') ? clearFootnote() : showFootnote(el);
     });
-    el.addEventListener('mouseleave', () => {
-      document.getElementById('fn-num').classList.remove('visible');
-      document.getElementById('fn-text').textContent = 'Hover a footnote number to see the citation.';
-      document.getElementById('fn-text').classList.remove('active');
-      el.classList.remove('active-fn');
+    el.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      el.classList.contains('active-fn') ? clearFootnote() : showFootnote(el);
     });
+    el.addEventListener('focus', () => showFootnote(el));
+    el.addEventListener('blur', clearFootnote);
   });
+
+  // tapping anywhere else in the script body clears an active footnote
+  body.addEventListener('click', clearFootnote);
 
   // scroll progress
   body.addEventListener('scroll', () => {

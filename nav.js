@@ -40,7 +40,10 @@
     a.textContent = 'Skip to main content';
     document.body.insertBefore(a, document.body.firstChild);
 
-    var target = document.querySelector('.hero, .page-content, #lab-root');
+    // first match in document order becomes the skip target: the hero on
+    // the homepage (note: index.html uses .hero-split, not .hero), the
+    // sub-hero h1 on interior pages, or the lab root on lab.html.
+    var target = document.querySelector('.hero, .hero-split, .sub-hero, .page-content, #lab-root');
     if (target) {
       if (!target.id) {
         target.id = 'main-content';

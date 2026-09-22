@@ -6,7 +6,10 @@
   <title>Page Not Found | Andover Economics Society</title>
   <meta name="description" content="The page you requested could not be found. Return to the Andover Economics Society homepage.">
   <meta name="robots" content="noindex">
-  <link rel="stylesheet" href="style.css">
+  <!-- 404.html is served at EVERY unmatched URL path (e.g. /articles/foo.html),
+       so every asset and link on this page must be root-relative. Relative
+       paths here resolve against the broken URL and 404 again. -->
+  <link rel="stylesheet" href="/style.css">
   <link rel="icon" href="/aes-favicon.ico" sizes="any">
   <link rel="icon" href="/aes-favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -45,7 +48,10 @@
   <div style="max-width:640px;">
     <div style="display:flex; gap:0.85rem; flex-wrap:wrap;">
       <a href="/index.html" class="btn btn-blue">Return to Home</a>
-      <button onclick="history.back()" class="btn btn-ghost">Go Back</button>
+      <!-- Shown only when the visitor came from another page on this site;
+           a direct hit on a bad external link has no in-site history to go
+           back to, and history.back() would just leave the site. -->
+      <button onclick="history.back()" class="btn btn-ghost" id="go-back-btn" hidden>Go Back</button>
     </div>
   </div>
 
@@ -60,42 +66,42 @@
       <p class="card-label">Publication</p>
       <h3>Andover Economic Review</h3>
       <p>The first high school economics journal written by and for high school students. The Winter 2025 issue is available now.</p>
-      <a href="journal.html" class="card-link">Read the journal →</a>
+      <a href="/journal.html" class="card-link">Read the journal →</a>
     </div>
 
     <div class="card">
       <p class="card-label">Competition</p>
       <h3>Fed Challenge</h3>
       <p>AES competes in the Federal Reserve Bank of New York's annual High School Fed Challenge research program.</p>
-      <a href="fed_challenge.html" class="card-link">About Fed Challenge →</a>
+      <a href="/fed_challenge.html" class="card-link">About Fed Challenge →</a>
     </div>
 
     <div class="card">
       <p class="card-label">Speaker series</p>
       <h3>Research Colloquium</h3>
       <p>AES brings economists and policy researchers to campus each year. Sessions are open to all members.</p>
-      <a href="colloquium.html" class="card-link">See the archive →</a>
+      <a href="/colloquium.html" class="card-link">See the archive →</a>
     </div>
 
     <div class="card">
       <p class="card-label">Research</p>
       <h3>Decision Lab</h3>
       <p>An interactive behavioral economics experiment you can complete in four minutes. Anchoring, sunk cost, and more.</p>
-      <a href="lab.html" class="card-link">Try the lab →</a>
+      <a href="/lab.html" class="card-link">Try the lab →</a>
     </div>
 
     <div class="card">
       <p class="card-label">Reference</p>
       <h3>Resources</h3>
       <p>Reading lists, research databases, and competition prep materials curated by the AES board.</p>
-      <a href="resources.html" class="card-link">Browse resources →</a>
+      <a href="/resources.html" class="card-link">Browse resources →</a>
     </div>
 
     <div class="card">
       <p class="card-label">Contact</p>
       <h3>Leadership</h3>
       <p>Meet the AES board and get in touch. Meetings are held Thursdays in CLC. No prior coursework required.</p>
-      <a href="leadership.html" class="card-link">Meet the board →</a>
+      <a href="/leadership.html" class="card-link">Meet the board →</a>
     </div>
 
   </div>
@@ -103,6 +109,13 @@
 </div>
 
 <div id="footer-placeholder"></div>
-<script src="nav.js" defer></script>
+<script>
+  // Offer "Go Back" only when the visitor arrived from somewhere on this site.
+  if (document.referrer && document.referrer.indexOf(location.origin) === 0) {
+    var gb = document.getElementById('go-back-btn');
+    if (gb) gb.hidden = false;
+  }
+</script>
+<script src="/nav.js" defer></script>
 </body>
 </html>
