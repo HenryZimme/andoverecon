@@ -1,6 +1,24 @@
 {
   "events": [
     {
+        "id": "2026-thurlow-apr",
+      "title": "Introductory Meeting 2026",
+      "date": "2026-10-07",
+      "category": "Meetings",
+      "description": "Board members introduced Andover Economics Society to new members, explaining planned activities such as the research colloqium and guest speakers as well as discussing the process behind operating the "Andover Economic Review"",
+      "credit": "Pia Chhabra, Konnor Fortini, Anna Lu",
+      "cover": "photos/events/2026-intro-meeting/IMG_7464.webp",
+      "photos": [
+        { "src": "photos/events/2026-intro-meeting/IMG_0770.webp", "alt": "AES members listening during introductory presentation" },
+        { "src": "photos/events/2026-intro-meeting/IMG_0773.webp", "alt": "Anna Lu presenting about the Andover Economic Review" },
+        { "src": "photos/events/2026-intro-meeting/IMG_0776.webp", "alt": "Andrew Liu explaining why prospective members should join AES" },
+        { "src": "photos/events/2026-intro-meeting/IMG_4344.webp", "alt": "Beginning of presentation to prospective members" },
+        { "src": "photos/events/2026-intro-meeting/IMG_7462.webp", "alt": "Henry Zimmerman detailing the Fed Challenge that AES members participate in" },
+        { "src": "photos/events/2026-intro-meeting/IMG_7464.webp", "alt": "AES members captivated by introductory presentation" },
+        { "src": "photos/events/2026-intro-meeting/IMG_4347.webp", "alt": "Partner discussions that took place after the presentation" }
+      ]
+    },
+    {
       "id": "2026-thurlow-apr",
       "title": "Julieann Thurlow & Jose Cruz | Reading Cooperative Bank",
       "date": "2026-04-23",
